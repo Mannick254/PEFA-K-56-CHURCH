@@ -1,0 +1,57 @@
+.aboutContainer {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  border-radius: 1.25rem;
+  color: #f1f5f9;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
+
+.aboutTitle {
+  font-size: 2.25rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  text-align: center;
+  color: #38bdf8;
+  letter-spacing: 1px;
+}
+
+.aboutSubtitle {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: #facc15;
+  text-align: center;
+}
+
+.aboutText {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+  color: #e2e8f0;
+}
+
+.featureList {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 1rem;
+}
+
+.featureList li {
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  color: #f8fafc;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(30, 41, 59, 0.6);
+  border-radius: 0.5rem;
+  transition: background 0.3s ease;
+}
+
+.featureList li:hover {
+  background: rgba(56, 189, 248, 0.2);
+}

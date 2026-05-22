@@ -1,1 +1,0 @@
-import{j as r}from"./index-COoDSU9M.js";const e=()=>r.jsxs("div",{children:[r.jsx("h2",{children:"Prayers"}),r.jsx("p",{children:"This section will be used to manage prayers."})]});export{e as default};

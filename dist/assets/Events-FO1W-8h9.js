@@ -1,0 +1,1 @@
+import{j as e}from"./index-nqcq9Cl8.js";const t=()=>e.jsxs("div",{children:[e.jsx("h2",{children:"Events"}),e.jsx("p",{children:"This section will be used to manage events."})]});export{t as default};

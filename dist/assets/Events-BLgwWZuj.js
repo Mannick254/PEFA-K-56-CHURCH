@@ -1,1 +1,0 @@
-import{j as s}from"./index-COoDSU9M.js";const t=()=>s.jsxs("div",{children:[s.jsx("h1",{children:"Events"}),s.jsx("p",{children:"This page will contain a list of church events."})]});export{t as default};

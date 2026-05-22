@@ -1,27 +1,32 @@
-import React from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '../supabaseClient';
+import styles from '../styles/Admin.module.css';
 
 const Admin = () => {
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user && user.user_metadata?.is_admin) {
+        setUser(user);
+      } else {
+        navigate('/'); // Redirect if not an admin
+      }
+    };
+
+    fetchUser();
+  }, [navigate]);
+
   return (
-    <div>
-      <h1>Admin</h1>
-      <nav>
-        <ul>
-          <li><Link to="/admin/members">Church Members</Link></li>
-          <li><Link to="/admin/youth">Youth</Link></li>
-          <li><Link to="/admin/children">Sunday School</Link></li>
-          <li><Link to="/admin/attendance">Sunday Service Attendance</Link></li>
-          <li><Link to="/admin/visitors">Visitors</Link></li>
-          <li><Link to="/admin/sermons">Sermons</Link></li>
-          <li><Link to="/admin/events">Events</Link></li>
-          <li><Link to="/admin/prayers">Prayers</Link></li>
-          <li><Link to="/admin/statement-of-faith">Statement of Faith</Link></li>
-        </ul>
-      </nav>
-      <hr />
-      <Outlet />
+    <div className={styles.adminContainer}>
+      <h2>Admin Dashboard</h2>
+      {user && <p>Welcome, {user.email}!</p>}
+      {/* Add more admin-specific content here */}
     </div>
   );
-}
+};
 
 export default Admin;

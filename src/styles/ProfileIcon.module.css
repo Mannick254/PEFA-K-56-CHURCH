@@ -1,0 +1,36 @@
+.profileIcon {
+  position: relative;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  margin-left: 1rem;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  min-width: 150px;
+  z-index: 1000; /* Ensure dropdown is on top */
+}
+
+.dropdownMenu a, .dropdownMenu button {
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 0.5rem;
+  width: 100%;
+  cursor: pointer;
+  color: #333;
+  text-decoration: none;
+}
+
+.dropdownMenu a:hover, .dropdownMenu button:hover {
+  background-color: #f0f0f0;
+}
