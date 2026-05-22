@@ -1,0 +1,1 @@
+import{j as t}from"./index-COoDSU9M.js";const o=()=>t.jsxs("div",{children:[t.jsx("h1",{children:"About Us"}),t.jsx("p",{children:"This page will contain information about the church."})]});export{o as default};

@@ -1,0 +1,1 @@
+import{j as t}from"./index-COoDSU9M.js";const s=()=>t.jsxs("div",{children:[t.jsx("h1",{children:"Contact Us"}),t.jsx("p",{children:"This page will contain the church's contact information."})]});export{s as default};

@@ -1,0 +1,1 @@
+import{j as s}from"./index-COoDSU9M.js";const r=()=>s.jsxs("div",{children:[s.jsx("h2",{children:"Sermons"}),s.jsx("p",{children:"This section will be used to manage sermons."})]});export{r as default};

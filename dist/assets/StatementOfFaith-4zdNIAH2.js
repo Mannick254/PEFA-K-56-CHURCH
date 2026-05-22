@@ -1,0 +1,1 @@
+import{j as t}from"./index-COoDSU9M.js";const s=()=>t.jsxs("div",{children:[t.jsx("h2",{children:"Our Statement of Faith"}),t.jsx("p",{children:"This page will display the church's statement of faith."})]});export{s as default};
