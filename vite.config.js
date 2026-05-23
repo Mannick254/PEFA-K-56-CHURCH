@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
+import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [
@@ -20,6 +21,7 @@ export default defineConfig({
         background_color: '#004a99',
         display: 'standalone',
         orientation: 'portrait',
+        start_url: '/',
         icons: [
           {
             src: 'pwa-192x192.png',
@@ -39,10 +41,22 @@ export default defineConfig({
           }
         ],
       },
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,json}'],
+      },
     }),
   ],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src'),
+    },
+  },
   server: {
     port: 5173,
     open: true,
+  },
+  build: {
+    outDir: 'dist',
+    sourcemap: true,
   },
 });

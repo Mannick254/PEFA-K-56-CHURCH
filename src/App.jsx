@@ -24,6 +24,7 @@ const AdminStatementOfFaith = lazy(() => import('./components/admin/StatementOfF
 const StatementOfFaith = lazy(() => import('./pages/StatementOfFaith'));
 const Prayers = lazy(() => import('./pages/Prayers'));
 const Login = lazy(() => import('./pages/Login'));
+const AdminLogin = lazy(() => import('./pages/AdminLogin'));
 const Register = lazy(() => import('./pages/Register'));
 const Profile = lazy(() => import('./pages/Profile'));
 const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
@@ -46,6 +47,7 @@ function App() {
                 <Route path="/prayers" element={<Prayers />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/admin-login" element={<AdminLogin />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
