@@ -1,0 +1,449 @@
+/* SermonsDisplay.module.css */
+
+.container {
+  padding: 2rem;
+  background-color: #f9fafb;
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 1.5rem;
+}
+
+.header h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #111827;
+}
+
+.header p {
+  font-size: 1.1rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+.addBtn, .closeBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.addBtn {
+  background-color: #4f46e5;
+  color: white;
+}
+
+.addBtn:hover {
+  background-color: #4338ca;
+}
+
+.closeBtn {
+  background-color: #ef4444;
+  color: white;
+}
+
+.closeBtn:hover {
+  background-color: #dc2626;
+}
+
+/* Form Styling */
+.formCard {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+  margin-bottom: 2rem;
+}
+
+.mainForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputGroup label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #374151;
+}
+
+.inputGroup input, .inputGroup textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.inputGroup input:focus, .inputGroup textarea:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+}
+
+.inputGroup textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.markdownGuide {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+}
+
+/* Media (Upload & Preview) */
+.mediaGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.uploadSection, .videoPreviewSection {
+  background: #f9fafb;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px dashed #d1d5db;
+}
+
+.uploadSection label, .videoPreviewSection label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.urlInput {
+  margin-top: 1rem;
+}
+
+.miniPlayer {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #e5e7eb;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.playerPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+}
+
+/* Form Actions */
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.submitBtn {
+  padding: 0.8rem 2rem;
+  background-color: #10b981;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.submitBtn:hover {
+  background-color: #059669;
+}
+
+.submitBtn:disabled {
+  background-color: #d1d5db;
+  cursor: not-allowed;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+
+/* Search Bar */
+.searchBar {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+}
+
+.searchBar input {
+  width: 100%;
+  padding: 1rem 1rem 1rem 3rem;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 1rem;
+}
+
+/* Banners & States */
+.errorBanner {
+  background-color: #fef2f2;
+  color: #991b1b;
+  padding: 1rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.loadingState, .emptyState {
+  text-align: center;
+  padding: 4rem 0;
+  color: #6b7280;
+}
+
+
+/* Sermon Grid & Cards */
+.sermonGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+}
+
+.sermonCard {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardImage {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: #e5e7eb;
+}
+
+.cardImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imagePlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #9ca3af;
+}
+
+.cardContent {
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.cardHeader h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1f2937;
+  line-height: 1.4;
+}
+
+.dateBadge {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  background-color: #eef2ff;
+  color: #4338ca;
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+
+.preacherName {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.summary {
+  color: #4b5563;
+  line-height: 1.6;
+  flex-grow: 1;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.summary.truncated {
+  max-height: 100px; /* Adjust as needed */
+  overflow: hidden;
+  position: relative;
+}
+
+.summary.truncated::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  background: linear-gradient(to top, white, rgba(255,255,255,0));
+}
+
+.readMoreBtn {
+  background: none;
+  border: none;
+  color: #4f46e5;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  margin-top: -1rem; /* Overlap the gradient */
+  margin-bottom: 1rem;
+  align-self: flex-start;
+}
+
+.readMoreBtn.showLess {
+  margin-top: 1rem;
+}
+
+/* Markdown Content Styling in Sermon Cards */
+.summary h1, .summary h2, .summary h3 {
+  font-weight: 700;
+  margin-top: 1.2em;
+  margin-bottom: 0.6em;
+  color: #111827;
+}
+.summary h1 { font-size: 1.4em; }
+.summary h2 { font-size: 1.2em; }
+.summary h3 { font-size: 1.1em; }
+
+.summary p {
+  margin-bottom: 1em;
+}
+
+.summary strong {
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.summary em {
+  font-style: italic;
+  color: #4f46e5;
+}
+
+.summary ul, .summary ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.summary li {
+  margin-bottom: 0.5rem;
+}
+
+.summary a {
+  color: #4f46e5;
+  text-decoration: underline;
+}
+.summary a:hover {
+  color: #3730a3;
+}
+
+/* Video Player */
+.videoWrapper {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: auto; /* Pushes video to bottom if content is short */
+  margin-bottom: 1.5rem;
+}
+
+/* Card Actions */
+.cardActions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: auto; /* Pushes buttons to the bottom */
+  padding-top: 1rem;
+  border-top: 1px solid #f3f4f6;
+}
+
+.editBtn, .deleteBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.editBtn {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.editBtn:hover {
+  background-color: #e5e7eb;
+}
+
+.deleteBtn {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.deleteBtn:hover {
+  background-color: #fecaca;
+  border-color: #fecaca;
+}

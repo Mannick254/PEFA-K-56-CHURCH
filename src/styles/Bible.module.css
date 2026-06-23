@@ -1,0 +1,377 @@
+/* Container & Layout */
+.bibleWrapper {
+  min-height: 100vh;
+  background-color: #f8fafc;
+  padding: 40px 20px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Verse of the Day (VOTD) Section */
+.votdContainer {
+  background: linear-gradient(135deg, #ffffff 0%, #f1f5ff 100%);
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 40px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.votdContainer:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(99, 102, 241, 0.1);
+  border-color: #c7d2fe;
+}
+
+.votdHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  color: #6366f1;
+}
+
+.votdLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sparkleIcon {
+  color: #fbbf24;
+}
+
+.votdQuote {
+  margin: 0;
+  padding: 0;
+}
+
+.votdQuote p {
+  font-size: 1.35rem;
+  line-height: 1.6;
+  color: #1e293b;
+  font-weight: 500;
+  margin-bottom: 12px;
+  font-style: italic;
+}
+
+.votdQuote cite {
+  font-weight: 600;
+  color: #64748b;
+  font-style: normal;
+  display: block;
+}
+
+.clickHint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 15px;
+  font-size: 0.8rem;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+/* Analysis Section */
+.analysisSection {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px dashed #cbd5e1;
+  animation: slideDown 0.4s ease-out forwards;
+}
+
+.analysisTitle {
+  font-size: 1rem;
+  color: #4338ca;
+  margin: 0 0 8px 0;
+  font-weight: 700;
+}
+
+.analysisText {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #475569;
+  margin: 0;
+}
+
+/* Search Section */
+.searchSection {
+  margin-bottom: 40px;
+}
+
+.titleArea {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.mainTitle {
+  font-size: 2rem;
+  color: #0f172a;
+  margin-bottom: 8px;
+  font-weight: 800;
+}
+
+.subtitle {
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+.searchBar {
+  display: flex;
+  gap: 12px;
+  background: white;
+  padding: 8px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e2e8f0;
+}
+
+.inputGroup {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 16px;
+  color: #94a3b8;
+}
+
+.mainInput {
+  width: 100%;
+  padding: 14px 14px 14px 48px;
+  border: none;
+  font-size: 1rem;
+  outline: none;
+  color: #1e293b;
+  background: transparent;
+}
+
+.suggestions {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  padding: 8px;
+  z-index: 10;
+  border: 1px solid #e2e8f0;
+}
+
+.suggestions li {
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.suggestions li:hover {
+  background: #f1f5ff;
+  color: #6366f1;
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+}
+
+.selectWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.selectIcon {
+  position: absolute;
+  left: 12px;
+  color: #64748b;
+  pointer-events: none;
+}
+
+.selectWrapper select {
+  padding: 12px 12px 12px 36px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  font-weight: 600;
+  cursor: pointer;
+  appearance: none;
+}
+
+.searchBtn {
+  background: #6366f1;
+  color: white;
+  border: none;
+  padding: 0 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 90px;
+}
+
+.searchBtn:hover {
+  background: #4f46e5;
+}
+
+.searchBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Display Area & Verse Reader */
+.displayArea {
+  margin-top: 20px;
+}
+
+.verseReader {
+  background: white;
+  padding: 40px;
+  border-radius: 24px;
+  border: 1px solid #e2e8f0;
+  position: relative;
+}
+
+.verseMeta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #6366f1;
+  margin-bottom: 24px;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.verseContent {
+  position: relative;
+}
+
+.bgQuote {
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  color: #f1f5ff;
+  z-index: 0;
+}
+
+.text {
+  position: relative;
+  z-index: 1;
+  font-size: 1.5rem;
+  line-height: 1.7;
+  color: #1e293b;
+}
+
+/* Error Card */
+.errorCard {
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  color: #e11d48;
+  padding: 16px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Loading & Skeletons */
+.votdSkeleton {
+  height: 180px;
+  background: linear-gradient(90deg, #f0f4f8 25%, #e2e8f0 50%, #f0f4f8 75%);
+  background-size: 200% 100%;
+  animation: skeletonPulse 1.5s infinite;
+  border-radius: 20px;
+  margin-bottom: 40px;
+}
+
+.loadingState {
+  padding: 40px;
+  background: white;
+  border-radius: 24px;
+}
+
+.skeletonLine {
+  height: 20px;
+  width: 100%;
+  background: #f1f5f9;
+  margin-bottom: 12px;
+  border-radius: 4px;
+}
+
+.skeletonLineShort {
+  height: 20px;
+  width: 60%;
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 0.8s linear infinite;
+}
+
+/* Animations */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes skeletonPulse {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .searchBar {
+    flex-direction: column;
+    padding: 16px;
+  }
+  
+  .controls {
+    width: 100%;
+  }
+  
+  .selectWrapper {
+    flex: 1;
+  }
+  
+  .selectWrapper select {
+    width: 100%;
+  }
+
+  .mainTitle {
+    font-size: 1.5rem;
+  }
+
+  .text {
+    font-size: 1.25rem;
+  }
+}

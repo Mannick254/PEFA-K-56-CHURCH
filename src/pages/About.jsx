@@ -1,58 +1,183 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { motion, useScroll, useSpring, useTransform, AnimatePresence } from 'framer-motion';
+import { supabase } from '../supabaseClient';
 import styles from '../styles/About.module.css';
+import { Compass, Church, Feather, Heart, ShieldCheck, Globe, ArrowRight } from 'lucide-react';
+import { FaDove } from 'react-icons/fa';
+
+// Sub-components
+import MarkdownDisplay from '../components/MarkdownDisplay';
 
 const About = () => {
+  const [aboutContent, setAboutContent] = useState(null);
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
+  
+  // Parallax offsets
+  const yHeroText = useTransform(scrollYProgress, [0, 0.5], [0, 200]);
+  const yHeroBg = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
+
+  useEffect(() => {
+    const fetchAboutContent = async () => {
+      const { data, error } = await supabase.from('about_us').select('*').single();
+      if (!error) setAboutContent(data);
+    };
+    fetchAboutContent();
+  }, []);
+
+  if (!aboutContent) return (
+    <div className={styles.loadingScreen}>
+      <motion.div 
+        animate={{ rotate: 360, opacity: [0.5, 1, 0.5] }} 
+        transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
+        className={styles.loaderLogo}
+      ><Feather size={48} /></motion.div>
+    </div>
+  );
+
+  const revealVariant = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  };
+
   return (
-    <section id="about" className={styles.aboutContainer}>
-      <div className={styles.aboutHeader}>
-        <h1 className={styles.aboutTitle}>About Us</h1>
-        <p className={styles.aboutSubtitle}>
-          Rooted in Christ • Serving Kawangware • Embracing the Future
-        </p>
-      </div>
+    <div className={styles.mainWrapper}>
+      <motion.div className={styles.progressLine} style={{ scaleX }} />
 
-      <div className={styles.aboutContent}>
-        <p className={styles.aboutText}>
-          <strong>PEFA Kawangware 56 Church</strong> is a vibrant branch of the
-          Pentecostal Evangelistic Fellowship of Africa (PEFA), located in the
-          heart of Nairobi. We are a Christ-centered community committed to
-          worship, discipleship, and outreach.
-        </p>
-        <p className={styles.aboutText}>
-          Our mission is to obey the Great Commission by making disciples,
-          nurturing believers, and serving our neighborhood with love. We raise
-          families in faith, guide children in the way of the Lord
-          <em>(Proverbs 22:6)</em>, and empower youth to live boldly for Christ.
-        </p>
-        <p className={styles.aboutText}>
-          Known for lively worship services, strong choir ministry, pastoral
-          counseling, and community support programs, we stand as a spiritual
-          anchor in Kawangware, offering hope and encouragement to all.
-        </p>
-        <p className={styles.aboutText}>
-          Whether you are seeking a home church, pastoral guidance, or simply a
-          place to encounter God’s presence, PEFA Kawangware 56 welcomes you
-          with warmth and fellowship.
-        </p>
-      </div>
+      {/* --- MODERN HERO SECTION --- */}
+      <section className={styles.heroSection}>
+        <motion.div style={{ y: yHeroBg }} className={styles.heroBg} />
+        <div className={styles.heroOverlay} />
+        
+        <div className={styles.container}>
+          <motion.div style={{ y: yHeroText }} className={styles.heroContent}>
+            <motion.span 
+              initial={{ opacity: 0, tracking: -2 }}
+              animate={{ opacity: 1, tracking: 0 }}
+              className={styles.kicker}
+            >
+              ESTABLISHED IN FAITH • DRIVEN BY PURPOSE
+            </motion.span>
+            <motion.h1 
+              initial={{ opacity: 0, clipPath: 'inset(0 0 100% 0)' }}
+              animate={{ opacity: 1, clipPath: 'inset(0 0 0% 0)' }}
+              transition={{ duration: 1, delay: 0.2 }}
+              className={styles.heroTitle}
+            >
+              {aboutContent.title}
+            </motion.h1>
+            <motion.p className={styles.heroSubtitle}>
+              {aboutContent.subtitle}
+            </motion.p>
+          </motion.div>
+        </div>
+        
+        <div className={styles.scrollIndicator}>
+          <span>Scroll to Explore</span>
+          <div className={styles.scrollLine} />
+        </div>
+      </section>
 
-      <div className={styles.digitalSection}>
-        <h2 className={styles.sectionTitle}>Embracing the Digital Age</h2>
-        <p className={styles.aboutText}>
-          We are excited to embrace modern technology. This application is a new
-          step in our journey, designed to bring our church family closer and
-          make our resources more accessible than ever.
-        </p>
-        <ul className={styles.featureList}>
-          <li><strong>🎥 Online Sermons:</strong> Access past sermons anytime.</li>
-          <li><strong>📅 Digital Events Calendar:</strong> Stay up-to-date with activities.</li>
-          <li><strong>🙏 Online Prayer Requests:</strong> Submit prayer needs directly.</li>
-          <li><strong>📢 Community Updates:</strong> Receive announcements and news.</li>
-        </ul>
-      </div>
-    </section>
+      {/* --- STORY SECTION (Interactive Image Reveal) --- */}
+      <section className={styles.storySection}>
+        <div className={styles.container}>
+          <div className={styles.storyGrid}>
+            <motion.div 
+              variants={revealVariant}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className={styles.storyText}
+            >
+              <div className={styles.iconBox}><Compass size={32} /></div>
+              <h2 className={styles.serifTitle}>{aboutContent.our_story_title}</h2>
+              <div className={styles.accentBar} />
+              <p className={styles.pLead}>{aboutContent.our_story_p1}</p>
+              <p className={styles.pBody}>{aboutContent.our_story_p2}</p>
+            </motion.div>
+
+            <motion.div 
+              className={styles.storyVisual}
+              initial={{ scale: 0.8, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 1 }}
+            >
+              <div className={styles.imageRevealWrapper}>
+                <img 
+                  src="https://res.cloudinary.com/dtcb3ffnv/image/upload/v1781692303/IMG_20260609_194629_lmtpxr.jpg" 
+                  alt="Our Heritage"
+                  className={styles.mainImage}
+                />
+                <div className={styles.floatingStats}>
+                  <div className={styles.statItem}>
+                    <h4>20+</h4>
+                    <p>Years of Ministry</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- MISSION (Glassmorphic Impact Section) --- */}
+      <section className={styles.missionSection}>
+        <div className={styles.meshGradient} />
+        <motion.div 
+          className={styles.missionGlassCard}
+          initial={{ opacity: 0, y: 100 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ margin: "-100px" }}
+        >
+          <FaDove className={styles.missionIcon} />
+          <h2 className={styles.missionTitle}>{aboutContent.our_mission_title}</h2>
+          <p className={styles.missionText}>{aboutContent.our_mission_p1}</p>
+          <div className={styles.missionDivider} />
+        </motion.div>
+      </section>
+
+      {/* --- BELIEFS BENTO GRID --- */}
+      <section className={styles.bentoSection}>
+        <div className={styles.container}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.serifTitle}>Our Foundation</h2>
+            <p>The pillars that guide our spiritual journey</p>
+          </div>
+          
+          <div className={styles.bentoGrid}>
+            <motion.div whileHover={{ y: -10 }} className={`${styles.bentoCard} ${styles.tall}`}>
+              <ShieldCheck className={styles.bentoIcon} />
+              <h3>The Bible</h3>
+              <p>The inspired, infallible, and authoritative Word of God. Our ultimate map for life’s journey.</p>
+              <MarkdownDisplay markdown={aboutContent.bible_context} />
+            </motion.div>
+
+            <motion.div whileHover={{ y: -10 }} className={styles.bentoCard}>
+              <Heart className={styles.bentoIcon} />
+              <h3>The Trinity</h3>
+              <p>One God, eternally existent in three persons: Father, Son, and Holy Spirit.</p>
+            </motion.div>
+
+            <motion.div whileHover={{ y: -10 }} className={styles.bentoCard}>
+              <Globe className={styles.bentoIcon} />
+              <h3>Our Outreach</h3>
+              <p>{aboutContent.digital_age_p1}</p>
+            </motion.div>
+
+            <motion.div whileHover={{ y: -10 }} className={`${styles.bentoCard} ${styles.wide} ${styles.ctaBackground}`}>
+              <div className={styles.ctaContent}>
+                <h3>{aboutContent.join_us_title}</h3>
+                <p>{aboutContent.join_us_p1}</p>
+                <button className={styles.modernButton}>
+                  Start Your Journey <ArrowRight size={18} />
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 };
 
 export default About;
-

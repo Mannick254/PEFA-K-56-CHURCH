@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import styles from '../styles/ResetPassword.module.css';
 
@@ -50,6 +50,9 @@ const ResetPassword = () => {
             {loading ? 'Loading...' : 'Reset Password'}
           </button>
         </form>
+        <p>
+          <Link to="/">Back to Site</Link>
+        </p>
       </div>
     </div>
   );

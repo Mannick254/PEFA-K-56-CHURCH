@@ -1,0 +1,169 @@
+/* Container and Layout */
+.heroAdmin {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.heroAdmin h3 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: #1a1a1a;
+    font-size: 1.5rem;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 0.5rem;
+}
+
+/* Form Styling */
+.formGroup {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.formGroup label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #444;
+}
+
+.formGroup input[type="text"],
+.formGroup textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.formGroup textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+/* Image Preview */
+.imagePreviewContainer {
+    margin-bottom: 10px;
+    background: #f8f9fa;
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 150px;
+    overflow: hidden;
+}
+
+.heroImagePreview {
+    max-width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    display: block;
+}
+
+.formGroup input[type="file"] {
+    padding: 10px 0;
+}
+
+/* Buttons */
+.buttonGroup {
+    display: flex;
+    gap: 10px;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.buttonGroup button {
+    padding: 0.75rem 1.25rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: filter 0.2s, transform 0.1s;
+    font-size: 0.95rem;
+}
+
+.buttonGroup button:active {
+    transform: translateY(1px);
+}
+
+.buttonGroup button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.updateButton {
+    background-color: #007bff;
+    color: white;
+}
+
+.publishButton {
+    background-color: #28a745;
+    color: white;
+}
+
+.unpublishButton {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.deleteButton {
+    background-color: #dc3545;
+    color: white;
+    margin-left: auto; /* Pushes delete button to the right */
+}
+
+/* Hover effects */
+.updateButton:hover:not(:disabled) { filter: brightness(90%); }
+.publishButton:hover:not(:disabled) { filter: brightness(90%); }
+.unpublishButton:hover:not(:disabled) { filter: brightness(90%); }
+.deleteButton:hover:not(:disabled) { filter: brightness(90%); }
+
+/* Status Alerts */
+.alert {
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+}
+
+.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .heroAdmin {
+        margin: 1rem;
+        padding: 1rem;
+    }
+
+    .buttonGroup {
+        flex-direction: column;
+    }
+
+    .deleteButton {
+        margin-left: 0;
+    }
+}

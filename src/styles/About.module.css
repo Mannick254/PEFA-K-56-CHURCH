@@ -1,57 +1,444 @@
-.aboutContainer {
-  max-width: 900px;
+/* --- VARIABLES & RESET --- */
+.mainWrapper {
+  --primary: #1a2a3a;
+  --accent: #d4af37; /* Modern Gold */
+  --accent-soft: rgba(212, 175, 55, 0.15);
+  --text-main: #2d3436;
+  --text-light: #636e72;
+  --bg-paper: #faf9f6;
+  --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  
+  background-color: var(--bg-paper);
+  color: var(--text-main);
+  font-family: 'Inter', -apple-system, sans-serif;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 3rem 2rem;
-  background: linear-gradient(135deg, #0f172a, #1e293b);
-  border-radius: 1.25rem;
-  color: #f1f5f9;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+  padding: 0 2rem;
 }
 
-.aboutTitle {
-  font-size: 2.25rem;
-  font-weight: 800;
-  margin-bottom: 1rem;
-  text-align: center;
-  color: #38bdf8;
-  letter-spacing: 1px;
+/* --- LOADING SCREEN --- */
+.loadingScreen {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg-paper);
+  color: var(--accent);
 }
 
-.aboutSubtitle {
-  font-size: 1.4rem;
-  font-weight: 600;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-  color: #facc15;
-  text-align: center;
-}
-
-.aboutText {
-  font-size: 1.05rem;
-  line-height: 1.7;
-  margin-bottom: 1rem;
-  color: #e2e8f0;
-}
-
-.featureList {
-  list-style: none;
-  padding-left: 0;
-  margin-top: 1rem;
-}
-
-.featureList li {
-  margin-bottom: 0.75rem;
-  font-size: 1rem;
-  color: #f8fafc;
+.loaderLogo {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  background: rgba(30, 41, 59, 0.6);
-  border-radius: 0.5rem;
-  transition: background 0.3s ease;
+  justify-content: center;
 }
 
-.featureList li:hover {
-  background: rgba(56, 189, 248, 0.2);
+/* --- PROGRESS BAR --- */
+.progressLine {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--accent);
+  z-index: 2000;
+  transform-origin: 0%;
+}
+
+/* --- HERO SECTION --- */
+.heroSection {
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: white;
+  text-align: center;
+}
+
+.heroBg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 120%; /* Extra height for parallax */
+  background: url('https://images.unsplash.com/photo-1438032005730-c779502df39b?q=80&w=2071') center/cover no-repeat;
+  z-index: -2;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(26, 42, 58, 0.4) 0%,
+    rgba(26, 42, 58, 0.8) 100%
+  );
+  z-index: -1;
+}
+
+.heroContent {
+  z-index: 1;
+  max-width: 900px;
+}
+
+.kicker {
+  display: block;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  font-size: 0.8rem;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+}
+
+.heroTitle {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 8vw, 5.5rem);
+  line-height: 1.1;
+  margin-bottom: 2rem;
+  font-weight: 700;
+}
+
+.heroSubtitle {
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+/* Scroll Animation */
+.scrollIndicator {
+  position: absolute;
+  bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  opacity: 0.7;
+}
+
+.scrollIndicator span {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.scrollLine {
+  width: 1px;
+  height: 80px;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+}
+
+/* --- STORY SECTION --- */
+.storySection {
+  padding: 120px 0;
+}
+
+.storyGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.iconBox {
+  width: 60px;
+  height: 60px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  margin-bottom: 2rem;
+}
+
+.serifTitle {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+.accentBar {
+  width: 80px;
+  height: 4px;
+  background: var(--accent);
+  margin-bottom: 2.5rem;
+  border-radius: 2px;
+}
+
+.pLead {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: var(--text-main);
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.pBody {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text-light);
+}
+
+/* Image Reveal Component */
+.imageRevealWrapper {
+  position: relative;
+  padding: 20px;
+}
+
+.imageRevealWrapper::before {
+  content: "";
+  position: absolute;
+  top: 0; right: 0; bottom: 40px; left: 40px;
+  border: 2px solid var(--accent-soft);
+  border-radius: 24px;
+  z-index: 0;
+}
+
+.mainImage {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  border-radius: 24px;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+}
+
+.floatingStats {
+  position: absolute;
+  bottom: 0;
+  left: -20px;
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  z-index: 2;
+  border-left: 5px solid var(--accent);
+}
+
+.statItem h4 {
+  font-size: 2rem;
+  color: var(--primary);
+  margin: 0;
+}
+
+.statItem p {
+  margin: 0;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: var(--text-light);
+  letter-spacing: 0.1em;
+}
+
+/* --- MISSION SECTION (Glassmorphism) --- */
+.missionSection {
+  position: relative;
+  padding: 160px 0;
+  background: #0f172a; /* Deep Navy */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.meshGradient {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(212, 175, 55, 0.15) 0, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(212, 175, 55, 0.1) 0, transparent 50%);
+}
+
+.missionGlassCard {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 20px;
+  padding: 80px 60px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 40px;
+  text-align: center;
+  color: white;
+}
+
+.missionIcon {
+  font-size: 3.5rem;
+  color: var(--accent);
+  margin-bottom: 2rem;
+}
+
+.missionTitle {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin-bottom: 1.5rem;
+}
+
+.missionText {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  opacity: 0.9;
+  font-weight: 300;
+}
+
+/* --- BENTO GRID SECTION --- */
+.bentoSection {
+  padding: 120px 0;
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.bentoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 300px;
+  gap: 30px;
+}
+
+.bentoCard {
+  background: white;
+  padding: 40px;
+  border-radius: 32px;
+  border: 1px solid rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  transition: var(--transition);
+  position: relative;
+}
+
+.bentoCard:hover {
+  border-color: var(--accent);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+}
+
+.bentoIcon {
+  color: var(--accent);
+  margin-bottom: auto;
+  size: 32px;
+}
+
+.bentoCard h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+
+.bentoCard p {
+  color: var(--text-light);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Bento Variations */
+.tall {
+  grid-row: span 2;
+  justify-content: center;
+  background: #f8f9fa;
+}
+
+.wide {
+  grid-column: span 2;
+}
+
+.ctaBackground {
+  background: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+}
+
+.ctaBackground h3 {
+  color: white;
+  font-size: 2.2rem;
+}
+
+.ctaBackground p {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.modernButton {
+  background: var(--accent);
+  color: var(--primary);
+  border: none;
+  padding: 18px 36px;
+  border-radius: 100px;
+  font-weight: 700;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 30px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.modernButton:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+  background: #e5bd3d;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 1024px) {
+  .storyGrid {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
+  
+  .storyVisual {
+    order: -1;
+  }
+
+  .bentoGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+
+  .missionGlassCard {
+    padding: 40px 25px;
+  }
+
+  .bentoGrid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+  }
+
+  .tall, .wide {
+    grid-row: auto;
+    grid-column: auto;
+  }
+
+  .bentoCard {
+    padding: 30px;
+    min-height: 250px;
+  }
+
+  .heroTitle {
+    font-size: 3rem;
+  }
 }

@@ -1,0 +1,544 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@400;500;600;800&display=swap');
+
+:root {
+  --gold: #d4af37;
+  --gold-light: #f1d592;
+  --navy: #0a0f18;
+  --slate: #1a202c;
+  --glass: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --white: #ffffff;
+  --bg-soft: #fcfcfc;
+  --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pageWrapper {
+  background-color: var(--white);
+  color: var(--slate);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+.progressBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  z-index: 2000;
+  transform-origin: 0%;
+}
+
+.container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 30px;
+}
+
+/* Typography Defaults */
+.serifTitle {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  color: var(--navy);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.tagline {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--gold);
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  margin-bottom: 15px;
+}
+
+/* 2. Sunday Experience (Bento) */
+.infoSection {
+  padding: 80px 0;
+  background: var(--bg-soft);
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.bentoGrid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 0.8fr;
+  grid-auto-rows: 1fr;
+  gap: 25px;
+}
+
+.bentoCard {
+  background: var(--white);
+  padding: 40px;
+  border-radius: 32px;
+  border: 1px solid rgba(0,0,0,0.04);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.02);
+  transition: var(--transition-smooth);
+}
+
+.bentoCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.06);
+}
+
+.cardHighlight {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.goldText { color: var(--gold); }
+
+/* Timeline UI */
+.timelineItem {
+  display: flex;
+  gap: 25px;
+  padding-bottom: 30px;
+  border-left: 2px solid #f0f0f0;
+  margin-left: 10px;
+  padding-left: 30px;
+  position: relative;
+}
+
+.timelineItem::before {
+  content: '';
+  position: absolute;
+  left: -7px;
+  top: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 3px solid var(--white);
+  box-shadow: 0 0 0 2px var(--gold);
+}
+
+.time {
+  font-weight: 800;
+  color: var(--gold);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+/* Specialized Classes */
+.miniClasses {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+  padding-bottom: 25px;
+  border-bottom: 1px dashed #eee;
+}
+
+.miniClassItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--slate);
+}
+
+.classGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.classTag {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f8f9fa;
+  padding: 12px;
+  border-radius: 16px;
+}
+
+.classIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.className { font-weight: 700; font-size: 0.8rem; display: block; }
+.classAge { font-size: 0.65rem; color: #888; }
+
+/* Location Card */
+.locationCard {
+  background: var(--navy);
+  color: var(--white);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.locationCard h3 { margin-top: 15px; color: var(--white); }
+.subtext { font-size: 0.85rem; opacity: 0.7; margin-bottom: 25px; }
+
+.mapBtn {
+  background: var(--gold);
+  color: var(--navy);
+  padding: 12px 30px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 0.9rem;
+  transition: var(--transition-smooth);
+}
+
+.mapBtn:hover {
+  background: var(--white);
+  transform: scale(1.05);
+}
+
+/* 3. Weekly Rhythms */
+.weeklySection {
+  padding: 80px 0;
+  background: var(--white);
+}
+
+.weeklyGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 20px;
+  margin-top: 50px;
+}
+
+.weeklyCard {
+  background: var(--white);
+  padding: 30px;
+  border-radius: 24px;
+  display: flex;
+  gap: 20px;
+  border: 1px solid #f0f0f0;
+  transition: var(--transition-smooth);
+}
+
+.weeklyCard:hover {
+  border-color: var(--gold);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+}
+
+.weeklyIcon {
+  width: 54px;
+  height: 54px;
+  background: #fdf8e6;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  flex-shrink: 0;
+}
+
+.weeklyDay {
+  color: var(--gold);
+  font-weight: 800;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.weeklyContent h4 { margin: 5px 0; color: var(--navy); font-size: 1.1rem; }
+.weeklyContent p { font-size: 0.9rem; color: #666; margin-bottom: 10px; }
+
+.weeklyTime {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: #f4f4f4;
+  padding: 5px 12px;
+  border-radius: 8px;
+}
+
+/* 4. Magazine Section */
+.magazineSection { padding: 80px 0; }
+
+.gridHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 50px;
+}
+
+.exploreBtn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--navy);
+  font-weight: 700;
+  border-bottom: 2px solid var(--gold);
+  padding-bottom: 5px;
+}
+
+.magazineGrid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 30px;
+}
+
+.featuredSermonCard {
+  background: linear-gradient(45deg, rgba(10,15,24,0.95), rgba(10,15,24,0.4)), 
+              url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&w=1200');
+  background-size: cover;
+  background-position: center;
+  height: 450px;
+  border-radius: 40px;
+  display: flex;
+  align-items: flex-end;
+  padding: 50px;
+  color: var(--white);
+  position: relative;
+  overflow: hidden;
+}
+
+.sermonContent { position: relative; z-index: 2; }
+.liveBadge {
+  background: var(--gold);
+  color: var(--navy);
+  padding: 5px 15px;
+  border-radius: 50px;
+  font-weight: 800;
+  font-size: 0.7rem;
+  margin-bottom: 15px;
+  display: inline-block;
+}
+
+.watchBtn {
+  display: inline-block;
+  margin-top: 25px;
+  padding: 14px 35px;
+  background: var(--white);
+  color: var(--navy);
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 800;
+  transition: var(--transition-smooth);
+}
+
+.watchBtn:hover { transform: scale(1.05); background: var(--gold); }
+
+.eventRow {
+  display: flex;
+  gap: 20px;
+  padding: 25px;
+  background: #f9f9f9;
+  border-radius: 24px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  transition: var(--transition-smooth);
+}
+
+.eventRow:hover { border-color: var(--gold); background: var(--white); }
+
+.eventDate {
+  background: var(--white);
+  padding: 12px;
+  border-radius: 15px;
+  text-align: center;
+  min-width: 65px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.03);
+}
+
+.eventDate .day { font-size: 1.6rem; font-weight: 800; color: var(--navy); display: block; line-height: 1; }
+.eventDate .month { font-size: 0.75rem; color: var(--gold); font-weight: 700; }
+
+/* 5. Dark Section Wrapper */
+.darkSectionWrapper {
+  background: var(--navy);
+  padding: 80px 0 0;
+  color: var(--white);
+  position: relative;
+}
+
+.innerDivider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+  margin: 100px 0;
+}
+
+/* 7. Prayer & Generosity Card */
+.footerCTA { padding: 80px 0; background: var(--bg-soft); }
+
+.ctaCard {
+  background: var(--navy);
+  padding: 80px 40px;
+  border-radius: 50px;
+  color: var(--white);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.ctaGlass { position: relative; z-index: 2; }
+
+.heartPulse {
+  color: #ff6b6b;
+  margin-bottom: 30px;
+  animation: heartPulse 2s infinite ease-in-out;
+}
+
+@keyframes heartPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); filter: drop-shadow(0 0 15px rgba(255,107,107,0.4)); }
+  100% { transform: scale(1); }
+}
+
+.mpesaCard {
+  background: var(--white);
+  color: var(--navy);
+  border-radius: 24px;
+  max-width: 450px;
+  margin: 40px auto;
+  overflow: hidden;
+  border: 5px solid #4caf50;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+}
+
+.mpesaHeader {
+  background: #4caf50;
+  color: var(--white);
+  padding: 15px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 800;
+}
+
+.mpesaBody { display: flex; justify-content: space-around; padding: 25px; }
+.payItem small { display: block; color: #888; font-size: 0.7rem; margin-bottom: 5px; }
+.payItem strong { font-size: 1.3rem; letter-spacing: 1px; }
+
+.ctaActions { display: flex; justify-content: center; gap: 20px; margin-top: 40px; }
+
+.primaryBtn {
+  background: var(--gold);
+  color: var(--navy);
+  padding: 18px 45px;
+  border-radius: 50px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: var(--transition-smooth);
+}
+
+.outlineBtn {
+  border: 2px solid var(--glass-border);
+  color: var(--white);
+  padding: 18px 45px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: var(--transition-smooth);
+}
+
+.primaryBtn:hover, .outlineBtn:hover { transform: translateY(-5px); background: var(--white); color: var(--navy); }
+
+/* Floating Action Button */
+.fabPrayer {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  background: var(--gold);
+  color: var(--navy);
+  padding: 16px 30px;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 15px 30px rgba(212, 175, 55, 0.4);
+  z-index: 1000;
+  transition: var(--transition-smooth);
+}
+
+.fabPrayer:hover { transform: scale(1.1) rotate(-2deg); }
+
+
+.visionSection {
+  background-color: var(--navy);
+  color: white;
+  padding: 100px 20px;
+  text-align: center;
+  position: relative;
+  background-image: url('https://www.transparenttextures.com/patterns/dark-matter.png');
+}
+
+.visionInner {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.visionTitle {
+  font-family: 'Playfair Display', serif;
+  font-size: 4rem;
+  margin: 20px 0;
+}
+
+.visionText {
+  font-size: 1.4rem;
+  line-height: 1.6;
+  opacity: 0.8;
+  font-weight: 300;
+  margin-bottom: 40px;
+}
+
+.visionBtn {
+  display: inline-block;
+  margin-top: 25px;
+  padding: 14px 35px;
+  background: var(--gold);
+  color: var(--navy);
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 800;
+  transition: var(--transition-smooth);
+}
+
+.visionBtn:hover {
+  transform: scale(1.05);
+  background: var(--white);
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 1200px) {
+  .bentoGrid { grid-template-columns: 1fr 1fr; }
+  .locationCard { grid-column: span 2; }
+}
+
+@media (max-width: 900px) {
+  .magazineGrid { grid-template-columns: 1fr; }
+  .bentoGrid { grid-template-columns: 1fr; }
+  .locationCard { grid-column: span 1; }
+  .weeklyGrid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .ctaActions { flex-direction: column; }
+  .fabText { display: none; }
+  .fabPrayer { padding: 16px; }
+  .container { padding: 0 20px; }
+  .serifTitle { font-size: 2.2rem; }
+  .featuredSermonCard { padding: 30px; height: 350px; }
+}

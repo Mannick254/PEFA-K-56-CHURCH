@@ -1,69 +1,140 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
-import styles from '../styles/Login.module.css'; // Using the same styles as Login
+import styles from '../styles/Login.module.css';
 
 const AdminLogin = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
+  const [status, setStatus] = useState({ type: '', msg: '' });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
+    setStatus({ type: '', msg: '' });
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      // Map username to email
+      let email;
+      if (username.trim() === 'PEFAK56') {
+        email = 'nicksonochieng64@gmail.com';
+      } else {
+        setStatus({ type: 'error', msg: 'Invalid Admin Credentials' });
+        setLoading(false);
+        return;
+      }
 
-    if (error) {
-      setError(error.message);
-    } else if (data.user && data.user.user_metadata?.is_admin) {
-      navigate('/admin');
-    } else {
-      setError('You are not authorized to access the admin page.');
-      await supabase.auth.signOut(); // Sign out the user if they are not an admin
+      // Authenticate
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (authError) {
+        setStatus({ type: 'error', msg: authError.message });
+        setLoading(false);
+        return;
+      }
+
+      // Verify Admin Status
+      let isAdmin = false;
+
+      // Check profiles table
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('is_admin')
+        .eq('id', authData.user.id)
+        .single();
+
+      if (!profileError && profile?.is_admin) {
+        isAdmin = true;
+      }
+
+      // Fallback: check user_metadata
+      if (authData.user.user_metadata?.role === 'admin') {
+        isAdmin = true;
+      }
+
+      if (!isAdmin) {
+        await supabase.auth.signOut();
+        setStatus({ type: 'error', msg: 'Unauthorized: Admin access required.' });
+        setLoading(false);
+        return;
+      }
+
+      // Success
+      setStatus({ type: 'success', msg: 'Verification successful! Redirecting to dashboard...' });
+      window.dispatchEvent(new CustomEvent('login-success'));
+
+      setTimeout(() => {
+        navigate('/admin');
+      }, 2500);
+
+    } catch (err) {
+      console.error('Unexpected error:', err);
+      setStatus({ type: 'error', msg: 'Something went wrong.' });
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
-    <div className={styles.loginContainer}>
-      <div className={styles.loginFormWrapper}>
-        <h2>Admin Login</h2>
-        {error && <p className={styles.error}>{error}</p>}
-        <form onSubmit={handleLogin}>
-          <div className={styles.inputGroup}>
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              type="email"
-              placeholder="Your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+    <div className={styles.loginPage}>
+      <div className={styles.loginCard}>
+        <div className={styles.header}>
+          <div className={styles.adminIcon}>🛡️</div>
+          <h2>Admin Portal</h2>
+          <p>Secure system access for authorized personnel only</p>
+        </div>
+
+        {status.type === 'success' ? (
+          <div className={styles.successWrapper}>
+            <div className={styles.checkmark}>✓</div>
+            <p>{status.msg}</p>
+            <div className={styles.progressBar}>
+              <div className={styles.progressFill}></div>
+            </div>
           </div>
-          <div className={styles.inputGroup}>
-            <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              type="password"
-              placeholder="Your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit" disabled={loading}>
-            {loading ? 'Loading...' : 'Login'}
-          </button>
-        </form>
+        ) : (
+          <form onSubmit={handleLogin} className={styles.form}>
+            {status.type === 'error' && (
+              <div className={styles.errorMessage}>
+                <span>⚠️</span> {status.msg}
+              </div>
+            )}
+
+            <div className={styles.inputGroup}>
+              <label>Admin ID</label>
+              <input
+                type="text"
+                placeholder="Enter username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+                disabled={loading}
+              />
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label>Password</label>
+              <input
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                disabled={loading}
+              />
+            </div>
+
+            <button type="submit" className={styles.loginBtn} disabled={loading}>
+              {loading ? <span className={styles.loader}></span> : 'Authorize Access'}
+            </button>
+            
+            <Link to="/" className={styles.backLink}>Return to Public Site</Link>
+          </form>
+        )}
       </div>
     </div>
   );

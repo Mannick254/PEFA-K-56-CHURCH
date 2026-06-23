@@ -1,15 +1,67 @@
 {
-  "short_name": "PEFA 56",
   "name": "PEFA Kawangware 56 Church",
+  "short_name": "PEFA 56",
+  "description": "PEFA Kawangware 56 Church website. Join our community for transformative sermons, worship, and fellowship.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a365d",
+  "theme_color": "#1a365d",
+  "lang": "en",
+  "scope": "/",
+  "orientation": "portrait",
   "icons": [
     {
-      "src": "/favicon.svg",
-      "type": "image/svg+xml",
+      "src": "https://res.cloudinary.com/dtcb3ffnv/image/upload/v1780723691/Untitled-design-24-_lfef05.png",
+      "sizes": "any",
+      "type": "image/png"
+    },
+    {
+      "src": "https://res.cloudinary.com/dtcb3ffnv/image/upload/v1780723691/Untitled-design-24-_lfef05.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://res.cloudinary.com/dtcb3ffnv/image/upload/v1780723691/Untitled-design-24-_lfef05.png",
+      "type": "image/png",
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "shortcuts": [
+    {
+      "name": "Sermons",
+      "short_name": "Sermons",
+      "description": "Listen to the latest sermons",
+      "url": "/sermons",
+      "icons": [
+        {
+          "src": "https://res.cloudinary.com/dtcb3ffnv/image/upload/v1780723691/Untitled-design-24-_lfef05.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Events",
+      "short_name": "Events",
+      "description": "View upcoming church events",
+      "url": "/events",
+      "icons": [
+        {
+          "src": "https://res.cloudinary.com/dtcb3ffnv/image/upload/v1780723691/Untitled-design-24-_lfef05.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Prayers",
+      "short_name": "Prayers",
+      "description": "Post and view prayer requests",
+      "url": "/prayers",
+      "icons": [
+        {
+          "src": "https://res.cloudinary.com/dtcb3ffnv/image/upload/v1780723691/Untitled-design-24-_lfef05.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
 }

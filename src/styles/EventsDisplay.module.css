@@ -1,0 +1,43 @@
+.container {
+    padding: 20px;
+  }
+  
+  .title {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .eventsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  .eventCard {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+  }
+  
+  .eventTitle {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .eventMeta {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  .eventDescription {
+    margin-top: 10px;
+  }
+  
+  .noEvents {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #888;
+  }

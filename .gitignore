@@ -1,4 +1,7 @@
-node_modules
-.env
-.vercel
-.env*
+/node_modules
+/dist
+/build
+/.idx
+/.idea
+/.vscode
+*.lo

@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
-import styles from '../styles/Login.module.css'; // Import the CSS module
+import { Mail, Lock, LogIn, CheckCircle2, AlertCircle } from 'lucide-react';
+import styles from '../styles/LoginUser.module.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -22,51 +24,124 @@ const Login = () => {
 
     if (error) {
       setError(error.message);
+      setLoading(false);
     } else {
-      navigate('/');
+      setIsSuccess(true);
+      window.dispatchEvent(new CustomEvent('login-success'));
+      
+      // Navigate after 3 seconds as per original logic
+      setTimeout(() => {
+        navigate('/');
+      }, 3000);
     }
-
-    setLoading(false);
   };
+
+  async function signInWithGoogle() {
+    setLoading(true);
+    setError(null);
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: 'https://pefa-k-56-church.vercel.app'
+      }
+    });
+    if (error) {
+      setError(error.message);
+      setLoading(false);
+    }
+  }
 
   return (
     <div className={styles.loginContainer}>
       <div className={styles.loginFormWrapper}>
-        <h2>Login</h2>
-        {error && <p className={styles.error}>{error}</p>}
-        <form onSubmit={handleLogin}>
-          <div className={styles.inputGroup}>
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              type="email"
-              placeholder="Your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+        <div className={styles.header}>
+          <div className={styles.logoIcon}>
+            <LogIn size={32} />
           </div>
-          <div className={styles.inputGroup}>
-            <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              type="password"
-              placeholder="Your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+          <h2>Welcome Back</h2>
+          <p>Please enter your details to sign in</p>
+        </div>
+
+        {error && (
+          <div className={styles.errorBanner}>
+            <AlertCircle size={18} />
+            <span>{error}</span>
           </div>
-          <div className={styles.extraLinks}>
-            <Link to="/forgot-password">Forgot Password?</Link>
+        )}
+
+        {isSuccess ? (
+          <div className={styles.successState}>
+            <CheckCircle2 size={48} className={styles.successIcon} />
+            <h3>Login Successful!</h3>
+            <p>Redirecting you to the dashboard...</p>
           </div>
-          <button type="submit" disabled={loading}>
-            {loading ? 'Loading...' : 'Login'}
-          </button>
-        </form>
-        <p>
-          Don't have an account? <Link to="/register">Register here</Link>
-        </p>
+        ) : (
+          <form onSubmit={handleLogin} className={styles.form}>
+            <div className={styles.inputGroup}>
+              <label htmlFor="email">Email Address</label>
+              <div className={styles.inputWrapper}>
+                <Mail className={styles.inputIcon} size={18} />
+                <input
+                  id="email"
+                  type="email"
+                  placeholder="name@company.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className={styles.inputGroup}>
+              <div className={styles.labelRow}>
+                <label htmlFor="password">Password</label>
+                <Link to="/forgot-password" className={styles.forgotLink}>
+                  Forgot Password?
+                </Link>
+              </div>
+              <div className={styles.inputWrapper}>
+                <Lock className={styles.inputIcon} size={18} />
+                <input
+                  id="password"
+                  type="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            <button 
+              type="submit" 
+              className={styles.submitBtn} 
+              disabled={loading}
+            >
+              {loading ? (
+                <span className={styles.loader}></span>
+              ) : (
+                'Sign In'
+              )}
+            </button>
+          </form>
+        )}
+        <div className={styles.separator}>OR</div>
+        <button
+            onClick={signInWithGoogle}
+            className={styles.googleBtn}
+            disabled={loading}
+        >
+            Sign In with Google
+        </button>
+
+        <div className={styles.footer}>
+          <p>
+            Don't have an account? <Link to="/register">Create account</Link>
+          </p>
+          <p>
+            <Link to="/">Back to Site</Link>
+          </p>
+        </div>
       </div>
     </div>
   );

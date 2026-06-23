@@ -1,0 +1,119 @@
+/* === GLOBAL ADMIN STYLES === */
+
+/* Use variables from Admin.module.css for consistency */
+:root {
+  --card-bg: #ffffff;
+  --card-shadow: rgba(0, 0, 0, 0.05);
+  --input-border: #d1d5db;
+  --input-focus-border: var(--accent-gold);
+  --button-bg: var(--sidebar-bg);
+  --button-hover-bg: var(--sidebar-hover);
+  --button-text: var(--text-light);
+}
+
+/* === CARD LAYOUT === */
+.adminCard {
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px var(--card-shadow), 0 2px 4px -1px var(--card-shadow);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.adminCardHeader {
+  border-bottom: 1px solid var(--input-border);
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+
+.adminCardHeader h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--sidebar-bg);
+  margin: 0;
+}
+
+/* === FORM STYLES === */
+.adminForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formGroup label {
+  font-weight: 600;
+  color: var(--sidebar-bg);
+  font-size: 0.9rem;
+}
+
+.input, .textarea, .select {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+  box-sizing: border-box; /* Important for padding + width */
+}
+
+.input:focus, .textarea:focus, .select:focus {
+  outline: none;
+  border-color: var(--input-focus-border);
+  box-shadow: 0 0 0 3px rgba(214, 158, 46, 0.2);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 120px;
+  font-family: inherit;
+}
+
+/* === BUTTON STYLES === */
+.adminButton {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-align: center;
+  display: inline-block;
+}
+
+.adminButton:hover {
+  background-color: var(--button-hover-bg);
+}
+
+.adminButton.secondary {
+    background-color: #e5e7eb;
+    color: #374151;
+}
+.adminButton.secondary:hover {
+    background-color: #d1d5db;
+}
+
+/* === LIST & GRID STYLES === */
+.dataGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.dataListItem {
+  background-color: #f9fafb;
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

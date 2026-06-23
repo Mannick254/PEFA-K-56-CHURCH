@@ -1,0 +1,93 @@
+.splashScreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #111827;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 1s ease-out 1s;
+}
+
+.splashScreen.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.splashContent {
+    text-align: center;
+    color: white;
+    position: relative;
+    z-index: 2;
+}
+
+.splashName {
+    font-size: 5rem;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 
+        0 0 7px rgba(255, 255, 255, 0.8),
+        0 0 21px rgba(255, 255, 255, 0.7),
+        0 0 42px rgba(99, 102, 241, 0.6),
+        0 0 82px rgba(99, 102, 241, 0.5),
+        0 0 92px rgba(99, 102, 241, 0.4);
+    animation: flicker 2s infinite alternate;
+}
+
+@keyframes flicker {
+    0%, 18%, 22%, 25%, 53%, 57%, 100% {
+        text-shadow:
+            0 0 7px rgba(255, 255, 255, 0.8),
+            0 0 21px rgba(255, 255, 255, 0.7),
+            0 0 42px rgba(99, 102, 241, 0.6),
+            0 0 82px rgba(99, 102, 241, 0.5),
+            0 0 92px rgba(99, 102, 241, 0.4);
+    }
+    20%, 24%, 55% {        
+        text-shadow: none;
+    }
+}
+
+.fireworks {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.firework {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #6366f1;
+    box-shadow: 0 0 12px #6366f1, 0 0 20px #fff;
+    animation-name: firework-burst;
+    animation-timing-function: cubic-bezier(0.1, 0.7, 0.5, 1);
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes firework-burst {
+    0% {
+        transform: scale(0.5);
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1.5) translate(
+            calc(-50% + (var(--random-x) - 0.5) * 400px), 
+            calc(-50% + (var(--random-y) - 0.5) * 400px)
+        );
+        opacity: 0;
+    }
+}

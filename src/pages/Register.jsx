@@ -71,6 +71,9 @@ const Register = () => {
         <p>
           Already have an account? <Link to="/login">Login here</Link>
         </p>
+        <p>
+          <Link to="/">Back to Site</Link>
+        </p>
       </div>
     </div>
   );

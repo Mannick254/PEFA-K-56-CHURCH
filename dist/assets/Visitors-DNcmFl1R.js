@@ -1,1 +1,0 @@
-import{j as i}from"./index-nqcq9Cl8.js";const r=()=>i.jsxs("div",{children:[i.jsx("h2",{children:"Visitors"}),i.jsx("p",{children:"This section will be used to record visitor information."})]});export{r as default};

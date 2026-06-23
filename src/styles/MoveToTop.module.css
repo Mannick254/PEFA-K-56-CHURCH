@@ -1,0 +1,18 @@
+
+.moveToTopButton {
+    position: -ms-page;
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .moveToTopButton:hover {
+    background-color: #0056b3;
+  }

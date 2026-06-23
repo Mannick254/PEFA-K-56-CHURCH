@@ -1,1 +1,0 @@
-import{j as e}from"./index-nqcq9Cl8.js";const s=()=>e.jsxs("div",{children:[e.jsx("h1",{children:"Home"}),e.jsx("p",{children:"Welcome to the PEFA Kawangware 56 Church website."})]});export{s as default};

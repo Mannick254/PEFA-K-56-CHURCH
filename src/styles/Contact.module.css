@@ -1,0 +1,167 @@
+/* src/styles/Contact.module.css */
+
+.contactPage {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-family: 'Inter', sans-serif;
+  color: var(--navy);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.header h1 {
+  font-size: 3.5rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.header p {
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 0 auto;
+  color: #555;
+}
+
+.mainContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  margin-bottom: 60px;
+}
+
+.contactInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.infoCard {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+  border-left: 5px solid var(--gold);
+}
+
+.infoCard .icon {
+  color: var(--gold);
+  margin-bottom: 15px;
+  width: 32px;
+  height: 32px;
+}
+
+.infoCard h4 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.infoCard p {
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.infoCard a {
+  color: var(--navy);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.infoCard a:hover {
+  color: var(--gold);
+}
+
+.contactFormWrapper {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+}
+
+.contactFormWrapper h3 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+
+.inputGroup {
+  margin-bottom: 20px;
+}
+
+.inputGroup label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.inputGroup input,
+.inputGroup textarea {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.inputGroup input:focus,
+.inputGroup textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(214, 158, 46, 0.2);
+}
+
+.submitBtn {
+  background: var(--navy);
+  color: white;
+  padding: 16px 32px;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.submitBtn:hover {
+  background: var(--gold);
+  transform: translateY(-3px);
+}
+
+.footer {
+  text-align: center;
+  padding-top: 40px;
+  border-top: 1px solid #eee;
+}
+
+.footer p {
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.socialLinks {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+}
+
+.socialLinks a {
+  color: var(--navy);
+  transition: color 0.2s;
+}
+
+.socialLinks a:hover {
+  color: var(--gold);
+}
+
+@media (max-width: 992px) {
+  .mainContent {
+    grid-template-columns: 1fr;
+  }
+}

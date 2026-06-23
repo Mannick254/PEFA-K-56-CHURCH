@@ -4,6 +4,7 @@ const urlsToCache = [
   '/index.html',
   '/manifest.json',
   '/favicon.svg',
+  'https://res.cloudinary.com/dtcb3ffnv/image/upload/v1780723691/Untitled-design-24-_lfef05.png',
   // Add other assets like CSS, JS, and images here
 ];
 

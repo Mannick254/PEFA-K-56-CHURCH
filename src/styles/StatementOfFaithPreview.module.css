@@ -1,0 +1,158 @@
+.sofWrapper {
+  padding: 120px 5%;
+  background-color: #ffffff;
+  border-top: 1px solid #f1f5f9;
+}
+
+.container {
+  max-width: 1250px;
+  margin: 0 auto;
+}
+
+.layoutGrid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 80px;
+  align-items: start;
+}
+
+/* Header Side Styles */
+.headerSide {
+  position: sticky;
+  top: 100px;
+}
+
+.tag {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #D4AF37; /* Gold */
+  letter-spacing: 3px;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.mainTitle {
+  font-size: 3.5rem;
+  line-height: 1.1;
+  color: #1A1A1A;
+  margin-bottom: 25px;
+  font-family: 'Instrument Serif', serif;
+}
+
+.mainTitle span {
+  display: block;
+  color: #64748b;
+  font-style: italic;
+}
+
+.subtext {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #475569;
+  margin-bottom: 40px;
+}
+
+.exploreLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 30px;
+  background: #1a1a1a;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.exploreLink:hover {
+  background: #D4AF37;
+  transform: translateX(5px);
+}
+
+/* List Side (The "Non-Card" List) */
+.listSide {
+  display: flex;
+  flex-direction: column;
+}
+
+.statementRow {
+  display: flex;
+  gap: 40px;
+  padding: 45px 0;
+  border-bottom: 1px solid #e2e8f0;
+  transition: 0.4s ease;
+}
+
+/* Subtle hover effect that doesn't involve a card shape */
+.statementRow:hover .rowNumber {
+  color: #D4AF37;
+  transform: scale(1.1);
+}
+
+.statementRow:hover .rowTitle {
+  color: #D4AF37;
+}
+
+.rowNumber {
+  font-family: 'Instrument Serif', serif;
+  font-size: 2.5rem;
+  color: #cbd5e1;
+  font-weight: 400;
+  line-height: 1;
+  transition: 0.3s ease;
+}
+
+.rowContent {
+  flex: 1;
+}
+
+.rowTitle {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1A1A1A;
+  margin-bottom: 15px;
+  transition: 0.3s ease;
+}
+
+.rowText {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #64748b;
+  max-width: 600px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 1024px) {
+  .layoutGrid {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
+  
+  .headerSide {
+    position: static;
+    text-align: center;
+  }
+
+  .mainTitle {
+    font-size: 2.8rem;
+  }
+  
+  .statementRow {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .rowNumber {
+    font-size: 1.8rem;
+  }
+  
+  .rowTitle {
+    font-size: 1.3rem;
+  }
+
+  .sofWrapper {
+    padding: 70px 5%;
+  }
+}
