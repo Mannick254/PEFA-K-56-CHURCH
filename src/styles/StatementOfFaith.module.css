@@ -1,168 +1,164 @@
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500&display=swap');
 
 .mainWrapper {
-  --ink: #1A1A1A;
-  --gold: #D4AF37;
-  --paper: #FDFCF9;
-  --stone: #F2F0EB;
-  
-  background-color: var(--paper);
-  padding: 120px 0;
+  padding: 80px 20px;
+  background-color: #f8f9fa; /* Softer background */
+  color: #212529; /* Softer black */
   min-height: 100vh;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  color: var(--ink);
+  font-family: 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
-  max-width: 1300px;
+  max-width: 750px; /* Slightly narrower for optimal readability */
   margin: 0 auto;
-  padding: 0 30px;
 }
 
 .header {
   text-align: center;
-  max-width: 800px;
-  margin: 0 auto 80px;
+  margin-bottom: 70px;
+  border-bottom: 1px solid #dee2e6; /* Soft divider */
+  padding-bottom: 40px;
 }
 
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--stone);
-  padding: 8px 16px;
-  border-radius: 100px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  margin-bottom: 24px;
-}
-
-.gold { color: var(--gold); }
-
-.mainTitle {
-  font-family: 'Instrument Serif', serif;
-  font-size: clamp(3rem, 8vw, 5rem);
-  line-height: 0.9;
-  font-style: italic;
-  margin-bottom: 24px;
-}
-
-.subtitle {
-  font-size: 1.25rem;
-  font-weight: 300;
-  color: #555;
-  line-height: 1.5;
-}
-
-/* --- Grid Layout --- */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-  gap: 40px;
-}
-
-/* --- Doctrine Card --- */
-.doctrineCard {
-  background: #FFFFFF;
-  padding: 50px 40px;
-  border-radius: 32px;
-  border: 1px solid rgba(0,0,0,0.04);
-  position: relative;
+.churchBrand {
   display: flex;
   flex-direction: column;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+  align-items: center;
+  margin-bottom: 25px;
 }
 
-.doctrineCard:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 30px 60px rgba(0,0,0,0.05);
-  border-color: var(--gold);
+.logoPlaceholder {
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+  color: #8a795d; /* Muted gold */
 }
 
-.cardHeader {
+.mainTitle {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: normal;
+  margin: 10px 0;
+  color: #212529;
+  text-transform: none; /* More traditional title case */
+}
+
+.affirmationText {
+  font-size: 1.05rem;
+  color: #6c757d; /* Softer grey */
+  font-weight: 400;
+  max-width: 550px;
+  margin: 15px auto 0;
+  line-height: 1.6;
+}
+
+/* Pillar List - More integrated design */
+.pillarList {
+    border-left: 2px solid #e9ecef; /* Soft timeline effect */
+    margin-top: 50px;
+    padding: 0 20px;
+}
+
+.pillarRow {
+  display: flex;
+  gap: 30px;
+  padding: 40px 0;
   position: relative;
-  margin-bottom: 20px;
+  border-bottom: 1px solid #e9ecef; /* Separator for each item */
 }
 
-.watermark {
-  position: absolute;
-  top: -20px;
-  left: -10px;
-  font-family: 'Instrument Serif', serif;
-  font-size: 4rem;
-  color: var(--stone);
-  opacity: 0.6;
-  z-index: 0;
+.pillarRow:last-child {
+    border-bottom: none;
+}
+
+/* CIRCLE as a pseudo-element on the timeline */
+.pillarRow::before {
+    content: '';
+    position: absolute;
+    left: -20px; /* Align with the main border */
+    top: 58px;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 12px;
+    background-color: #ced4da;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.pillarRow:hover::before {
+    background-color: #8a795d;
+}
+
+.contentSide {
+  padding-top: 0;
 }
 
 .doctrineTitle {
-  font-family: 'Instrument Serif', serif;
-  font-size: 2.2rem;
-  position: relative;
-  z-index: 1;
-  font-weight: 400;
-  margin: 0;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: #343a40;
 }
 
-.contentBody {
-  margin-bottom: 30px;
-  flex-grow: 1;
+.doctrineContent {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #5a6672;
+  margin-bottom: 20px;
+  font-weight: 300;
 }
 
-.contentBody p {
-  font-size: 1.05rem;
-  line-height: 1.8;
-  color: #444;
+.reference {
+  font-weight: 500;
+  color: #495057;
+  font-size: 1rem;
+  line-height: 1.6;
+  font-style: italic;
 }
 
-.referenceBadge {
-  align-self: flex-start;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: #fdf6e3; /* Soft warm glow */
-  color: #b58900;
-  padding: 8px 16px;
-  border-radius: 8px;
+.refText {
+  border-left: 3px solid #dee2e6;
+  padding-left: 15px;
+  margin-top: 8px;
+  color: #6c757d;
+  display: block;
+}
+
+.footer {
+  margin-top: 80px;
+  text-align: center;
+  color: #adb5bd;
   font-size: 0.85rem;
-  font-weight: 600;
 }
 
-/* --- States --- */
+/* Loader */
 .loaderWrapper {
-  height: 60vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
-  font-family: 'Instrument Serif', serif;
-  font-style: italic;
-  font-size: 1.5rem;
-  color: var(--gold);
+  background: #f8f9fa;
 }
 
 .spinner {
+  color: #8a795d;
   animation: spin 1s linear infinite;
 }
 
 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-.errorBox {
-  text-align: center;
-  padding: 40px;
-  background: #fff5f5;
-  border-radius: 20px;
-  color: #c53030;
-}
-
-/* --- Responsive --- */
-@media (max-width: 768px) {
-  .grid { grid-template-columns: 1fr; }
-  .mainTitle { font-size: 3rem; }
-  .doctrineCard { padding: 40px 30px; }
-  .mainWrapper { padding: 80px 0; }
+/* Mobile Optimization */
+@media (max-width: 600px) {
+  .header { margin-bottom: 50px; }
+  .mainTitle { font-size: 2rem; }
+  .doctrineTitle { font-size: 1.5rem; }
+  .doctrineContent { font-size: 1rem; }
+  .pillarList { margin-left: 10px; padding-left: 25px; }
+    .pillarRow::before {
+        left: -25px;
+    }
 }

@@ -3,16 +3,16 @@ import { supabase } from '../../supabaseClient';
 import styles from '../../styles/StatementOfFaithadmin.module.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Plus, Search, Edit2, Trash2, CheckCircle, 
-  Book, Type, Hash, AlertCircle, Loader2, Save, X 
+  Search, Edit2, Trash2, CheckCircle, 
+  Book, Type, Hash, AlertCircle, Loader2 
 } from 'lucide-react';
 
 const StatementOfFaith = () => {
   const [statements, setStatements] = useState([]);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [reference, setReference] = useState(''); // New: Bible Reference
-  const [priority, setPriority] = useState(1);     // New: Ordering
+  const [reference, setReference] = useState('');
+  const [priority, setPriority] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [editing, setEditing] = useState(null);
   const [error, setError] = useState(null);
@@ -54,27 +54,37 @@ const StatementOfFaith = () => {
     setLoading(true);
     setError(null);
 
+    // Get current user for RLS policies
+    const { data: { user } } = await supabase.auth.getUser();
+
     const payload = { 
-        title, 
-        content, 
-        bible_reference: reference, 
-        priority: parseInt(priority) 
+      title, 
+      content, 
+      bible_reference: reference, 
+      priority: parseInt(priority), 
+      user_id: user?.id // attach owner for RLS
     };
 
     try {
       if (editing) {
-        const { error } = await supabase
+        const { data, error } = await supabase
           .from('statement_of_faith')
           .update(payload)
-          .eq('id', editing.id);
+          .eq('id', editing.id)
+          .select();
+
         if (error) throw error;
-        setSuccess('Doctrine updated successfully');
+        if (data && data.length > 0) setSuccess('Doctrine updated successfully');
+        else throw new Error("Update failed. Check permissions.");
       } else {
-        const { error } = await supabase
+        const { data, error } = await supabase
           .from('statement_of_faith')
-          .insert([payload]);
+          .insert([payload])
+          .select();
+
         if (error) throw error;
-        setSuccess('New doctrine added to the foundation');
+        if (data && data.length > 0) setSuccess('New doctrine added to the foundation');
+        else throw new Error("Insert failed. Check permissions.");
       }
       resetForm();
       fetchStatements();
@@ -98,8 +108,8 @@ const StatementOfFaith = () => {
     const { error } = await supabase.from('statement_of_faith').delete().eq('id', id);
     if (error) setError(error.message);
     else {
-        setSuccess('Statement removed');
-        fetchStatements();
+      setSuccess('Statement removed');
+      fetchStatements();
     }
   };
 

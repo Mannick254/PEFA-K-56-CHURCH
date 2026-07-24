@@ -17,9 +17,7 @@
   z-index: 1000;
   padding: 1.25rem 0;
   transition: var(--transition);
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: #fff;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
@@ -78,7 +76,7 @@
 }
 
 .brandMain {
-  font-weight: 800;
+  font-weight: 700;
   font-size: 1.2rem;
   letter-spacing: 1px;
   color: var(--primary-color);
@@ -87,7 +85,7 @@
 
 .brandSub {
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: 400;
   color: var(--accent-color);
   letter-spacing: 2px;
 }
@@ -111,7 +109,7 @@
   padding: 0.6rem 1rem;
   text-decoration: none;
   color: var(--text-main);
-  font-weight: 600;
+  font-weight: 500;
   font-size: 0.95rem;
   transition: var(--transition);
   border-radius: 8px;
@@ -308,7 +306,7 @@
   }
 
   .mobileAuth a, .logoutBtn {
-    font-weight: 600;
+    font-weight: 500;
     text-decoration: none;
     color: var(--text-main);
   }

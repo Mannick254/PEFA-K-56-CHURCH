@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Users, UserCheck, ArrowRight, AlertCircle, Sparkles } from 'lucide-react';
 import styles from '../styles/ChurchDepartmentsSection.module.css';
 import { Link } from 'react-router-dom';
+import { supabase } from '../supabaseClient';
+import { STATIC_MINISTRIES } from '../data/ministries';
 
 const ChurchDepartmentsSection = () => {
   const [departments, setDepartments] = useState([]);
@@ -14,21 +15,38 @@ const ChurchDepartmentsSection = () => {
     const fetchDepartments = async () => {
       try {
         setLoading(true);
-        const { data, error } = await supabase
+        const { data: supabaseData, error: dbError } = await supabase
           .from('church_departments')
-          .select('id, name, head, image_url')
-          .order('name', { ascending: true })
-          .limit(4);
+          .select('*')
+          .order('name', { ascending: true });
 
-        if (error) throw error;
-        setDepartments(data || []);
+        if (dbError) throw dbError;
+
+        const merged = STATIC_MINISTRIES.map(staticDept => {
+          const remote = supabaseData?.find(
+            r => r.name.toLowerCase() === staticDept.name.toLowerCase()
+          );
+          return {
+            ...staticDept,
+            ...remote,
+            id: staticDept.id,
+            image: remote?.image_url || staticDept.image,
+            iconName: remote?.icon_name || staticDept.iconName || 'Sparkles',
+            description: remote?.description || staticDept.description || ''
+          };
+        });
+
+        setDepartments(merged.slice(0, 4));
+        setError(null);
       } catch (err) {
+        console.error("Fetch error:", err);
         setError("Unable to load ministries at this moment.");
-        console.error(err.message);
+        setDepartments(STATIC_MINISTRIES.slice(0, 4));
       } finally {
         setLoading(false);
       }
     };
+
     fetchDepartments();
   }, []);
 
@@ -52,7 +70,6 @@ const ChurchDepartmentsSection = () => {
 
   return (
     <section className={styles.wrapper}>
-      {/* Background Decorative Elements */}
       <div className={styles.bgGlow} />
       
       <div className={styles.container}>
@@ -70,12 +87,14 @@ const ChurchDepartmentsSection = () => {
           </p>
         </header>
 
-        {error ? (
+        {error && !loading && (
           <div className={styles.errorState}>
             <AlertCircle size={32} />
             <p>{error}</p>
           </div>
-        ) : loading ? (
+        )}
+
+        {loading ? (
           <div className={styles.grid}>
             {[...Array(4)].map((_, i) => (
               <div key={i} className={styles.skeletonCard}>
@@ -100,15 +119,15 @@ const ChurchDepartmentsSection = () => {
                 variants={cardVariants}
                 whileHover="hover"
               >
-                <Link to={`/church-department/${dept.id}`} className={styles.link}>
+                <Link to={`/church-department-reader/${dept.id}`} className={styles.link}>
                   <div className={styles.imageWrapper}>
                     <motion.div 
                       className={styles.imageZoomer}
                       variants={{ hover: { scale: 1.1 } }}
                       transition={{ duration: 0.6 }}
                     >
-                      {dept.image_url ? (
-                        <img src={dept.image_url} alt={dept.name} className={styles.image} />
+                      {dept.image ? (
+                        <img src={dept.image} alt={dept.name} className={styles.image} />
                       ) : (
                         <div className={styles.placeholder}>
                           <Users size={40} />

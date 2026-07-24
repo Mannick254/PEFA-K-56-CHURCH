@@ -40,7 +40,7 @@ const Footer = () => {
                 <Flame size={32} strokeWidth={2.5} />
               </div>
               <div className={styles.logoText}>
-                <span className={styles.churchName}>PEFA ALL NATIONS GOSPEL</span>
+                <span className={styles.churchName}>ALL NATIONS GOSPEL</span>
                 <span className={styles.branchCode}>K-56 BRANCH</span>
               </div>
             </div>
@@ -69,12 +69,13 @@ const Footer = () => {
           initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInParent}
         >
           <motion.div className={styles.column} variants={fadeInChild}>
-            <h5 className={styles.columnTitle}>Ministry</h5>
+             <h5 className={styles.columnTitle}>Ministry</h5>
             <ul className={styles.linkList}>
               <li><Link to="/about">Our Story</Link></li>
               <li><Link to="/Church-Department">Leadership</Link></li>
               <li><Link to="/statement-of-faith">What We Believe</Link></li>
               <li><Link to="/prayers">Prayer Altar</Link></li>
+              <li><Link to="/lessons">Daily Discipleship</Link></li>
             </ul>
           </motion.div>
 
@@ -85,6 +86,7 @@ const Footer = () => {
               <li><Link to="/events">Events</Link></li>
               <li><Link to="/contact">Contact Us</Link></li>
               <li><Link to="/k56-gallery">Gallery</Link></li>
+              <li><Link to="/live">Live page</Link></li>
             </ul>
           </motion.div>
           
@@ -92,8 +94,8 @@ const Footer = () => {
             <h5 className={styles.columnTitle}>Sister Branches</h5>
             <ul className={styles.linkList}>
               <li>PEFA Undugu</li>
-              <li>PEFA Ng'ando</li>
-              <li>PEFA Riruta</li>
+              <li>PEFA Ngando</li>
+              <li>PEFA Karen End</li>
               <li>PEFA Satellite</li>
             </ul>
           </motion.div>
@@ -101,7 +103,6 @@ const Footer = () => {
           <motion.div className={styles.column} variants={fadeInChild}>
             <h5 className={styles.columnTitle}>Resources</h5>
             <ul className={styles.linkList}>
-              <li><Link to="/sitemap">Sitemap</Link></li>
               <li><Link to="/terms">Terms of Service</Link></li>
               <li><Link to="/privacy">Privacy Policy</Link></li>
             </ul>
@@ -113,9 +114,14 @@ const Footer = () => {
           className={styles.bottomRow}
           initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }} variants={fadeInParent}
         >
-          <motion.p className={styles.copyright} variants={fadeInChild}>
-            &copy; {currentYear} PEFA Kawangware 56. All Rights Reserved.
-          </motion.p>
+            <div className={styles.copyWrapper}>
+                <motion.p className={styles.copyright} variants={fadeInChild}>
+                    &copy; {currentYear} PEFA Kawangware 56. All Rights Reserved.
+                </motion.p>
+                <motion.p className={styles.designCredit} variants={fadeInChild}>
+                    Designed by <a href="#" target="_blank" rel="noopener noreferrer">PEFAK56 ICT TEAM</a>
+                </motion.p>
+            </div>
           <motion.div className={styles.socialIcons} variants={fadeInChild}>
             <a href="https://www.facebook.com/PEFAKawangware56" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
               <FaFacebook size={20} />

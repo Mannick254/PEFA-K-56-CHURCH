@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { supabase } from '../supabaseClient';
 import styles from '../styles/ForgotPassword.module.css';
 import { Link } from 'react-router-dom';
+import Seo from '../components/Seo';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -30,6 +31,7 @@ const ForgotPassword = () => {
 
   return (
     <div className={styles.forgotPasswordContainer}>
+        <Seo title="Forgot Password" description="Reset your password for your PEFA Kawangware 56 account."/>
       <div className={styles.forgotPasswordFormWrapper}>
         <h2>Forgot Password</h2>
         {message && <p className={styles.message}>{message}</p>}

@@ -1,3 +1,4 @@
+
 import React, { Suspense, lazy, useState, useEffect } from 'react';
 import {
   BrowserRouter as Router,
@@ -10,10 +11,13 @@ import Footer from './components/Footer';
 import ErrorBoundary from './components/ErrorBoundary';
 import MoveToTop from './components/MoveToTop';
 import ScrollToTop from './components/ScrollToTop';
+import SmoothScroll from './components/SmoothScroll';
 import FireworksComponent from './components/Fireworks';
 import InstallPWA from './components/InstallPWA'; // Import the new component
 import PrivateRoute from './components/PrivateRoute';
 import Notification from './components/Notification';
+import useNotificationPermission from './hooks/useNotifications'; // Import the hook
+import Breadcrumb from './components/Breadcrumb'; // Import the Breadcrumb component
 import './App.css';
 import './styles/AdminLayout.css';
 import { createServerClient } from '@supabase/ssr';
@@ -23,8 +27,13 @@ import { createServerClient } from '@supabase/ssr';
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
 const Sermons = lazy(() => import('./pages/Sermons'));
+const SermonReader = lazy(() => import('./pages/SermonReader'));
+const JesusLessons = lazy(() => import('./pages/JesusLessons'));
+const LessonReader = lazy(() => import('./pages/LessonReader'));
 const Events = lazy(() => import('./pages/Events'));
+const EventReader = lazy(() => import('./pages/EventReader'));
 const Contact = lazy(() => import('./pages/Contact'));
+const Connect = lazy(() => import('./pages/Connect'));
 const StatementOfFaith = lazy(() => import('./pages/StatementOfFaith'));
 const Prayers = lazy(() => import('./pages/Prayers'));
 const Login = lazy(() => import('./pages/Login'));
@@ -35,10 +44,12 @@ const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
 const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 const ChurchDepartment = lazy(() => import('./pages/ChurchDepartment'));
-const Sitemap = lazy(() => import('./pages/Sitemap'));
+const ChurchDepartmentReader = lazy(() => import('./pages/ChurchDepartmentReader'));
 const K56GalleryPage = lazy(() => import('./pages/K56Gallery'));
 const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
+const Live = lazy(() => import('./components/Live'));
+const ChurchImportanceReader = lazy(() => import('./pages/ChurchImportanceReader'));
 
 
 // Lazy load admin components
@@ -63,11 +74,14 @@ const KindnessActs = lazy(() => import('./components/admin/KindnessActs'));
 const DataView = lazy(() => import('./components/admin/DataView'));
 const AdminChurchDepartment = lazy(() => import('./components/admin/ChurchDepartment'));
 const K56GalleryAdmin = lazy(() => import('./components/admin/K56GalleryAdmin'));
+const LiveAdmin = lazy(() => import('./components/admin/LiveAdmin'));
+const ConnectAdmin = lazy(() => import('./components/admin/ConnectAdmin'));
 
 const AppContent = () => {
   const location = useLocation();
   const [showFireworks, setShowFireworks] = useState(false);
   const [notification, setNotification] = useState({ message: '', type: '' });
+  const notificationPermission = useNotificationPermission(); // Use the hook
 
   useEffect(() => {
     const hasSeenFireworks = sessionStorage.getItem('hasSeenFireworks');
@@ -94,6 +108,10 @@ const AppContent = () => {
     '/reset-password',
   ].includes(location.pathname);
 
+  // Determine if the breadcrumb should be shown
+  const showBreadcrumb = !isAdminPage && !isAuthPage && location.pathname !== '/' && location.pathname !== '/live';
+
+
   return (
     <div className={`app-container ${isAdminPage ? 'admin-layout' : ''}`}>
        <Notification
@@ -103,6 +121,11 @@ const AppContent = () => {
       />
       {showFireworks && <FireworksComponent options={{ fullscreen: true }} />}
       {!isAuthPage && <Navbar />}
+      {showBreadcrumb && (
+        <div className="breadcrumb-container">
+          <Breadcrumb />
+        </div>
+      )}
       <main className={!isAuthPage ? 'content-with-navbar' : ''}>
         <Suspense fallback={<div>Loading...</div>}>
           <ErrorBoundary>
@@ -111,15 +134,22 @@ const AppContent = () => {
               <Route path="/" element={<Home setNotification={setNotification} />} />
               <Route path="/about" element={<About />} />
               <Route path="/sermons" element={<Sermons />} />
+              <Route path="/sermons/:sermonId" element={<SermonReader />} />
+              <Route path="/lessons" element={<JesusLessons />} />
+              <Route path="/lessons/:lessonId" element={<LessonReader />} />
               <Route path="/events" element={<Events />} />
+              <Route path="/event/:id" element={<EventReader />} />
               <Route path="/statement-of-faith" element={<StatementOfFaith />} />
               <Route path="/prayers" element={<Prayers />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/connect" element={<Connect />} />
               <Route path="/church-department" element={<ChurchDepartment />} />
-              <Route path="/sitemap" element={<Sitemap />} />
+              <Route path="/church-department-reader/:id" element={<ChurchDepartmentReader />} />
+              <Route path="/church-importance/:id" element={<ChurchImportanceReader />} />
               <Route path="/k56-gallery" element={<K56GalleryPage />} />
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/terms" element={<Terms />} />
+              <Route path="/live" element={<Live />} />
 
               {/* Auth routes */}
               <Route path="/login" element={<Login />} />
@@ -158,6 +188,8 @@ const AppContent = () => {
                 <Route path="view-data" element={<DataView />} />
                 <Route path="church-department" element={<AdminChurchDepartment />} />
                 <Route path="k56-gallery" element={<K56GalleryAdmin />} />
+                <Route path="live" element={<LiveAdmin />} />
+								<Route path="connect" element={<ConnectAdmin />} />
               </Route>
 
               {/* Catch-all */}
@@ -166,7 +198,7 @@ const AppContent = () => {
           </ErrorBoundary>
         </Suspense>
       </main>
-      {!isAuthPage && <Footer />}
+      {!isAuthPage && !isAdminPage && <Footer />}
       <MoveToTop />
       <InstallPWA /> {/* Add the new component here */}
     </div>
@@ -177,7 +209,9 @@ function App() {
   return (
     <Router future={{ v7_relativeSplatPath: true }}>
       <ScrollToTop />
-      <AppContent />
+      <SmoothScroll>
+        <AppContent />
+      </SmoothScroll>
     </Router>
   );
 }

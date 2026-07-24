@@ -62,7 +62,7 @@
   flex-shrink: 0;
 }
 
-.brandName { font-weight: 700; font-size: 1.1rem; white-space: nowrap; }
+.brandName { font-weight: 600; font-size: 1.1rem; white-space: nowrap; }
 
 /* === Sidebar Toggle Button === */
 .collapseBtn {
@@ -107,7 +107,7 @@
 
 .groupToggle:hover { background: var(--sidebar-hover); color: var(--text-light); }
 .groupActive { color: var(--accent-gold); }
-.groupTitle { flex-grow: 1; margin-left: 12px; font-size: 0.9rem; font-weight: 600; white-space: nowrap; }
+.groupTitle { flex-grow: 1; margin-left: 12px; font-size: 0.9rem; font-weight: 500; white-space: nowrap; }
 .chevron { transition: transform 0.3s ease; }
 .chevronOpen { transform: rotate(180deg); }
 
@@ -121,7 +121,7 @@
 }
 
 .navLink:hover { background: var(--sidebar-hover); color: var(--text-light); }
-.navLink.active { background: var(--accent-gold); color: var(--sidebar-bg); font-weight: 700; }
+.navLink.active { background: var(--accent-gold); color: var(--sidebar-bg); font-weight: 600; }
 
 .linkIcon { font-size: 1.1rem; width: 24px; display: grid; place-items: center; flex-shrink: 0; }
 .linkLabel { margin-left: 12px; }
@@ -133,7 +133,7 @@
 
 .logoutLink {
   display: flex; align-items: center; gap: 12px; color: var(--error-color);
-  text-decoration: none; padding: 0.75rem 1rem; border-radius: 8px; font-weight: 600;
+  text-decoration: none; padding: 0.75rem 1rem; border-radius: 8px; font-weight: 500;
   transition: background 0.2s; white-space: nowrap; background: none; border: none; width: 100%;
 }
 

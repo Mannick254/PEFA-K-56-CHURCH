@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import styles from '../styles/Login.module.css';
+import Seo from '../components/Seo';
 
 const AdminLogin = () => {
   const [username, setUsername] = useState('');
@@ -81,6 +82,7 @@ const AdminLogin = () => {
 
   return (
     <div className={styles.loginPage}>
+      <Seo title="Admin Login" />
       <div className={styles.loginCard}>
         <div className={styles.header}>
           <div className={styles.adminIcon}>🛡️</div>

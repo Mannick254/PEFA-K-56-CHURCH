@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import styles from '../styles/StatementOfFaith.module.css';
 import { motion } from 'framer-motion';
-import { Book, Loader2, AlertCircle, Sparkles } from 'lucide-react';
+import { Loader2, AlertCircle, BookOpen } from 'lucide-react';
+import styles from '../styles/StatementOfFaith.module.css';
 
 const StatementOfFaith = () => {
   const [statements, setStatements] = useState([]);
@@ -26,90 +26,75 @@ const StatementOfFaith = () => {
         setLoading(false);
       }
     };
-
     fetchStatements();
   }, []);
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15 }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { duration: 0.8, ease: [0.6, 0.05, -0.01, 0.9] } 
-    }
-  };
 
   if (loading) return (
     <div className={styles.loaderWrapper}>
       <Loader2 className={styles.spinner} size={40} />
-      <span>Consulting the foundations...</span>
+      <span>Loading Foundations...</span>
     </div>
   );
 
   return (
     <section className={styles.mainWrapper}>
       <div className={styles.container}>
+        {/* Header mimicking the image structure */}
         <motion.header 
           className={styles.header}
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
         >
-          <div className={styles.badge}>
-             <Sparkles size={14} className={styles.gold} />
-             <span>Theological Pillars</span>
-          </div>
-          <h1 className={styles.mainTitle}>Statement of Faith</h1>
-          <p className={styles.subtitle}>
-            Our core convictions and the eternal truths that guide PEFA Kawangware 56.
+          <h1 className={styles.mainTitle}>STATEMENT OF FAITH</h1>
+          <p className={styles.affirmationText}>
+            Our Core Doctrines must be fully affirmed by all community members.
           </p>
+          <div className={styles.thickDivider} />
         </motion.header>
 
         {error && (
           <div className={styles.errorBox}>
-            <AlertCircle size={24} />
-            <p>Doctrine content currently unavailable.</p>
+            <AlertCircle size={20} />
+            <p>Database connection error. Please try again later.</p>
           </div>
         )}
 
-        <motion.div 
-          className={styles.grid}
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          {statements.map((statement) => (
-            <motion.article 
+        {/* The Numbered List Layout */}
+        <div className={styles.pillarList}>
+          {statements.map((statement, index) => (
+            <motion.div 
               key={statement.id}
-              className={styles.doctrineCard}
-              variants={itemVariants}
+              className={styles.pillarRow}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.1 }}
+              viewport={{ once: true, margin: "-50px" }}
             >
-              <div className={styles.cardHeader}>
-                <span className={styles.watermark}>0{statement.priority}</span>
-                <h3 className={styles.doctrineTitle}>{statement.title}</h3>
-              </div>
-              
-              <div className={styles.contentBody}>
-                <p>{statement.content}</p>
+              {/* The Bold Circle Number from your image */}
+              <div className={styles.numberContainer}>
+                <div className={styles.circleNumber}>
+                  {index + 1}
+                </div>
+                {index !== statements.length - 1 && <div className={styles.connectingLine} />}
               </div>
 
-              {statement.bible_reference && (
-                <div className={styles.referenceBadge}>
-                  <Book size={12} />
-                  <span>{statement.bible_reference}</span>
-                </div>
-              )}
-            </motion.article>
+              {/* The Content side */}
+              <div className={styles.contentSide}>
+                <h3 className={styles.doctrineTitle}>{statement.title}</h3>
+                <p className={styles.doctrineContent}>
+                  {statement.content}
+                </p>
+                {statement.bible_reference && (
+                  <div className={styles.reference}>
+                    <BookOpen size={14} className={styles.refIcon} />
+                    <span>{statement.bible_reference}</span>
+                  </div>
+                )}
+              </div>
+            </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import styles from '../styles/ResetPassword.module.css';
+import Seo from '../components/Seo';
 
 const ResetPassword = () => {
   const [password, setPassword] = useState('');
@@ -30,6 +31,7 @@ const ResetPassword = () => {
 
   return (
     <div className={styles.resetPasswordContainer}>
+        <Seo title="Reset Password" description="Reset your password for your PEFA Kawangware 56 account."/>
       <div className={styles.resetPasswordFormWrapper}>
         <h2>Reset Password</h2>
         {message && <p className={styles.message}>{message}</p>}

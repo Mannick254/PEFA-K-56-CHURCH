@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MoveRight, BookOpen, Quote, Sparkles, Minus } from 'lucide-react';
+import { MoveRight, BookOpen, Quote, Sparkles, Calendar } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
-import styles from '../styles/JesusLessons.module.css';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
+import styles from '../styles/JesusSection.module.css';
 
 const JesusLessons = () => {
   const [lessons, setLessons] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [expandedId, setExpandedId] = useState(null);
 
   useEffect(() => {
     const fetchLessons = async () => {
@@ -28,106 +30,111 @@ const JesusLessons = () => {
     fetchLessons();
   }, []);
 
-  // Separate the newest lesson to feature it prominently
-  const { featured, stream } = useMemo(() => {
-    return {
-      featured: lessons[0],
-      stream: lessons.slice(1)
-    };
-  }, [lessons]);
+  const featuredLesson = useMemo(() => lessons[0], [lessons]);
+  const otherLessons = useMemo(() => lessons.slice(1), [lessons]);
 
   if (loading) return (
     <div className={styles.loadingContainer}>
       <motion.div 
-        animate={{ opacity: [0.4, 1, 0.4] }} 
-        transition={{ repeat: Infinity, duration: 1.5 }}
+        animate={{ scale: [1, 1.1, 1], opacity: [0.5, 1, 0.5] }} 
+        transition={{ repeat: Infinity, duration: 2 }}
+        className={styles.loader}
       >
-        Loading Eternal Wisdom...
+        <Sparkles size={40} className={styles.goldIcon} />
+        <p>Seeking Wisdom...</p>
       </motion.div>
     </div>
   );
 
   return (
-    <section className={styles.wrapper}>
+    <section className={styles.wrapper} id="lessons">
       <div className={styles.container}>
         
-        {/* Header Section */}
         <header className={styles.sectionHeader}>
-          <div className={styles.badge}>
+          <motion.div 
+            initial={{ opacity: 0, y: -10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            className={styles.badge}
+          >
             <Sparkles size={14} /> <span>DAILY DISCIPLESHIP</span>
-          </div>
+          </motion.div>
           <h2 className={styles.mainTitle}>Teachings of <span>the Master</span></h2>
+          <p className={styles.subtitle}>Timeless wisdom for the modern journey</p>
         </header>
 
-        {/* Featured Lesson - Large Editorial Style */}
-        {featured && (
+        {featuredLesson && (
           <motion.div 
-            className={styles.featuredArea}
-            initial={{ opacity: 0, y: 20 }}
+            className={styles.featuredCard}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
           >
-            <div className={styles.featuredImage}>
-              <img src={featured.image_url || '/placeholder-jesus.jpg'} alt="" />
-              <div className={styles.featuredOverlay}>
-                <span className={styles.scriptureTag}>{featured.scripture_reference}</span>
+            <div className={styles.featuredImageWrapper}>
+              <img 
+                src={featuredLesson.image_url || 'https://images.unsplash.com/photo-1507434965515-61970f2bd7c6?auto=format&fit=crop&q=80'} 
+                alt={featuredLesson.lesson_title} 
+                className={styles.featuredImage}
+              />
+              <div className={styles.imageOverlay}>
+                <span className={styles.scriptureTag}>{featuredLesson.scripture_reference}</span>
               </div>
             </div>
+            
             <div className={styles.featuredContent}>
-              <h3 className={styles.featuredTitle}>{featured.lesson_title}</h3>
-              <div className={styles.featuredVerse}>
-                <Quote size={20} className={styles.goldQuote} />
-                <p>{featured.verse}</p>
+              <div className={styles.dateMeta}>
+                <Calendar size={14} /> 
+                {new Date(featuredLesson.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
               </div>
-              <div className={styles.markdownWrapper}>
-                <ReactMarkdown>{featured.message}</ReactMarkdown>
+              <h3 className={styles.featuredTitle}>{featuredLesson.lesson_title}</h3>
+              <div className={styles.excerpt}>
+                <Quote size={24} className={styles.quoteIcon} />
+                <div className={styles.markdownWrapper}>
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    rehypePlugins={[rehypeRaw]}
+                  >
+                    {featuredLesson.message.length > 220 
+                      ? `${featuredLesson.message.substring(0, 220)}...` 
+                      : featuredLesson.message}
+                  </ReactMarkdown>
+                </div>
               </div>
+              <Link to={`/lessons/${featuredLesson.id}`} className={styles.primaryBtn}>
+                Explore Teaching <MoveRight size={18} />
+              </Link>
             </div>
           </motion.div>
         )}
 
-        {/* The Wisdom Stream - Sequential Layout */}
-        <div className={styles.streamContainer}>
-          <div className={styles.streamHeader}>
-            <Minus size={40} className={styles.dividerIcon} />
-            <h4>Further Lessons</h4>
-          </div>
-
-          <div className={styles.streamList}>
-            {stream.map((lesson, index) => (
-              <motion.div 
-                key={lesson.id} 
-                className={styles.lessonRow}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-              >
-                <div className={styles.rowLead}>
-                  <span className={styles.rowNumber}>0{index + 1}</span>
-                  <div className={styles.rowMeta}>
-                    <h4 className={styles.rowTitle}>{lesson.lesson_title}</h4>
-                    <span className={styles.rowScripture}>{lesson.scripture_reference}</span>
-                  </div>
-                </div>
-
-                <div className={styles.rowBody}>
-                  <div className={`${styles.rowMessage} ${expandedId === lesson.id ? styles.expanded : ''}`}>
-                    <ReactMarkdown>{lesson.message}</ReactMarkdown>
-                  </div>
-                  
-                  <button 
-                    className={styles.expandBtn}
-                    onClick={() => setExpandedId(expandedId === lesson.id ? null : lesson.id)}
+        {otherLessons.length > 0 && (
+          <div className={styles.archiveSection}>
+            <h3 className={styles.archiveTitle}>Previous Wisdom</h3>
+            <div className={styles.lessonGrid}>
+              <AnimatePresence>
+                {otherLessons.map((lesson, index) => (
+                  <motion.div
+                    key={lesson.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    viewport={{ once: true }}
                   >
-                    {expandedId === lesson.id ? 'Close Lesson' : 'Read Full Teaching'}
-                    <MoveRight size={16} />
-                  </button>
-                </div>
-              </motion.div>
-            ))}
+                    <Link to={`/lessons/${lesson.id}`} className={styles.lessonRow}>
+                        <div className={styles.rowInfo}>
+                          <span className={styles.rowReference}>{lesson.scripture_reference}</span>
+                          <h4 className={styles.rowTitle}>{lesson.lesson_title}</h4>
+                        </div>
+                        <div className={styles.rowArrow}>
+                          <BookOpen size={20} />
+                        </div>
+                    </Link>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
           </div>
-        </div>
-
+        )}
       </div>
     </section>
   );

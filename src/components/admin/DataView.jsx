@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../supabaseClient';
 import styles from '../../styles/DataView.module.css';
+import '../../styles/Skeleton.css'; // Import skeleton styles
 import { FaSync, FaSearch, FaTimes, FaPlus, FaMale, FaFemale, FaChild, FaUsers } from 'react-icons/fa';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
@@ -14,6 +15,47 @@ const getAvatar = (name) => {
     const initials = name ? name.split(' ').map(n => n[0]).join('').substring(0, 2) : '?';
     return <div className={styles.avatar}>{initials}</div>;
 };
+
+const SkeletonRow = () => (
+    <tr>
+        <td>
+            <div className={styles.userCell}>
+                <div className="skeleton skeleton-avatar"></div>
+                <div>
+                    <div className="skeleton skeleton-text"></div>
+                    <div className="skeleton skeleton-text" style={{ width: '70%' }}></div>
+                </div>
+            </div>
+        </td>
+        <td><div className="skeleton skeleton-text"></div></td>
+        <td><div className="skeleton skeleton-text"></div></td>
+        <td><div className="skeleton skeleton-text"></div></td>
+        <td><div className="skeleton skeleton-button"></div></td>
+    </tr>
+);
+
+const SkeletonCard = () => (
+    <div className={styles.mCard}>
+        <div className={styles.mCardHeader}>
+            <div className="skeleton skeleton-avatar"></div>
+            <div className={styles.mTitle}>
+                <div className="skeleton skeleton-text"></div>
+                <div className="skeleton skeleton-text" style={{ width: '70%' }}></div>
+            </div>
+        </div>
+        <div className={styles.mCardBody}>
+            <div className={styles.mInfo}>
+                <div className="skeleton skeleton-text"></div>
+                <div className="skeleton skeleton-text" style={{ width: '80%' }}></div>
+            </div>
+            <div className={styles.mInfo}>
+                <div className="skeleton skeleton-text"></div>
+                <div className="skeleton skeleton-text" style={{ width: '80%' }}></div>
+            </div>
+        </div>
+    </div>
+);
+
 
 const DataView = () => {
     const [activeTab, setActiveTab] = useState('members');
@@ -213,7 +255,29 @@ const DataView = () => {
                 </div>
             </div>
 
-            {loading ? <p>Loading...</p> : error ? <p>{error}</p> : (
+            {loading ? (
+                <>
+                    <div className={styles.desktopTable}>
+                        <table className={styles.modernTable}>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Contact</th>
+                                    <th>Join Date</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {[...Array(5)].map((_, i) => <SkeletonRow key={i} />)}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div className={styles.mobileCards}>
+                        {[...Array(3)].map((_, i) => <SkeletonCard key={i} />)}
+                    </div>
+                </>
+            ) : error ? <p>{error}</p> : (
                 <>
                     <div className={styles.desktopTable}>
                         <table className={styles.modernTable}>

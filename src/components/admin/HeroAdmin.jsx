@@ -4,9 +4,9 @@ import styles from '../../styles/HeroAdmin.module.css';
 import Upload from './upload';
 
 const HeroAdmin = () => {
-    const [heroTitle, setHeroTitle] = useState('');
-    const [heroSubtitle, setHeroSubtitle] = useState('');
-    const [heroImage, setHeroImage] = useState('');
+    const [heroTitle, setHeroTitle] = useState('THEME OF THE YEAR 2026');
+    const [heroSubtitle, setHeroSubtitle] = useState('ABIDING IN CHRIST (John 15:4)');
+    const [heroImage, setHeroImage] = useState('https://res.cloudinary.com/dtcb3ffnv/image/upload/v1779698892/PK56_uh2j35.jpg');
     const [isPublished, setIsPublished] = useState(false);
     const [heroId, setHeroId] = useState(null);
 

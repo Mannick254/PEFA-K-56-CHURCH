@@ -9,10 +9,23 @@ const K56GalleryAdmin = () => {
     const [images, setImages] = useState([]);
     const [imageUrl, setImageUrl] = useState('');
     const [caption, setCaption] = useState('');
+    const [category, setCategory] = useState('Events');
     const [isLoading, setIsLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [status, setStatus] = useState({ type: '', message: '' });
     const [editingImage, setEditingImage] = useState(null);
+
+    const categories = [
+        'Events', 
+        'Sunday Service',
+        'Special Programs',
+        'Outreach',
+        'Kids & Youth',
+        'Workshops', 
+        'Community', 
+        'Behind the Scenes',
+        'Testimonies'
+    ];
 
     useEffect(() => {
         fetchImages();
@@ -47,7 +60,8 @@ const K56GalleryAdmin = () => {
             .from('k56_gallery')
             .insert([{ 
                 image_url: imageUrl,
-                caption: caption || 'Gallery Image' 
+                caption: caption || 'Gallery Image',
+                category: category
             }]);
 
         if (error) {
@@ -56,6 +70,7 @@ const K56GalleryAdmin = () => {
             showStatus('success', 'Image added successfully!');
             setImageUrl('');
             setCaption('');
+            setCategory('Events');
             fetchImages();
         }
         setIsSubmitting(false);
@@ -81,11 +96,11 @@ const K56GalleryAdmin = () => {
         e.preventDefault();
         if (!editingImage) return;
 
-        const { id, image_url, caption } = editingImage;
+        const { id, image_url, caption, category } = editingImage;
         
         const { error } = await supabase
             .from('k56_gallery')
-            .update({ image_url, caption })
+            .update({ image_url, caption, category })
             .eq('id', id);
 
         if (error) {
@@ -121,9 +136,16 @@ const K56GalleryAdmin = () => {
                     <div className={styles.inputGroup}>
                         <label>Image</label>
                         <Upload 
-                            onUpload={setImageUrl}
-                            onUrlChange={setImageUrl}
-                            initialUrl={imageUrl}
+                            onUploadSuccess={(uploadInfo) => setImageUrl(uploadInfo.url)} 
+                        />
+                    </div>
+                    <div className={styles.inputGroup}>
+                        <label>Image URL</label>
+                        <input
+                            type="text"
+                            placeholder="Or paste image URL here"
+                            value={imageUrl}
+                            onChange={(e) => setImageUrl(e.target.value)}
                         />
                     </div>
                     
@@ -136,18 +158,20 @@ const K56GalleryAdmin = () => {
                             onChange={(e) => setCaption(e.target.value)}
                         />
                     </div>
+
                     <div className={styles.inputGroup}>
-                        <label>Or paste Image URL</label>
-                        <input 
-                            type="text"
-                            placeholder="https://example.com/image.png"
-                            value={imageUrl}
-                            onChange={(e) => setImageUrl(e.target.value)}
-                            className={styles.urlInput}
-                        />
+                        <label>Category</label>
+                        <select
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
+                        >
+                            {categories.map(cat => (
+                                <option key={cat} value={cat}>{cat}</option>
+                            ))}
+                        </select>
                     </div>
 
-                    <button type="submit" disabled={isSubmitting} className={styles.submitBtn}>
+                    <button type="submit" disabled={isSubmitting || !imageUrl} className={styles.submitBtn}>
                         {isSubmitting ? <Loader2 className={styles.spin} /> : <PlusCircle size={20} />}
                         Add to Gallery
                     </button>
@@ -207,24 +231,31 @@ const K56GalleryAdmin = () => {
                                 <div className={styles.inputGroup}>
                                     <label>Image</label>
                                     <Upload 
-                                        onUpload={(url) => setEditingImage({ ...editingImage, image_url: url })}
-                                        onUrlChange={(url) => setEditingImage({ ...editingImage, image_url: url })}
-                                        initialUrl={editingImage.image_url}
+                                        onUploadSuccess={(uploadInfo) => setEditingImage({ ...editingImage, image_url: uploadInfo.url })}
                                     />
                                 </div>
                                 <div className={styles.inputGroup}>
-                                    <label>Or paste Image URL</label>
+                                    <label>Image URL</label>
                                     <input 
-                                        type="text"
-                                        placeholder="https://example.com/image.png"
-                                        value={editingImage.image_url}
-                                        onChange={(e) => setEditingImage({ ...editingImage, image_url: e.target.value })}
-                                        className={styles.urlInput}
+                                        type="text" 
+                                        value={editingImage.image_url} 
+                                        onChange={(e) => setEditingImage({ ...editingImage, image_url: e.target.value })} 
                                     />
                                 </div>
                                 <div className={styles.inputGroup}>
                                     <label>Caption</label>
                                     <input type="text" value={editingImage.caption} onChange={(e) => setEditingImage({ ...editingImage, caption: e.target.value })} />
+                                </div>
+                                <div className={styles.inputGroup}>
+                                    <label>Category</label>
+                                    <select
+                                        value={editingImage.category}
+                                        onChange={(e) => setEditingImage({ ...editingImage, category: e.target.value })}
+                                    >
+                                        {categories.map(cat => (
+                                            <option key={cat} value={cat}>{cat}</option>
+                                        ))}
+                                    </select>
                                 </div>
                                 <div className={styles.modalActions}>
                                     <button type="button" onClick={() => setEditingImage(null)} className={styles.cancelBtn}>Cancel</button>

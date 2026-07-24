@@ -14,6 +14,11 @@
   overflow-x: hidden;
 }
 
+.mainWrapper em {
+  color: #007bff;
+  font-style: normal;
+}
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -89,7 +94,7 @@
 
 .kicker {
   display: block;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.4em;
   font-size: 0.8rem;
@@ -98,20 +103,20 @@
 }
 
 .heroTitle {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Inter', sans-serif;
   font-size: clamp(2.5rem, 8vw, 5.5rem);
   line-height: 1.1;
   margin-bottom: 2rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .heroSubtitle {
-  font-size: clamp(1.1rem, 2vw, 1.5rem);
-  opacity: 0.9;
-  max-width: 600px;
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  opacity: 0.95;
+  max-width: 700px;
   margin: 0 auto;
   font-weight: 300;
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
 /* Scroll Animation */
@@ -162,7 +167,7 @@
 }
 
 .serifTitle {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Inter', sans-serif;
   font-size: clamp(2rem, 4vw, 3.5rem);
   color: var(--primary);
   margin-bottom: 1rem;
@@ -181,7 +186,7 @@
   line-height: 1.6;
   color: var(--text-main);
   margin-bottom: 1.5rem;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .pBody {
@@ -245,7 +250,7 @@
 .missionSection {
   position: relative;
   padding: 160px 0;
-  background: #0f172a; /* Deep Navy */
+  background: #007bff; /* Deep Navy */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -282,7 +287,7 @@
 }
 
 .missionTitle {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Inter', sans-serif;
   font-size: clamp(2rem, 5vw, 3rem);
   margin-bottom: 1.5rem;
 }
@@ -335,7 +340,7 @@
 }
 
 .bentoCard h3 {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1.8rem;
   margin-bottom: 1rem;
   color: var(--primary);
@@ -369,7 +374,7 @@
 
 .ctaBackground h3 {
   color: white;
-  font-size: 2.2rem;
+  font-synthesis: 2.2rem;
 }
 
 .ctaBackground p {
@@ -382,7 +387,7 @@
   border: none;
   padding: 18px 36px;
   border-radius: 100px;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 1rem;
   display: flex;
   align-items: center;

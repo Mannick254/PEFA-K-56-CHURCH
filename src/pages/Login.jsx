@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import { Mail, Lock, LogIn, CheckCircle2, AlertCircle } from 'lucide-react';
 import styles from '../styles/LoginUser.module.css';
+import Seo from '../components/Seo';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -53,6 +54,7 @@ const Login = () => {
 
   return (
     <div className={styles.loginContainer}>
+      <Seo title="Login" description="Sign in to your PEFA Kawangware 56 account to access your profile and member-exclusive content." />
       <div className={styles.loginFormWrapper}>
         <div className={styles.header}>
           <div className={styles.logoIcon}>

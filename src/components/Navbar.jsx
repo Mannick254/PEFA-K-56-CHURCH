@@ -57,11 +57,11 @@ const Navbar = () => {
 
   const navLinks = [
     { name: 'Home', path: '/' },
+    { name: 'Live', path: '/live' },
     { name: 'Sermons', path: '/sermons' },
     { name: 'Events', path: '/events' },
-    { name: 'Faith', path: '/statement-of-faith' },
     { name: 'Prayers', path: '/prayers' },
-    { name: 'Church Department', path: '/church-department' },
+    { name: 'Ministries', path: '/church-department' },
   ];
 
   return (
@@ -114,6 +114,7 @@ const Navbar = () => {
               <div className={`${styles.dropdownContent} ${isAboutDropdownActive ? styles.show : ''}`}>
                 <NavLink to="/about" onClick={closeAll}>About Us</NavLink>
                 <NavLink to="/contact" onClick={closeAll}>Contact</NavLink>
+                <NavLink to="/statement-of-faith" onClick={closeAll}>Faith</NavLink>
               </div>
             </li>
 

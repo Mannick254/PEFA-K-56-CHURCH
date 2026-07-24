@@ -1,53 +1,69 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import styles from '../styles/ChurchImportance.module.css';
-import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
-import { Heart, Users, ShieldCheck, Sparkles, Plus, Minus, BookOpen } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Heart, Users, ShieldCheck, Sparkles, BookOpen, ArrowRight } from 'lucide-react';
 import { getOptimizedImageUrl } from '../image-optimization';
+import { useNavigate } from 'react-router-dom';
 
 const ChurchImportance = () => {
     const [points, setPoints] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [expandedCard, setExpandedCard] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchPoints = async () => {
-            const { data, error } = await supabase.from('church_importance').select('*');
-            if (!error) {
-                const optimizedPoints = data.map(point => ({
-                    ...point,
-                    // Correctly use image_url from the database
-                    imageUrl: getOptimizedImageUrl(point.image_url, { width: 500, quality: 80 })
-                }));
-                setPoints(optimizedPoints);
+            try {
+                const { data, error } = await supabase
+                    .from('church_importance')
+                    .select('*')
+                    .order('id', { ascending: true });
+                
+                if (!error && data) {
+                    const optimizedPoints = data.map(point => ({
+                        ...point,
+                        imageUrl: getOptimizedImageUrl(point.image_url, { width: 800, quality: 85 })
+                    }));
+                    setPoints(optimizedPoints);
+                }
+            } catch (err) {
+                console.error("Error fetching church foundations:", err);
+            } finally {
+                setLoading(false);
             }
-            setLoading(false);
         };
         fetchPoints();
     }, []);
 
-    // Logic to map icons based on title keywords for more relevance
     const getIcon = (title) => {
         const t = title.toLowerCase();
-        if (t.includes('love') || t.includes('heart')) return <Heart />;
-        if (t.includes('community') || t.includes('people')) return <Users />;
-        if (t.includes('protect') || t.includes('truth')) return <ShieldCheck />;
-        return <Sparkles />;
+        if (t.includes('love') || t.includes('heart')) return <Heart className={styles.icon} />;
+        if (t.includes('community') || t.includes('people')) return <Users className={styles.icon} />;
+        if (t.includes('protect') || t.includes('truth')) return <ShieldCheck className={styles.icon} />;
+        return <Sparkles className={styles.icon} />;
     };
 
-    if (loading) return (
-        <div className={styles.loadingContainer}>
-            <motion.div 
-                animate={{ rotate: 360 }} 
-                transition={{ repeat: Infinity, duration: 1 }}
-                className={styles.spinner}
-            />
-            <p>Gathering foundations...</p>
-        </div>
-    );
+    // Animation Variants
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.15 }
+        }
+    };
+
+    const cardVariants = {
+        hidden: { opacity: 0, y: 30 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+    };
+
+    if (loading) return <SkeletonLoader />;
 
     return (
         <section className={styles.importanceSection}>
+            {/* Background Decorative Elements */}
+            <div className={styles.lightLeak} />
+            
             <div className={styles.container}>
                 <header className={styles.header}>
                     <motion.div
@@ -55,85 +71,82 @@ const ChurchImportance = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                     >
-                        <span className={styles.kicker}>Why We Gather</span>
-                        <h2 className={styles.sectionTitle}>The Importance of the <span className={styles.accent}>Church</span></h2>
+                        <span className={styles.kicker}>The Living Body</span>
+                        <h2 className={styles.sectionTitle}>
+                            The Heart of the <span className={styles.accent}>Church</span>
+                        </h2>
                         <div className={styles.titleUnderline} />
+                        <p className={styles.subtitle}>
+                            Understanding why the local church is God's primary vehicle for spiritual growth and community.
+                        </p>
                     </motion.div>
                 </header>
 
-                <LayoutGroup>
-                    <motion.div layout className={styles.pointsGrid}>
-                        {points.map((point, index) => {
-                            const isExpanded = expandedCard === index;
+                <motion.div 
+                    className={styles.pointsGrid}
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-100px" }}
+                >
+                    {points.map((point, index) => (
+                        <motion.article 
+                            key={point.id} 
+                            className={styles.pointCard}
+                            variants={cardVariants}
+                            whileHover={{ y: -10 }}
+                        >
+                            <div className={styles.imageWrapper}>
+                                <img 
+                                    src={point.imageUrl || '/api/placeholder/800/600'} 
+                                    alt={point.title} 
+                                    className={styles.pointImage} 
+                                />
+                                <div className={styles.glassOverlay}>
+                                    <div className={styles.iconCircle}>
+                                        {getIcon(point.title)}
+                                    </div>
+                                </div>
+                                <span className={styles.floatingNumber}>
+                                    {String(index + 1).padStart(2, '0')}
+                                </span>
+                            </div>
                             
-                            return (
-                                <motion.article 
-                                    layout
-                                    key={index} 
-                                    className={`${styles.pointCard} ${isExpanded ? styles.expanded : ''}`}
-                                    initial={{ opacity: 0, y: 30 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                            <div className={styles.cardContent}>
+                                <h3 className={styles.pointTitle}>{point.title}</h3>
+                                <p className={styles.pointDescription}>
+                                    {point.message.length > 130 
+                                        ? `${point.message.substring(0, 130)}...` 
+                                        : point.message}
+                                </p>
+                                
+                                <button 
+                                    onClick={() => navigate(`/church-importance/${point.id}`)} 
+                                    className={styles.readMoreBtn}
                                 >
-                                    <div className={styles.imageWrapper}>
-                                        <motion.img 
-                                            layout
-                                            src={point.imageUrl || '/api/placeholder/400/300'} 
-                                            alt={point.title} 
-                                            className={styles.pointImage} 
-                                        />
-                                        <div className={styles.imageOverlay} />
-                                        <div className={styles.floatingIcon}>
-                                            {getIcon(point.title)}
-                                        </div>
-                                    </div>
-                                    
-                                    <div className={styles.content}>
-                                        <div className={styles.cardHeader}>
-                                            <span className={styles.cardNumber}>0{index + 1}</span>
-                                            <h3 className={styles.pointTitle}>{point.title}</h3>
-                                        </div>
-
-                                        <motion.div layout className={styles.messageContainer}>
-                                            <div className={styles.pointMessage}>
-                                                {isExpanded 
-                                                    ? point.message 
-                                                    : `${point.message.substring(0, 110)}...`
-                                                }
-                                            </div>
-                                        </motion.div>
-
-                                        <button 
-                                            onClick={() => setExpandedCard(isExpanded ? null : index)} 
-                                            className={styles.actionBtn}
-                                        >
-                                            {isExpanded ? (
-                                                <><Minus size={16} /> Show Less</>
-                                            ) : (
-                                                <><Plus size={16} /> Learn More</>
-                                            )}
-                                        </button>
-                                    </div>
-
-                                    {/* Subtle background decoration for expanded state */}
-                                    {isExpanded && (
-                                        <motion.div 
-                                            initial={{ opacity: 0 }} 
-                                            animate={{ opacity: 1 }} 
-                                            className={styles.cardDecoration}
-                                        >
-                                            <BookOpen size={120} />
-                                        </motion.div>
-                                    )}
-                                </motion.article>
-                            );
-                        })}
-                    </motion.div>
-                </LayoutGroup>
+                                    <span>Read Insight</span>
+                                    <ArrowRight size={18} />
+                                </button>
+                            </div>
+                        </motion.article>
+                    ))}
+                </motion.div>
             </div>
         </section>
     );
 };
+
+const SkeletonLoader = () => (
+    <div className={styles.importanceSection}>
+        <div className={styles.container}>
+            <div className={styles.skeletonHeader} />
+            <div className={styles.pointsGrid}>
+                {[1, 2, 3].map((i) => (
+                    <div key={i} className={styles.skeletonCard} />
+                ))}
+            </div>
+        </div>
+    </div>
+);
 
 export default ChurchImportance;

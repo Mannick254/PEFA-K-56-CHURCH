@@ -1,0 +1,291 @@
+/* Variables for consistency */
+:root {
+    --primary: #3b82f6;
+    --text-main: #1a1a1a;
+    --text-muted: #64748b;
+    --bg-app: #f8fafc;
+    --bg-card: #ffffff;
+    --border-color: #e2e8f0;
+    --font-serif: 'Georgia', 'Cambria', 'Times New Roman', Times, serif;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+    --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.05);
+}
+
+.readerContainer {
+    max-width: 850px; /* Slightly wider for comfort */
+    margin: 0 auto;
+    padding: 0 1.5rem 5rem;
+    background-color: var(--bg-app);
+    min-height: 100vh;
+}
+
+/* Progress Bar - Thinner and more subtle */
+.progressBar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(to right, var(--primary), #60a5fa);
+    z-index: 1100;
+    transition: width 0.1s ease-out;
+}
+
+/* Modernized Sticky Nav */
+.topNav {
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    margin: 0 -1.5rem 2rem; /* Bleed to edges */
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 1000;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.backLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.backLink:hover {
+    color: var(--primary);
+}
+
+/* Toolbar Buttons */
+.toolbar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.toolbar button {
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 8px;
+    color: var(--text-muted);
+    transition: all 0.2s ease;
+}
+
+.toolbar button:hover {
+    background: #f1f5f9;
+    color: var(--text-main);
+    border-color: var(--border-color);
+}
+
+/* Sermon Article Layout */
+.sermonArticle {
+    background: var(--bg-card);
+    padding: 3rem 4rem; /* Generous padding for "Paper" feel */
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    margin-top: 2rem;
+}
+
+.sermonHeader {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.sermonTitle {
+    font-size: 3rem;
+    font-family: var(--font-serif);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text-main);
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+}
+
+.metaData {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.metaItem {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Video Integration */
+.videoWrapper {
+    margin: 3rem -4rem; /* Pull video out wider than text for visual impact */
+    aspect-ratio: 16 / 9;
+    background: #000;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+.videoWrapper iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+
+/* Sermon Body Typography (The Core) */
+.sermonBody {
+    font-family: var(--font-serif);
+    font-size: 1.25rem; /* Slightly larger for readability */
+    line-height: 1.85;
+    color: #2d3748;
+}
+
+.sermonBody h1, .sermonBody h2, .sermonBody h3 {
+    font-family: var(--font-sans);
+    color: var(--text-main);
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+}
+
+.sermonBody p {
+    margin-bottom: 1.8rem;
+}
+
+/* Blockquote Style - Modernized */
+.sermonBody blockquote {
+    margin: 3rem 0;
+    padding: 1rem 2rem;
+    border-left: 4px solid var(--primary);
+    background: #eff6ff;
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    color: #1e40af;
+}
+
+.sermonBody em,
+.sermonBody i {
+    color: #1e40af;
+}
+
+/* Download Dropdown */
+.dropdown { position: relative; }
+
+.dropdownContent {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    margin-top: 8px;
+    background: white;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    min-width: 160px;
+    overflow: hidden;
+    animation: slideIn 0.2s ease-out;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown:hover .dropdownContent {
+    display: block;
+}
+
+.dropdownContent button {
+    width: 100%;
+    text-align: left;
+    padding: 12px 16px;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: none;
+    border-radius: 0;
+    color: var(--text-main);
+}
+
+.dropdownContent button:hover {
+    background: #f8fafc;
+    color: var(--primary);
+}
+
+/* Scroll to top button */
+.articleFooter {
+    margin-top: 5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.scrollTop {
+    margin-top: 1rem;
+    background: var(--text-main);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 99px;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.scrollTop:hover {
+    transform: translateY(-2px);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .readerContainer {
+        padding: 0 0 5rem;
+    }
+
+    .sermonArticle {
+        padding: 2rem 1.5rem;
+        margin-top: 0;
+        border-radius: 0;
+        box-shadow: none;
+    }
+    
+    .sermonTitle {
+        font-size: 2.25rem;
+    }
+
+    .videoWrapper {
+        margin: 2rem -1.5rem;
+    }
+
+    .metaData {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .topNav {
+        padding: 0.5rem 1rem;
+        margin: 0;
+        border-radius: 0;
+    }
+}
+
+/* Printing logic */
+@media print {
+    body { background: white; }
+    .readerContainer { max-width: 100%; padding: 0; }
+    .topNav, .progressBar, .articleFooter, .backLink { display: none !important; }
+    .sermonArticle { box-shadow: none; padding: 0; }
+}

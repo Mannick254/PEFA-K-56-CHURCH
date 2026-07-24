@@ -1,313 +1,247 @@
-:root {
-  --primary: #f97316; /* Flame Orange */
-  --primary-glow: rgba(249, 115, 22, 0.15);
-  --bg-dark: #0f172a;
-  --text-muted: #94a3b8;
-  --text-light: #f8fafc;
-  --border-color: rgba(255, 255, 255, 0.08);
-}
-
+/* src/styles/Footer.module.css */
 .footer {
-  background-color: var(--bg-dark);
-  color: var(--text-light);
-  padding: 80px 0 30px 0;
-  position: relative;
-  overflow: hidden;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-}
-
-/* Background Glow Effect */
-.glow {
-  position: absolute;
-  top: -150px;
-  right: -100px;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
-  pointer-events: none;
+    background-color: #1a1a1a;
+    color: #a3a3a3;
+    padding: 60px 0 30px;
+    font-family: 'Roboto', sans-serif;
 }
 
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
-  position: relative;
-  z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
-/* Top Section */
+/* --- Top Row: Brand and Newsletter --- */
 .topRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 40px;
-  margin-bottom: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 40px;
+    border-bottom: 1px solid #333;
+    margin-bottom: 40px;
+    gap: 40px;
 }
 
 .brandSide {
-  flex: 1;
-  min-width: 300px;
+    flex: 1.5;
+    min-width: 280px;
 }
 
 .logoArea {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
 .iconWrapper {
-  background: linear-gradient(135deg, var(--primary), #ea580c);
-  padding: 10px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 10px 20px -5px rgba(249, 115, 22, 0.4);
+    background-color: #f5a623;
+    color: #1a1a1a;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
 }
 
 .logoText {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .churchName {
-  font-size: 1.4rem;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  line-height: 1.2;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 1px;
 }
 
 .branchCode {
-  font-size: 0.85rem;
-  color: var(--primary);
-  font-weight: 600;
-  letter-spacing: 2px;
+    font-size: 0.9rem;
+    color: #f5a623;
+    letter-spacing: 2px;
+    font-weight: 500;
 }
 
 .missionText {
-  color: var(--text-muted);
-  line-height: 1.6;
-  max-width: 400px;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    max-width: 400px;
 }
 
-/* Newsletter */
+.missionText strong {
+    color: #f0f0f0;
+}
+
 .newsletterSide {
-  flex: 1;
-  min-width: 300px;
-  background: rgba(255, 255, 255, 0.03);
-  padding: 30px;
-  border-radius: 20px;
-  border: 1px solid var(--border-color);
-  backdrop-filter: blur(10px);
+    flex: 1;
+    min-width: 280px;
 }
 
 .newsletterSide h4 {
-  font-size: 1.25rem;
-  margin-bottom: 8px;
+    font-size: 1.2rem;
+    color: #fff;
+    margin-bottom: 15px;
+    font-weight: 500;
 }
 
 .newsletterSide p {
-  color: var(--text-muted);
-  font-size: 0.95rem;
-  margin-bottom: 20px;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    line-height: 1.6;
 }
 
-.subscribeForm {
-  display: flex;
-  gap: 10px;
-  background: rgba(0, 0, 0, 0.2);
-  padding: 6px;
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
+.newsletterForm {
+    display: flex;
 }
 
-.subscribeForm input {
-  background: transparent;
-  border: none;
-  padding: 10px 15px;
-  color: white;
-  flex: 1;
-  outline: none;
+.newsletterForm input {
+    flex-grow: 1;
+    padding: 12px 15px;
+    border: 1px solid #444;
+    border-radius: 6px 0 0 6px;
+    background-color: #2b2b2b;
+    color: #fff;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.3s;
 }
 
-.subscribeForm button {
-  background: var(--primary);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: background 0.3s ease;
+.newsletterForm input:focus {
+    border-color: #f5a623;
 }
 
-.subscribeForm button:hover {
-  background: #ea580c;
+.newsletterForm button {
+    padding: 12px 20px;
+    border: none;
+    background-color: #f5a623;
+    color: #1a1a1a;
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-radius: 0 6px 6px 0;
+    transition: background-color 0.3s;
 }
 
-/* Divider */
-.divider {
-  height: 1px;
-  background: linear-gradient(to right, transparent, var(--border-color), transparent);
-  margin-bottom: 60px;
+.newsletterForm button:hover {
+    background-color: #f7b94e;
 }
 
-/* Grid Section */
+/* --- Middle Section: Links Grid --- */
 .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 40px;
-  margin-bottom: 60px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 30px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid #333;
+    margin-bottom: 30px;
 }
 
 .columnTitle {
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: 24px;
-  position: relative;
-  padding-bottom: 10px;
-}
-
-.columnTitle::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 30px;
-  height: 2px;
-  background: var(--primary);
+    font-size: 1.1rem;
+    color: #fff;
+    font-weight: 500;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #444;
 }
 
 .linkList {
-  list-style: none;
-  padding: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .linkList li {
-  margin-bottom: 12px;
+    margin-bottom: 12px;
 }
 
-.linkList a, .textBtn {
-  color: var(--text-muted);
-  text-decoration: none;
-  transition: all 0.3s ease;
-  font-size: 0.95rem;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
+.linkList a,
+.linkList li {
+    color: #a3a3a3;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.3s, padding-left 0.3s;
+    position: relative;
 }
 
-.linkList a:hover, .textBtn:hover {
-  color: var(--primary);
-  padding-left: 5px;
+.linkList a:hover {
+    color: #fff;
+    padding-left: 5px;
 }
 
-/* Contact Section */
-.contactInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+/* --- Bottom Row: Copyright and Socials --- */
+.bottomRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
-.contactLink {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  color: var(--text-muted);
-  text-decoration: none;
-  font-size: 0.95rem;
-  transition: color 0.3s ease;
+.copyWrapper {
+    text-align: left;
 }
 
-.contactIcon {
-  color: var(--primary);
-  background: var(--primary-glow);
-  padding: 8px;
-  border-radius: 8px;
-  display: flex;
+.copyright,
+.designCredit {
+    font-size: 0.9rem; /* Increased font size slightly */
+    margin: 0;
+    color: #d1d5db; /* A much lighter, more visible grey */
 }
 
-.contactLink:hover {
-  color: var(--text-light);
+.designCredit {
+    margin-top: 8px;
 }
 
-/* Social Grid */
-.socialGrid {
-  display: flex;
-  gap: 12px;
+.designCredit a {
+    color: #f5a623; /* Using the theme's accent color */
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
 }
 
-.socialIcon {
-  width: 44px;
-  height: 44px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  text-decoration: none;
-  border: 1px solid var(--border-color);
+.designCredit a:hover {
+    color: #fff;
 }
 
-.socialIcon:hover {
-  background: var(--primary);
-  border-color: var(--primary);
+.socialIcons {
+    display: flex;
+    gap: 15px;
 }
 
-/* Bottom Bar */
-.bottomBar {
-  padding-top: 30px;
-  border-top: 1px solid var(--border-color);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 20px;
+.socialIcons a {
+    color: #a3a3a3;
+    transition: color 0.3s, transform 0.3s;
 }
 
-.copyright {
-  color: var(--text-muted);
-  font-size: 0.9rem;
+.socialIcons a:hover {
+    color: #fff;
+    transform: translateY(-2px);
 }
 
-.legalLinks {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+/* --- Responsive Design --- */
+@media (max-width: 992px) {
+    .topRow {
+        flex-direction: column;
+    }
 }
 
-.legalLinks a {
-  color: var(--text-muted);
-  text-decoration: none;
-  font-size: 0.9rem;
-}
-
-.dot {
-  width: 4px;
-  height: 4px;
-  background: var(--text-muted);
-  border-radius: 50%;
-}
-
-/* Responsive Fixes */
 @media (max-width: 768px) {
-  .topRow {
-    flex-direction: column;
-  }
-  
-  .newsletterSide {
-    width: 100%;
-  }
+    .bottomRow {
+        flex-direction: column-reverse;
+        align-items: center;
+        text-align: center;
+    }
 
-  .bottomBar {
-    flex-direction: column;
-    text-align: center;
-  }
+    .copyWrapper {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }

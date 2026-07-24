@@ -1,15 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import { Sparkles, PlayCircle, ChevronDown, MoveRight } from 'lucide-react';
+import { Sparkles, PlayCircle, MoveRight } from 'lucide-react';
 import { supabase } from '../supabaseClient';
 import styles from '../styles/Hero.module.css';
 
 const Hero = () => {
   const [heroData, setHeroData] = useState({
-    title: "Faith Meets Family",
-    subtitle: "Welcome to PEFA Kawangware 56, a spiritual home where every soul finds purpose.",
-    image_url: 'https://res.cloudinary.com/dtcb3ffnv/image/upload/v1779698892/PK56_uh2j35.jpg'
+    title: "THEME OF THE YEAR 2026",
+    subtitle: "ABIDING IN CHRIST (John 15:4)",
+    image_url: 'https://res.cloudinary.com/dtcb3ffnv/image/upload/v1779698892/PK56_uh2j35.jpg',
+    cta_primary_text: 'About Us',
+    cta_primary_link: '/about',
+    cta_secondary_text: 'Watch Online',
+    cta_secondary_link: '/sermons'
   });
   const [isLoading, setIsLoading] = useState(true);
   const containerRef = useRef(null);
@@ -19,95 +23,111 @@ const Hero = () => {
     offset: ["start start", "end start"]
   });
 
-  // Parallax: Image moves slower, Text fades and moves up
-  const yImage = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
-  const scaleImage = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
-  const opacityText = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
-  const yText = useTransform(scrollYProgress, [0, 0.7], [0, -50]);
+  // Parallax and fade effects
+  const yImage = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const opacityText = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const scaleText = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
 
   useEffect(() => {
     const fetchHeroData = async () => {
       try {
-        const { data, error } = await supabase
-          .from('hero')
-          .select('title, subtitle, image_url')
-          .eq('published', true)
-          .single();
-
-        if (!error && data) {
-          setHeroData({
-            title: data.title || heroData.title,
-            subtitle: data.subtitle || heroData.subtitle,
-            image_url: data.image_url || heroData.image_url
-          });
-        }
+        const { data } = await supabase.from('hero').select('*').eq('published', true).single();
+        if (data) setHeroData(prev => ({ ...prev, ...data }));
       } catch (err) {
-        console.error('Fetch error:', err);
+        console.error('Error fetching hero:', err);
       } finally {
-        setIsLoading(false);
+        setTimeout(() => setIsLoading(false), 800); 
       }
     };
     fetchHeroData();
   }, []);
 
-  const scrollToContent = () => {
-    const nextSection = containerRef.current?.offsetHeight;
-    window.scrollTo({ top: nextSection, behavior: 'smooth' });
-  };
-
   const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1, 
-      transition: { staggerChildren: 0.2, delayChildren: 0.2 } 
-    }
+    visible: { transition: { staggerChildren: 0.15 } }
   };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+  const wordMaskVariants = {
+    hidden: { y: "115%" },
+    visible: { 
+      y: 0, 
+      transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } 
+    }
   };
 
   return (
     <section ref={containerRef} className={styles.heroContainer}>
-      {/* Background Layer */}
+      {/* Background Media Layer */}
       <div className={styles.heroMedia}>
-        <motion.div style={{ y: yImage, scale: scaleImage }} className={styles.imageWrapper}>
-          <img src={heroData.image_url} alt="PEFA 56 Sanctuary" className={styles.heroImg} />
+        <motion.div style={{ y: yImage }} className={styles.imageWrapper}>
+          <img src={heroData.image_url} alt="" aria-hidden="true" className={styles.heroImg} />
+          <div className={styles.overlayGradient} />
         </motion.div>
-        <div className={styles.vignetteOverlay} />
       </div>
 
-      {/* Content Layer */}
+      {/* Main Content Layer */}
       <div className={styles.contentWrapper}>
-        <AnimatePresence>
-          {!isLoading && (
+        <AnimatePresence mode="wait">
+          {isLoading ? (
+            <motion.div key="loader" exit={{ opacity: 0 }} className={styles.loaderContainer}>
+              <div className={styles.spinner} />
+            </motion.div>
+          ) : (
             <motion.div 
-              style={{ opacity: opacityText, y: yText }} 
+              key="content"
+              style={{ opacity: opacityText, scale: scaleText }} 
               className={styles.heroContent}
               variants={containerVariants}
               initial="hidden"
               animate="visible"
             >
-              <motion.div variants={itemVariants} className={styles.heroBadge}>
-                <Sparkles size={14} className={styles.goldText} />
-                <span>A Place to Belong, A Place to Grow</span>
+              {/* Badge */}
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={styles.heroBadge}
+              >
+                <Sparkles size={14} className={styles.goldIcon} />
+                <span>A PLACE TO BELONG & GROW</span>
               </motion.div>
               
-              <motion.h1 variants={itemVariants} className={styles.heroDisplayTitle}>
-                {heroData.title}
-              </motion.h1>
+              {/* Title with Split Text Effect */}
+              <h1 className={styles.heroDisplayTitle}>
+                {heroData.title.split(" ").map((word, i) => (
+                  <span key={i} className={styles.wordOverflow}>
+                    <motion.span variants={wordMaskVariants} className={styles.wordInner}>
+                      {word}&nbsp;
+                    </motion.span>
+                  </span>
+                ))}
+              </h1>
 
-              <motion.p variants={itemVariants} className={styles.heroLeadText}>
+              {/* Subtitle */}
+              <motion.p 
+                variants={{
+                  hidden: { opacity: 0, filter: "blur(10px)" },
+                  visible: { opacity: 1, filter: "blur(0px)", transition: { duration: 1 } }
+                }}
+                className={styles.heroLeadText}
+              >
                 {heroData.subtitle}
               </motion.p>
 
-              <motion.div variants={itemVariants} className={styles.heroButtonGroup}>
-                <Link to="/contact" className={styles.btnPrimary}>
-                  Plan Your Visit <MoveRight size={18} />
+              {/* Action Buttons */}
+              <motion.div 
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+                }}
+                className={styles.heroButtonGroup}
+              >
+                <Link to={heroData.cta_primary_link} className={styles.btnPrimary}>
+                  <span>{heroData.cta_primary_text}</span>
+                  <MoveRight size={20} className={styles.btnIcon} />
                 </Link>
-                <Link to="/sermons" className={styles.btnOutline}>
-                  <PlayCircle size={18} /> Watch Online
+
+                <Link to={heroData.cta_secondary_link} className={styles.btnOutline}>
+                  <PlayCircle size={20} className={styles.btnIcon} /> 
+                  <span>{heroData.cta_secondary_text}</span>
                 </Link>
               </motion.div>
             </motion.div>
@@ -115,19 +135,12 @@ const Hero = () => {
         </AnimatePresence>
       </div>
 
-      {/* Scroll Hint */}
-      <motion.button 
-        onClick={scrollToContent}
-        className={styles.scrollHint}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2 }}
-      >
-        <span className={styles.scrollText}>Explore PEFA 56</span>
-        <motion.div animate={{ y: [0, 6, 0] }} transition={{ repeat: Infinity, duration: 2 }}>
-          <ChevronDown size={24} />
-        </motion.div>
-      </motion.button>
+      {/* Scroll Indicator (Desktop Only) */}
+      <div className={styles.scrollIndicator}>
+        <div className={styles.mouse}>
+          <div className={styles.wheel} />
+        </div>
+      </div>
     </section>
   );
 };

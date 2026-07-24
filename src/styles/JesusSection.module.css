@@ -1,0 +1,366 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500&family=Montserrat:wght@300;400;600&display=swap');
+
+:root {
+  --gold: #b59410;
+  --text-main: #1a1a1a;
+  --text-muted: #64748b;
+  --bg-pure: #ffffff;
+  --bg-soft: #f8fafc;
+  --border-light: #e2e8f0;
+}
+
+.wrapper {
+  padding: 100px 20px;
+  background-color: var(--bg-pure);
+  color: var(--text-main);
+  font-family: 'Montserrat', sans-serif;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Header */
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--gold);
+  padding: 4px 12px;
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.mainTitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 600;
+  color: var(--text-main);
+  line-height: 1;
+}
+
+.mainTitle span {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--gold);
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  font-weight: 300;
+  max-width: 500px;
+  margin: 10px auto 0;
+  line-height: 1.6;
+}
+
+.titleDivider {
+  width: 60px;
+  height: 2px;
+  background: var(--gold);
+  margin: 25px auto 0;
+  opacity: 0.6;
+}
+
+/* Featured Hero Card */
+.featuredCard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--bg-pure);
+  border: 1px solid var(--border-light);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.06);
+  border-radius: 4px; /* Minimalist sharp/soft edges */
+  overflow: hidden;
+  margin-bottom: 100px;
+}
+
+.featuredImageWrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.featuredImageWrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imageScrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
+}
+
+.scriptureFloatingTag {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background: #fff;
+  padding: 6px 14px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.featuredContent {
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.featuredTitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.5rem;
+  line-height: 1.1;
+  margin-bottom: 25px;
+}
+
+.quoteIcon {
+  color: var(--gold);
+  margin-bottom: 15px;
+  opacity: 0.5;
+}
+
+.markdownWrapper {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  font-weight: 400;
+  color: #475569;
+  margin-bottom: 40px;
+}
+
+.primaryBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 15px;
+  background: var(--text-main);
+  color: #fff;
+  padding: 16px 32px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  width: fit-content;
+  transition: all 0.3s ease;
+}
+
+.primaryBtn:hover {
+  background: var(--gold);
+}
+
+/* Archive List */
+.archiveHeader {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.archiveHeader h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  white-space: nowrap;
+}
+
+.archiveLine {
+  height: 1px;
+  background: var(--border-light);
+  width: 100%;
+}
+
+.lessonList {
+  display: flex;
+  flex-direction: column;
+}
+
+.lessonRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 10px;
+  border-bottom: 1px solid var(--border-light);
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.lessonRow:hover {
+  background-color: var(--bg-soft);
+}
+
+.rowLead {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.rowNumber {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--gold);
+}
+
+.rowTitle {
+  font-size: 1.1rem;
+  color: var(--text-main);
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+
+.rowScripture {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.rowArrow {
+  color: var(--border-light);
+  transition: color 0.3s ease;
+}
+
+.lessonRow:hover .rowArrow {
+  color: var(--gold);
+}
+
+.markdownWrapper h1,
+.markdownWrapper h2,
+.markdownWrapper h3,
+.markdownWrapper h4,
+.markdownWrapper h5,
+.markdownWrapper h6 {
+  color: #0f172a;
+  margin: 2.5rem 0 1.25rem;
+  line-height: 1.3;
+  font-weight: 700;
+}
+
+.markdownWrapper h1 { font-size: 2rem; }
+.markdownWrapper h2 { font-size: 1.75rem; }
+.markdownWrapper h3 { font-size: 1.5rem; }
+.markdownWrapper h4 { font-size: 1.25rem; }
+
+.markdownWrapper a {
+  color: #2563eb;
+  text-decoration: none;
+  border-bottom: 1px solid #dbeafe;
+  transition: all 0.2s;
+}
+
+.markdownWrapper a:hover {
+  background-color: #eff6ff;
+}
+
+
+.markdownWrapper blockquote {
+  border-left: 4px solid #2563eb;
+  padding-left: 1.5rem;
+  font-style: italic;
+  color: #2563eb;
+  margin: 2.5rem 0;
+}
+
+.markdownWrapper em,
+.markdownWrapper i {
+  color: #2563eb;
+  font-style: italic;
+}
+
+.markdownWrapper ul, .markdownWrapper ol {
+  margin: 1.5rem 0;
+  padding-left: 2rem;
+}
+
+.markdownWrapper li {
+  margin-bottom: 0.75rem;
+}
+
+.markdownWrapper code {
+  background: #f1f5f9;
+  color: #475569;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.markdownWrapper pre {
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 2rem 0;
+}
+
+.markdownWrapper pre code {
+  background: none;
+  padding: 0;
+}
+
+.markdownWrapper img {
+  max-width: 100%;
+  border-radius: 12px;
+  margin: 2rem 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.markdownWrapper hr {
+  border: none;
+  height: 1px;
+  background-color: #e2e8f0;
+  margin: 3rem 0;
+}
+
+/* Loading */
+.loadingContainer {
+  height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader {
+  text-align: center;
+}
+
+.loader p {
+  margin-top: 15px;
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.goldIcon {
+  color: var(--gold);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .featuredCard {
+    grid-template-columns: 1fr;
+  }
+  .featuredContent {
+    padding: 40px 30px;
+  }
+}

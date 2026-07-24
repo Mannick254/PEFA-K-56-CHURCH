@@ -11,10 +11,10 @@ const AboutAdmin = () => {
         our_story_p2: '',
         our_mission_title: '',
         our_mission_p1: '',
-        digital_age_title: '',
         digital_age_p1: '',
         join_us_title: '',
-        join_us_p1: ''
+        join_us_p1: '',
+        bible_context: '' // Added new field
     });
     const [id, setId] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -31,7 +31,6 @@ const AboutAdmin = () => {
             const { data, error: fetchError } = await supabase.from('about_us').select('*').single();
             
             if (fetchError) {
-                // PGRST116 means no rows found, which is fine for the first setup
                 if (fetchError.code === 'PGRST116') {
                     console.log('No about content found. Ready for first entry.');
                 } else {
@@ -67,7 +66,7 @@ const AboutAdmin = () => {
             if (submitError) throw submitError;
 
             alert('About content updated successfully!');
-            fetchAboutContent(); // Refresh to get ID if it was an insert
+            fetchAboutContent();
         } catch (err) {
             console.error('Error saving about content:', err);
             alert('Error: ' + err.message);
@@ -87,55 +86,57 @@ const AboutAdmin = () => {
                 
                 <div className="formGroup">
                     <label htmlFor="title">Main Title</label>
-                    <input type="text" id="title" name="title" value={aboutContent.title || ''} onChange={handleChange} placeholder="Main Title" className="input" />
+                    <textarea id="title" name="title" value={aboutContent.title || ''} onChange={handleChange} placeholder="Main Title" className="textarea"></textarea>
                 </div>
                 
                 <div className="formGroup">
                     <label htmlFor="subtitle">Subtitle</label>
-                    <input type="text" id="subtitle" name="subtitle" value={aboutContent.subtitle || ''} onChange={handleChange} placeholder="Subtitle" className="input" />
+                    <textarea id="subtitle" name="subtitle" value={aboutContent.subtitle || ''} onChange={handleChange} placeholder="Subtitle" className="textarea"></textarea>
                 </div>
 
                 <h4>Our Story Section</h4>
                 <div className="formGroup">
                     <label htmlFor="our_story_title">Story Title</label>
-                    <input type="text" id="our_story_title" name="our_story_title" value={aboutContent.our_story_title || ''} onChange={handleChange} placeholder="Our Story Title" className="input" />
+                    <textarea id="our_story_title" name="our_story_title" value={aboutContent.our_story_title || ''} onChange={handleChange} placeholder="Our Story Title" className="textarea"></textarea>
                 </div>
                 <div className="formGroup">
-                    <label htmlFor="our_story_p1">Story Paragraph 1</label>
+                    <label htmlFor="our_story_p1">Story Paragraph 1 (Markdown Supported)</label>
                     <textarea id="our_story_p1" name="our_story_p1" value={aboutContent.our_story_p1 || ''} onChange={handleChange} placeholder="Our Story Paragraph 1" className="textarea"></textarea>
                 </div>
                 <div className="formGroup">
-                    <label htmlFor="our_story_p2">Story Paragraph 2</label>
+                    <label htmlFor="our_story_p2">Story Paragraph 2 (Markdown Supported)</label>
                     <textarea id="our_story_p2" name="our_story_p2" value={aboutContent.our_story_p2 || ''} onChange={handleChange} placeholder="Our Story Paragraph 2" className="textarea"></textarea>
                 </div>
 
                 <h4>Our Mission Section</h4>
                 <div className="formGroup">
                     <label htmlFor="our_mission_title">Mission Title</label>
-                    <input type="text" id="our_mission_title" name="our_mission_title" value={aboutContent.our_mission_title || ''} onChange={handleChange} placeholder="Our Mission Title" className="input" />
+                    <textarea id="our_mission_title" name="our_mission_title" value={aboutContent.our_mission_title || ''} onChange={handleChange} placeholder="Our Mission Title" className="textarea"></textarea>
                 </div>
                 <div className="formGroup">
-                    <label htmlFor="our_mission_p1">Mission Paragraph</label>
+                    <label htmlFor="our_mission_p1">Mission Paragraph (Markdown Supported)</label>
                     <textarea id="our_mission_p1" name="our_mission_p1" value={aboutContent.our_mission_p1 || ''} onChange={handleChange} placeholder="Our Mission Paragraph" className="textarea"></textarea>
                 </div>
 
                 <h4>Digital Age Section</h4>
                 <div className="formGroup">
-                    <label htmlFor="digital_age_title">Digital Age Title</label>
-                    <input type="text" id="digital_age_title" name="digital_age_title" value={aboutContent.digital_age_title || ''} onChange={handleChange} placeholder="Digital Age Title" className="input" />
-                </div>
-                <div className="formGroup">
-                    <label htmlFor="digital_age_p1">Digital Age Paragraph</label>
+                    <label htmlFor="digital_age_p1">Digital Age Paragraph (Markdown Supported)</label>
                     <textarea id="digital_age_p1" name="digital_age_p1" value={aboutContent.digital_age_p1 || ''} onChange={handleChange} placeholder="Digital Age Paragraph" className="textarea"></textarea>
+                </div>
+                
+                <h4>Bible Context Section</h4>
+                <div className="formGroup">
+                    <label htmlFor="bible_context">Bible Context (Markdown Supported)</label>
+                    <textarea id="bible_context" name="bible_context" value={aboutContent.bible_context || ''} onChange={handleChange} placeholder="Bible context from the About page" className="textarea"></textarea>
                 </div>
 
                 <h4>Join Us Section</h4>
                 <div className="formGroup">
                     <label htmlFor="join_us_title">Join Us Title</label>
-                    <input type="text" id="join_us_title" name="join_us_title" value={aboutContent.join_us_title || ''} onChange={handleChange} placeholder="Join Us Title" className="input" />
+                    <textarea id="join_us_title" name="join_us_title" value={aboutContent.join_us_title || ''} onChange={handleChange} placeholder="Join Us Title" className="textarea"></textarea>
                 </div>
                 <div className="formGroup">
-                    <label htmlFor="join_us_p1">Join Us Paragraph</label>
+                    <label htmlFor="join_us_p1">Join Us Paragraph (Markdown Supported)</label>
                     <textarea id="join_us_p1" name="join_us_p1" value={aboutContent.join_us_p1 || ''} onChange={handleChange} placeholder="Join Us Paragraph" className="textarea"></textarea>
                 </div>
 

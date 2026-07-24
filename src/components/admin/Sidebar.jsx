@@ -5,7 +5,7 @@ import {
   FaUsers, FaUserGraduate, FaChild, FaCalendarCheck, FaUserPlus, FaHome, FaBook,
   FaCalendarAlt, FaPray, FaFileAlt, FaHandHoldingHeart, FaInfoCircle, FaLandmark,
   FaBible, FaChurch, FaAngleLeft, FaAngleRight, FaSignOutAlt, FaChevronDown, FaDatabase,
-  FaImage
+  FaImage, FaVideo
 } from 'react-icons/fa';
 import useAuthStore from '../../store';
 
@@ -49,6 +49,13 @@ const Sidebar = ({ isMobileView, isCollapsed, isMobileOpen, toggleSidebar, toggl
 
   const navGroups = useMemo(() => [
     {
+        title: "Live Stream",
+        icon: <FaVideo />,
+        links: [
+            { to: "/admin/live", label: "Live Admin", icon: <FaVideo /> },
+        ]
+    },
+    {
       title: "Internal Data",
       icon: <FaUsers />,
       links: [
@@ -58,6 +65,7 @@ const Sidebar = ({ isMobileView, isCollapsed, isMobileOpen, toggleSidebar, toggl
         { to: "/admin/children", label: "Children's Ministry", icon: <FaChild /> },
         { to: "/admin/attendance", label: "Sunday Attendance", icon: <FaCalendarCheck /> },
         { to: "/admin/visitors", label: "New Visitors", icon: <FaUserPlus /> },
+	{ to: "/admin/connect", label: "Connect Submissions", icon: <FaUserPlus /> },
       ]
     },
     {

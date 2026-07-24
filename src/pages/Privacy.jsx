@@ -1,128 +1,187 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, useScroll, useSpring } from 'framer-motion';
 import { 
   ShieldCheck, Eye, Database, Share2, 
-  Cookie, Clock, Lock, UserCheck, Mail, MapPin 
+  Cookie, Lock, UserCheck, Mail, MapPin,
+  Camera, Baby, Trash2, Globe, ChevronRight
 } from 'lucide-react';
 import styles from '../styles/Privacy.module.css';
+import Seo from '../components/Seo';
 
 const Privacy = () => {
+  const [activeSection, setActiveSection] = useState('collection');
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
   const sections = [
-    { id: 'collection', title: 'Information Collection', icon: <Database size={18} /> },
-    { id: 'usage', title: 'How We Use Data', icon: <Eye size={18} /> },
-    { id: 'sharing', title: 'Data Sharing', icon: <Share2 size={18} /> },
-    { id: 'security', title: 'Security Measures', icon: <Lock size={18} /> },
+    { id: 'collection', title: 'Data Collection', icon: <Database size={18} /> },
+    { id: 'usage', title: 'Usage Policy', icon: <Eye size={18} /> },
+    { id: 'media', title: 'Media & Photos', icon: <Camera size={18} /> },
+    { id: 'children', title: 'Minors & Kids', icon: <Baby size={18} /> },
+    { id: 'sharing', title: 'Third Parties', icon: <Share2 size={18} /> },
+    { id: 'security', title: 'Data Safety', icon: <Lock size={18} /> },
+    { id: 'retention', title: 'Retention', icon: <Trash2 size={18} /> },
     { id: 'rights', title: 'Your Rights', icon: <UserCheck size={18} /> },
   ];
 
   const scrollTo = (id) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const element = document.getElementById(id);
+    const offset = 100;
+    const bodyRect = document.body.getBoundingClientRect().top;
+    const elementRect = element?.getBoundingClientRect().top ?? 0;
+    const elementPosition = elementRect - bodyRect;
+    const offsetPosition = elementPosition - offset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    });
+    setActiveSection(id);
   };
 
   return (
     <div className={styles.pageWrapper}>
-      {/* Hero Section */}
+      <motion.div className={styles.progressBar} style={{ scaleX }} />
+      
+      {/* Hero Header */}
       <header className={styles.hero}>
+        <div className={styles.heroGlow}></div>
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           className={styles.container}
         >
-          <div className={styles.badge}><ShieldCheck size={14} /> Privacy Center</div>
-          <h1>Privacy Policy</h1>
-          <p>Your trust is our priority. Learn how we protect your personal information at PEFA Kawangware 56.</p>
+          <div className={styles.badge}>
+            <ShieldCheck size={14} className={styles.badgeIcon} /> 
+            PEFA Governance & Privacy
+          </div>
+          <h1 className={styles.title}>Privacy & <span className={styles.highlight}>Data Protection</span></h1>
+          <p className={styles.subtitle}>
+            At PEFA Kawangware 56, we handle your spiritual and personal data with the 
+            highest level of integrity and biblical stewardship.
+          </p>
           <div className={styles.meta}>
-            <span>Version 1.2</span>
-            <span className={styles.dot}></span>
-            <span>Last Updated: July 24, 2024</span>
+            <div className={styles.metaItem}><Globe size={14} /> Version 2.0 (KDA Compliant)</div>
+            <div className={styles.metaItem}><Lock size={14} /> Last Updated: June 2026</div>
           </div>
         </motion.div>
       </header>
 
       <div className={`${styles.container} ${styles.mainGrid}`}>
-        {/* Quick Navigation Sidebar */}
+        {/* Navigation Sidebar */}
         <aside className={styles.sidebar}>
           <div className={styles.stickyNav}>
-            <h5>Contents</h5>
+            <h5 className={styles.navTitle}>Policy Sections</h5>
             {sections.map(s => (
-              <button key={s.id} onClick={() => scrollTo(s.id)} className={styles.navLink}>
-                {s.icon} {s.title}
+              <button 
+                key={s.id} 
+                onClick={() => scrollTo(s.id)} 
+                className={`${styles.navLink} ${activeSection === s.id ? styles.activeNav : ''}`}
+              >
+                <span className={styles.iconWrapper}>{s.icon}</span>
+                {s.title}
+                <ChevronRight className={styles.chevron} size={14} />
               </button>
             ))}
           </div>
         </aside>
 
-        {/* Content Area */}
+        {/* Content Body */}
         <main className={styles.content}>
           <section className={styles.introCard}>
+            <h3>Our Commitment</h3>
             <p>
-              Welcome to the PEFA Church Kawangware website. We are committed to protecting your 
-              personal information and your right to privacy. If you have any questions or 
-              concerns about this notice, please contact us at 
-              <a href="mailto:56pefa@yahoo.com"> 56pefa@yahoo.com</a>.
+              This Privacy Policy explains how PEFA Church Kawangware ("we", "us", or "our") 
+              collects and uses your information when you visit our website, attend our 
+              services, or participate in our ministries. We are committed to complying 
+              with the <strong>Kenya Data Protection Act (2019)</strong>.
             </p>
           </section>
 
           <section id="collection" className={styles.contentBlock}>
             <h2><Database className={styles.sectionIcon} /> 1. Information We Collect</h2>
-            <p>We collect information that you voluntarily provide to us when you register, donate, or contact our ministry.</p>
+            <p>We collect data to better serve our congregation and community.</p>
             <div className={styles.infoGrid}>
               <div className={styles.infoBox}>
-                <h6>Personal Details</h6>
-                <p>Names, phone numbers, email addresses, and mailing addresses provided via forms.</p>
+                <h6>Ministry Data</h6>
+                <p>Prayer requests, testimonies, and spiritual counseling notes provided voluntarily.</p>
               </div>
               <div className={styles.infoBox}>
-                <h6>Payment Data</h6>
-                <p>Donation information is processed securely. We do not store credit card numbers on our local servers.</p>
+                <h6>Financial Data</h6>
+                <p>M-Pesa transaction IDs and donation records for tax and transparency purposes.</p>
               </div>
             </div>
           </section>
 
-          <section id="usage" className={styles.contentBlock}>
-            <h2><Eye className={styles.sectionIcon} /> 2. How We Use Your Information</h2>
-            <ul className={styles.featureList}>
-              <li>To facilitate account creation and secure logon.</li>
-              <li>To share testimonies (only with your explicit consent).</li>
-              <li>To send spiritual resources and church updates.</li>
-              <li>To respond to prayer requests and legal inquiries.</li>
-            </ul>
+          <section id="media" className={styles.contentBlock}>
+            <h2><Camera className={styles.sectionIcon} /> 2. Media & Photography</h2>
+            <p>As a vibrant church community, we often document our services and events.</p>
+            <div className={styles.policyAlert}>
+              <p>By attending our services, you acknowledge that photography and video recording may occur. These are used for:</p>
+              <ul className={styles.featureList}>
+                <li>Live-streaming on YouTube/Facebook for home-bound members.</li>
+                <li>Church newsletters and social media updates.</li>
+                <li>Archival history of the ministry.</li>
+              </ul>
+              <small>Note: If you wish to not be photographed, please inform our ushering team.</small>
+            </div>
           </section>
 
-          <section id="sharing" className={styles.contentBlock}>
-            <h2><Share2 className={styles.sectionIcon} /> 3. Will Your Information Be Shared?</h2>
-            <p>We only share information to comply with laws, protect your rights, or fulfill ministry obligations. We <strong>never sell</strong> your data to third-party advertisers.</p>
+          <section id="children" className={styles.contentBlock}>
+            <h2><Baby className={styles.sectionIcon} /> 3. Children’s Privacy</h2>
+            <p>Protecting the youngest members of our flock is our priority.</p>
+            <div className={styles.infoBox}>
+              <p>We do not knowingly collect personal data from children under 13 without explicit parental consent. Data collected during Sunday School registration is stored securely and accessible only to authorized ministry leaders.</p>
+            </div>
           </section>
 
           <section id="security" className={styles.contentBlock}>
             <div className={styles.securityBanner}>
-              <Lock size={32} />
+              <div className={styles.lockIconBox}>
+                <Lock size={32} />
+              </div>
               <div>
-                <h2>6. How We Keep Your Information Safe</h2>
-                <p>We implement industry-standard encryption and organizational security measures to protect your data from unauthorized access.</p>
+                <h2>4. Data Security</h2>
+                <p>We use TLS/SSL encryption for all data transfers. Your tithe and offering information is restricted to the church treasury department only.</p>
               </div>
             </div>
           </section>
 
-          <section id="rights" className={styles.contentBlock}>
-            <h2><UserCheck className={styles.sectionIcon} /> 7. Your Privacy Rights</h2>
-            <p>You have the right to request access to your data, request corrections, or ask for your information to be deleted from our records.</p>
+          <section id="retention" className={styles.contentBlock}>
+            <h2><Trash2 className={styles.sectionIcon} /> 5. Data Retention</h2>
+            <p>We keep your personal information only as long as it is necessary for the purposes set out in this policy, or as required by Kenyan Law (e.g., financial records for 7 years).</p>
           </section>
 
-          {/* Contact Section */}
+          <section id="rights" className={styles.contentBlock}>
+            <h2><UserCheck className={styles.sectionIcon} /> 6. Your Rights</h2>
+            <p>Under the Data Protection Act, you have the right to:</p>
+            <ul className={styles.featureList}>
+              <li>Access and receive a copy of your data.</li>
+              <li>Rectify inaccurate personal data.</li>
+              <li>Object to the processing of your data for marketing.</li>
+              <li>Request the deletion of your data (Right to be Forgotten).</li>
+            </ul>
+          </section>
+
+          {/* Detailed Footer Contact */}
           <footer className={styles.contactFooter}>
             <div className={styles.contactGrid}>
               <div className={styles.contactItem}>
                 <Mail className={styles.contactIcon} />
                 <div>
-                  <h6>Email Us</h6>
+                  <h6>Data Protection Officer</h6>
                   <p>56pefa@yahoo.com</p>
                 </div>
               </div>
               <div className={styles.contactItem}>
                 <MapPin className={styles.contactIcon} />
                 <div>
-                  <h6>Visit Us</h6>
-                  <p>P.O. BOX 79353, Nairobi, Kenya</p>
+                  <h6>Physical Office</h6>
+                  <p>Kawangware 56, P.O. BOX 79353, Nairobi</p>
                 </div>
               </div>
             </div>

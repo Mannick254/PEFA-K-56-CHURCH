@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import styles from '../styles/Prayers.module.css';
+import Seo from '../components/Seo';
 
 const Prayers = () => {
   const [prayers, setPrayers] = useState([]);
@@ -68,6 +69,7 @@ const Prayers = () => {
 
   return (
     <section className={styles.container}>
+      <Seo title="Community Prayers" description="Share your prayer requests with the PEFA Kawangware 56 community and pray for others." />
       <div className={styles.header}>
         <h1 className={styles.title}>Community Prayers</h1>
         <p className={styles.subtitle}>Share your burdens and lift others in prayer.</p>

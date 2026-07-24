@@ -16,6 +16,8 @@ const resetIdleTimer = () => {
 const useAuthStore = create((set) => ({
   user: null,
   loading: true,
+  heading: '',
+  setHeading: (heading) => set({ heading }),
 
   // Actions
   setUser: (user) => set({ user }),

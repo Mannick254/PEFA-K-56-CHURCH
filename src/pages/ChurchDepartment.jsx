@@ -1,121 +1,165 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
-import styles from '../styles/ChurchDepartment.module.css';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Users, UserCheck, Sparkles, ArrowUpRight } from 'lucide-react';
+import { supabase } from '../supabaseClient';
+import * as Icons from 'lucide-react';
+import styles from '../styles/ChurchDepartment.module.css';
+import { STATIC_MINISTRIES } from '../data/ministries';
+import Seo from '../components/Seo';
 
-const ChurchDepartment = () => {
-  const [departments, setDepartments] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const IconRenderer = ({ iconName, size = 20 }) => {
+  const IconComponent = Icons[iconName] || Icons.Sparkles;
+  return <IconComponent size={size} />;
+};
+
+const useDepartments = () => {
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const { data, error } = await supabase
+        const { data: supabaseData, error: dbError } = await supabase
           .from('church_departments')
-          .select('id, name, head, image_url')
+          .select('*')
           .order('name', { ascending: true });
 
-        if (error) throw error;
-        setDepartments(data);
+        if (dbError) throw dbError;
+
+        const merged = STATIC_MINISTRIES.map(staticDept => {
+          const remote = supabaseData?.find(
+            r => r.name.toLowerCase() === staticDept.name.toLowerCase()
+          );
+          return {
+            ...staticDept,
+            ...remote,
+            id: staticDept.id,
+            image: remote?.image_url || staticDept.image,
+            iconName: remote?.icon_name || staticDept.iconName || 'Sparkles',
+            description: remote?.description || staticDept.description || ''
+          };
+        });
+
+        setData(merged);
       } catch (err) {
-        setError(err.message);
+        console.error("Fetch error:", err);
+        setData(STATIC_MINISTRIES);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
     fetchDepartments();
   }, []);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1 }
-    }
-  };
+  return { data, isLoading };
+};
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: { 
-      y: 0, 
-      opacity: 1, 
-      transition: { duration: 0.6, ease: [0.6, 0.05, -0.01, 0.9] } 
-    }
-  };
-
-  if (loading) return (
-    <div className={styles.loader}>
-      <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1 }}>
-        <Sparkles className={styles.goldText} />
-      </motion.div>
-      <span>Gathering our teams...</span>
+const SkeletonCard = () => (
+    <div className={styles.skeletonCard}>
+      <div className={styles.skeletonImage} />
+      <div className={styles.skeletonContent}>
+        <div className={styles.skeletonTitle} />
+        <div className={styles.skeletonText} />
+        <div className={styles.skeletonText} />
+      </div>
     </div>
   );
 
+const ChurchDepartment = () => {
+  const { data: departments, isLoading } = useDepartments();
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.05,
+        duration: 0.4,
+        ease: "easeOut"
+      }
+    })
+  };
+
   return (
-    <section className={styles.wrapper}>
-      <div className={styles.container}>
-        <header className={styles.header}>
-          <motion.span 
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            className={styles.kicker}
-          >
-            Our Ministry
-          </motion.span>
-          <h2 className={styles.title}>Church Departments</h2>
-          <p className={styles.subtitle}>
-            Discover the heartbeat of our church. Our departments are dedicated to serving God and our community with excellence and love.
-          </p>
-        </header>
-
-        {error && <div className={styles.error}>Unable to load departments.</div>}
-
-        <motion.div 
-          className={styles.departmentGrid}
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
-          {departments.map((dept) => (
-            <motion.article 
-              key={dept.id} 
-              className={styles.deptCard}
-              variants={itemVariants}
-              whileHover={{ y: -8 }}
+    <>
+      <Seo 
+        title="Church Departments" 
+        description="Explore the various departments at PEFA Kawangware 56 and find your place to serve." 
+      />
+      <motion.section 
+        className={styles.wrapper}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
+        <div className={styles.container}>
+          <header className={styles.header}>
+            <motion.span 
+              className={styles.kicker}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
             >
-              <div className={styles.imageArea}>
-                {dept.image_url ? (
-                  <img src={dept.image_url} alt={dept.name} className={styles.deptImage} />
-                ) : (
-                  <div className={styles.imagePlaceholder}>
-                    <Users size={40} />
-                  </div>
-                )}
-                <div className={styles.cardOverlay}>
-                    <div className={styles.badge}><Users size={12}/> Department</div>
-                </div>
-              </div>
+              Get Involved
+            </motion.span>
+            <motion.h1 
+              className={styles.title}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              Serving with Purpose
+            </motion.h1>
+            <motion.p
+              className={styles.headerDescription}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              Find your place and purpose. Our diverse range of departments offers a place for 
+              everyone to use their unique gifts to serve God and our community.
+            </motion.p>
+          </header>
 
-              <div className={styles.contentArea}>
-                <h3 className={styles.deptName}>{dept.name}</h3>
-                <div className={styles.leaderInfo}>
-                  <UserCheck size={16} className={styles.goldText} />
-                  <span>Led by <strong>{dept.head}</strong></span>
-                </div>
-                <button className={styles.learnMore}>
-                  Get Involved <ArrowUpRight size={14} />
-                </button>
-              </div>
-            </motion.article>
-          ))}
-        </motion.div>
-      </div>
-    </section>
+          <div className={styles.departmentGrid}>
+            {isLoading ? (
+              Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)
+            ) : (
+              departments.map((dept, index) => (
+                <motion.div
+                  key={dept.id}
+                  custom={index}
+                  variants={cardVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <Link to={`/church-department-reader/${dept.id}`} className={styles.card}>
+                    <div className={styles.imageWrapper}>
+                      <img src={dept.image} alt={`${dept.name} ministry`} className={styles.cardImage} />
+                      <div className={styles.imageOverlay} />
+                      <div className={styles.iconBadge}>
+                        <IconRenderer iconName={dept.iconName} size={24} />
+                      </div>
+                    </div>
+                    <div className={styles.cardContent}>
+                      <h3 className={styles.cardTitle}>{dept.name}</h3>
+                      <p className={styles.cardDescription}>
+                        {dept.description.substring(0, 100)}...
+                      </p>
+                      <span className={styles.cardAction}>
+                        Learn More <Icons.ArrowRight size={16} />
+                      </span>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))
+            )}
+          </div>
+        </div>
+      </motion.section>
+    </>
   );
 };
 

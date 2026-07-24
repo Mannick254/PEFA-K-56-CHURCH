@@ -13,7 +13,7 @@
   
   .adminContainer {
     max-width: 1200px;
-    margin: 2rem auto;
+    margin: 1rem auto;
     padding: 0 1rem;
     font-family: 'Inter', sans-serif;
     color: var(--text-dark);
@@ -24,14 +24,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
-    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
     background: white;
     border-radius: 1rem;
     border: 1px solid var(--border-color);
   }
   
-  .header h1 { font-size: 1.75rem; font-weight: 800; margin: 0; letter-spacing: -0.02em; }
+  .header h1 { font-size: 1.5rem; font-weight: 800; margin: 0; letter-spacing: -0.02em; }
   .header p { color: var(--text-muted); margin: 0.25rem 0 0; }
   .headerIcon { color: var(--accent); opacity: 0.2; }
   
@@ -40,9 +40,9 @@
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    padding: 1rem;
+    padding: 0.75rem;
     border-radius: 0.75rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     font-weight: 500;
     animation: slideDown 0.3s ease;
   }
@@ -57,14 +57,14 @@
   /* Layout */
   .mainGrid {
     display: grid;
-    grid-template-columns: 400px 1fr;
-    gap: 2rem;
+    grid-template-columns: 350px 1fr;
+    gap: 1.5rem;
   }
   
   /* Form Card */
   .card {
     background: white;
-    padding: 1.5rem;
+    padding: 1rem;
     border-radius: 1rem;
     border: 1px solid var(--border-color);
     box-shadow: var(--shadow-md);
@@ -72,17 +72,17 @@
     top: 1rem;
   }
   
-  .cardTitle { font-size: 1.25rem; margin-bottom: 1.5rem; color: var(--text-dark); }
+  .cardTitle { font-size: 1.1rem; margin-bottom: 1rem; color: var(--text-dark); }
   
-  .inputGroup { margin-bottom: 1.25rem; }
+  .inputGroup { margin-bottom: 1rem; }
   .inputGroup label { display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-muted); }
   
   .inputGroup input, .inputGroup textarea {
     width: 100%;
-    padding: 0.75rem;
+    padding: 0.5rem;
     border: 1px solid var(--border-color);
     border-radius: 0.5rem;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     transition: all 0.2s;
   }
   
@@ -107,7 +107,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.6rem 1rem;
+    padding: 0.5rem 0.75rem;
     background: white;
     border: 1px solid var(--border-color);
     border-radius: 0.5rem;
@@ -118,7 +118,7 @@
   .imagePreview {
     position: relative;
     width: 100%;
-    height: 150px;
+    height: 120px;
   }
   
   .imagePreview img {
@@ -149,13 +149,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
   }
   
   .dataGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
   }
   
   .dataCard {
@@ -168,21 +168,21 @@
   
   .dataCard:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
   
-  .dataImage { height: 160px; background: #f1f5f9; position: relative; }
+  .dataImage { height: 140px; background: #f1f5f9; position: relative; }
   .dataImage img { width: 100%; height: 100%; object-fit: cover; }
   .noImage { height: 100%; display: flex; align-items: center; justify-content: center; color: var(--text-muted); }
   
-  .dataContent { padding: 1.25rem; }
-  .dataContent h3 { margin: 0 0 0.5rem; font-size: 1.1rem; }
+  .dataContent { padding: 1rem; }
+  .dataContent h3 { margin: 0 0 0.5rem; font-size: 1rem; }
   .dataContent p { 
-    font-size: 0.9rem; 
+    font-size: 0.875rem; 
     color: var(--text-muted); 
     line-height: 1.5;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
   }
   
   .dataActions {
@@ -204,13 +204,13 @@
   .deleteBtn:hover { background: #fef2f2; color: var(--danger); border-color: #fecaca; }
   
   /* Buttons */
-  .formActions { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
+  .formActions { display: flex; gap: 0.75rem; margin-top: 1rem; }
   .primaryBtn {
     flex: 2;
     background: var(--accent);
     color: white;
     border: none;
-    padding: 0.75rem;
+    padding: 0.6rem;
     border-radius: 0.5rem;
     font-weight: 600;
     cursor: pointer;
@@ -224,7 +224,7 @@
     flex: 1;
     background: #f1f5f9;
     border: none;
-    padding: 0.75rem;
+    padding: 0.6rem;
     border-radius: 0.5rem;
     font-weight: 600;
     cursor: pointer;

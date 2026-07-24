@@ -1,73 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500&display=swap');
+
 .sofWrapper {
-  padding: 120px 5%;
-  background-color: #ffffff;
-  border-top: 1px solid #f1f5f9;
+  padding: 100px 5%;
+  background-color: #f8f9fa; /* Softer, almost white background */
 }
 
 .container {
-  max-width: 1250px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
 .layoutGrid {
   display: grid;
-  grid-template-columns: 1fr 1.5fr;
-  gap: 80px;
+  grid-template-columns: 1fr 1.6fr; /* Adjusted ratio */
+  gap: 60px;
   align-items: start;
 }
 
 /* Header Side Styles */
 .headerSide {
   position: sticky;
-  top: 100px;
+  top: 120px;
 }
 
 .tag {
+  font-family: 'Roboto', sans-serif;
   font-size: 0.8rem;
-  font-weight: 800;
-  color: #D4AF37; /* Gold */
-  letter-spacing: 3px;
+  font-weight: 500; /* Lighter weight */
+  color: #8a795d; /* Muted gold/brown */
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
   display: block;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .mainTitle {
-  font-size: 3.5rem;
-  line-height: 1.1;
-  color: #1A1A1A;
-  margin-bottom: 25px;
-  font-family: 'Instrument Serif', serif;
+  font-family: 'Playfair Display', serif;
+  font-size: 3.2rem;
+  line-height: 1.2;
+  color: #212529; /* Dark, but not harsh black */
+  margin-bottom: 20px;
+  font-weight: 700;
 }
 
 .mainTitle span {
   display: block;
-  color: #64748b;
+  color: #6c757d; /* Softer grey */
   font-style: italic;
+  font-weight: 400;
+  font-size: 2rem;
 }
 
 .subtext {
-  font-size: 1.1rem;
-  line-height: 1.7;
-  color: #475569;
-  margin-bottom: 40px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #5a6672; /* Darker grey for readability */
+  margin-bottom: 35px;
+  font-weight: 300;
 }
 
 .exploreLink {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  padding: 15px 30px;
-  background: #1a1a1a;
+  gap: 10px;
+  padding: 14px 28px;
+  background: #343a40; /* Dark grey, less harsh than black */
   color: #fff;
   text-decoration: none;
   border-radius: 50px;
-  font-weight: 600;
-  transition: 0.3s ease;
+  font-weight: 500;
+  transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .exploreLink:hover {
-  background: #D4AF37;
-  transform: translateX(5px);
+  background: #8a795d; /* Muted gold on hover */
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.1);
 }
 
 /* List Side (The "Non-Card" List) */
@@ -78,29 +87,35 @@
 
 .statementRow {
   display: flex;
-  gap: 40px;
-  padding: 45px 0;
-  border-bottom: 1px solid #e2e8f0;
-  transition: 0.4s ease;
+  gap: 30px;
+  padding: 35px 20px; /* Added horizontal padding */
+  border-bottom: 1px solid #e9ecef; /* Lighter border */
+  border-radius: 12px; /* Softly rounded corners */
+  transition: background-color 0.4s ease, transform 0.4s ease;
 }
 
-/* Subtle hover effect that doesn't involve a card shape */
+/* Enhanced hover effect */
+.statementRow:hover {
+  background-color: #ffffff;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  border-color: transparent;
+}
+
 .statementRow:hover .rowNumber {
-  color: #D4AF37;
-  transform: scale(1.1);
-}
-
-.statementRow:hover .rowTitle {
-  color: #D4AF37;
+  color: #8a795d;
+  transform: scale(1.15) rotate(-5deg);
 }
 
 .rowNumber {
-  font-family: 'Instrument Serif', serif;
-  font-size: 2.5rem;
-  color: #cbd5e1;
-  font-weight: 400;
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  color: #ced4da; /* Lighter, less obtrusive number color */
+  font-weight: 700;
   line-height: 1;
-  transition: 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  align-self: flex-start;
+  padding-top: 5px;
 }
 
 .rowContent {
@@ -108,25 +123,32 @@
 }
 
 .rowTitle {
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: #1A1A1A;
-  margin-bottom: 15px;
-  transition: 0.3s ease;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #343a40;
+  margin-bottom: 10px;
+  transition: color 0.3s ease;
+}
+
+.statementRow:hover .rowTitle {
+  color: #212529; /* Darken title on hover for focus */
 }
 
 .rowText {
-  font-size: 1.05rem;
-  line-height: 1.8;
-  color: #64748b;
-  max-width: 600px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #6c757d;
+  max-width: 580px;
+  font-weight: 300;
 }
 
 /* Mobile Responsiveness */
 @media (max-width: 1024px) {
   .layoutGrid {
     grid-template-columns: 1fr;
-    gap: 60px;
+    gap: 50px;
   }
   
   .headerSide {
@@ -135,24 +157,29 @@
   }
 
   .mainTitle {
-    font-size: 2.8rem;
+    font-size: 2.5rem;
+  }
+
+  .mainTitle span {
+    font-size: 1.8rem;
   }
   
   .statementRow {
     gap: 20px;
+    padding: 25px 10px;
   }
 }
 
 @media (max-width: 600px) {
   .rowNumber {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
   }
   
   .rowTitle {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
   }
 
   .sofWrapper {
-    padding: 70px 5%;
+    padding: 60px 5%;
   }
 }

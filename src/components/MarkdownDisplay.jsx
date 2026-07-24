@@ -1,11 +1,17 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
-import rehypeRaw from 'rehype-raw';
+import remarkGfm from 'remark-gfm';
 
 const MarkdownDisplay = ({ markdown }) => {
-  return (
-    <ReactMarkdown rehypePlugins={[rehypeRaw]}>{markdown}</ReactMarkdown>
-  );
+    if (!markdown) {
+        return null;
+    }
+
+    return (
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {markdown}
+        </ReactMarkdown>
+    );
 };
 
 export default MarkdownDisplay;

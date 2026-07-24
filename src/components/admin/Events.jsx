@@ -1,152 +1,239 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../supabaseClient';
-import styles from '../../styles/AdminEvents.module.css';
+import { 
+  Edit2, 
+  Trash2, 
+  Plus, 
+  X, 
+  Upload as UploadIcon, 
+  Link as LinkIcon, 
+  Calendar, 
+  MapPin, 
+  Type,
+  CheckCircle2,
+  AlertCircle
+} from 'lucide-react';
+import styles from '../../styles/EventAdmin.module.css';
 import Upload from './upload';
 
 const AdminEvents = () => {
-  const [items, setItems] = useState([]);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [location, setLocation] = useState('');
-  const [date, setDate] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
-  const [editing, setEditing] = useState(null);
-  const [error, setError] = useState(null);
+  const initialFormState = {
+    title: '',
+    location: '',
+    date: '',
+    description: '',
+    video_url: '',
+    image_url: '',
+  };
+
+  const [events, setEvents] = useState([]);
+  const [formData, setFormData] = useState(initialFormState);
+  const [editingId, setEditingId] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState({ type: '', message: '' });
 
   useEffect(() => {
-    fetchItems();
+    fetchEvents();
   }, []);
 
-  const fetchItems = async () => {
+  const fetchEvents = async () => {
     setLoading(true);
-    const { data: events, error: eventsError } = await supabase.from('events').select('*');
-    if (eventsError) setError(eventsError.message);
+    const { data, error } = await supabase
+      .from('events')
+      .select('*')
+      .order('date', { ascending: true });
 
-    const allItems = [...events.map(e => ({ ...e, type: 'event' }))].sort((a, b) => new Date(b.date) - new Date(a.date));
-
-    setItems(allItems);
+    if (error) {
+      showStatus('error', error.message);
+    } else {
+      setEvents(data);
+    }
     setLoading(false);
+  };
+
+  const showStatus = (type, message) => {
+    setStatus({ type, message });
+    setTimeout(() => setStatus({ type: '', message: '' }), 5000);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
 
-    let itemData = { title, description, date, location, image_url: imageUrl };
-    let tableName = 'events';
+    const result = editingId
+      ? await supabase.from('events').update(formData).eq('id', editingId).select()
+      : await supabase.from('events').insert([formData]).select();
 
-    let result;
-    if (editing) {
-      result = await supabase.from(tableName).update(itemData).eq('id', editing.id).select();
+    if (result.error) {
+      showStatus('error', result.error.message);
     } else {
-      result = await supabase.from(tableName).insert([itemData]).select();
-    }
-
-    const { data, error } = result;
-    setLoading(false);
-
-    if (error) {
-      setError(error.message);
-    } else if (data) {
-      fetchItems(); // Refetch all items
+      showStatus('success', `Event ${editingId ? 'updated' : 'created'} successfully!`);
       cancelEdit();
+      fetchEvents();
     }
+    setLoading(false);
   };
 
-  const handleEdit = (item) => {
-    setEditing(item);
-    setTitle(item.title);
-    setDescription(item.description);
-    setDate(item.date);
-    setLocation(item.location);
-    setImageUrl(item.image_url || '');
+  const handleEdit = (event) => {
+    setEditingId(event.id);
+    setFormData({
+      title: event.title,
+      location: event.location,
+      date: event.date,
+      description: event.description,
+      video_url: event.video_url || '',
+      image_url: event.image_url || '',
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleDelete = async (item) => {
-    const tableName = 'events';
-    const { error } = await supabase.from(tableName).delete().eq('id', item.id);
-
-    if (error) {
-      setError(error.message);
-    } else {
-      fetchItems(); // Refetch all items
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete this event?')) {
+      const { error } = await supabase.from('events').delete().eq('id', id);
+      if (error) showStatus('error', error.message);
+      else {
+        showStatus('success', 'Event removed');
+        fetchEvents();
+      }
     }
   };
 
   const cancelEdit = () => {
-    setEditing(null);
-    setTitle('');
-    setDescription('');
-    setLocation('');
-    setDate('');
-    setImageUrl('');
-    setError(null);
+    setEditingId(null);
+    setFormData(initialFormState);
   };
 
   return (
-    <div className={styles.container}>
-      <h2>{editing ? 'Edit Event' : 'Add New Event'}</h2>
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <input type="text" placeholder="Event Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
-        <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
-        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
-        <input type="text" placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} required />
-        
-        <div className={styles.imageUploadContainer}>
-          <label>Event Image</label>
-          <Upload 
-            onUpload={setImageUrl} 
-            onUrlChange={setImageUrl}
-            initialUrl={imageUrl}
-          />
+    <div className={styles.adminContainer}>
+      <header className={styles.header}>
+        <div>
+          <h1>Event Dashboard</h1>
+          <p>Schedule and manage upcoming church events and gatherings.</p>
+        </div>
+      </header>
+
+      {status.message && (
+        <div className={`${styles.alert} ${styles[status.type]}`}>
+          {status.type === 'success' ? <CheckCircle2 size={18} /> : <AlertCircle size={18} />}
+          {status.message}
+        </div>
+      )}
+
+      <section className={styles.formCard}>
+        <div className={styles.cardHeader}>
+          <div className={styles.iconCircle}>
+            {editingId ? <Edit2 size={20} /> : <Plus size={20} />}
+          </div>
+          <h2>{editingId ? 'Edit Event Details' : 'Create New Event'}</h2>
+        </div>
+
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.inputGrid}>
+            <div className={styles.inputGroup}>
+              <label><Type size={16} /> Event Title</label>
+              <input name="title" type="text" value={formData.title} onChange={handleInputChange} placeholder="e.g. Annual Youth Conference" required />
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label><MapPin size={16} /> Location</label>
+              <input name="location" type="text" value={formData.location} onChange={handleInputChange} placeholder="Main Sanctuary or Online" required />
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label><Calendar size={16} /> Date & Time</label>
+              <input name="date" type="datetime-local" value={formData.date} onChange={handleInputChange} required />
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label><LinkIcon size={16} /> Promo/Video URL</label>
+              <input name="video_url" type="url" value={formData.video_url} onChange={handleInputChange} placeholder="Optional YouTube link" />
+            </div>
+          </div>
+
           <div className={styles.inputGroup}>
-            <label>Or paste Image URL</label>
-            <input 
-                type="text"
-                placeholder="https://example.com/image.png"
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
-                className={styles.urlInput}
-            />
-        </div>
-        </div>
+            <label>Event Description</label>
+            <textarea name="description" value={formData.description} onChange={handleInputChange} required rows="4" placeholder="Tell the congregation about this event..." />
+          </div>
 
-        <div className={styles.formButtons}>
-          <button type="submit" disabled={loading}>
-            {loading ? 'Saving...' : editing ? 'Update' : 'Add'}
-          </button>
-          {editing && <button type="button" onClick={cancelEdit}>Cancel</button>}
-        </div>
-      </form>
-      {error && <p className={styles.error}>⚠️ {error}</p>}
+          <div className={styles.uploadSection}>
+            <label className={styles.sectionLabel}><UploadIcon size={16} /> Event Banner / Flyer</label>
+            <div className={styles.uploadControls}>
+              <Upload 
+                onUploadSuccess={(uploadInfo) => setFormData(prev => ({...prev, image_url: uploadInfo.url}))} 
+              />
+              <div className={styles.urlInputWrapper}>
+                <span>OR PASTE URL</span>
+                <input 
+                  type="text" 
+                  name="image_url" 
+                  placeholder="https://..." 
+                  value={formData.image_url} 
+                  onChange={handleInputChange} 
+                />
+              </div>
+            </div>
+          </div>
 
-      <h2>Manage Events</h2>
-      {loading && <p>Loading...</p>}
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Date</th>
-            <th>Details</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {items.map(item => (
-            <tr key={item.id}>
-              <td>{item.title}</td>
-              <td>{new Date(item.date).toLocaleDateString()}</td>
-              <td>{`Location: ${item.location}`}</td>
-              <td className={styles.actionButtons}>
-                <button onClick={() => handleEdit(item)} className={styles.editButton}>Edit</button>
-                <button onClick={() => handleDelete(item)} className={styles.deleteButton}>Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+          <div className={styles.formActions}>
+            <button type="submit" className={styles.submitBtn} disabled={loading}>
+              {loading ? 'Saving...' : editingId ? 'Update Event' : 'Publish Event'}
+            </button>
+            {editingId && (
+              <button type="button" className={styles.cancelBtn} onClick={cancelEdit}>
+                <X size={16} /> Cancel Edit
+              </button>
+            )}
+          </div>
+        </form>
+      </section>
+
+      <section className={styles.listSection}>
+        <div className={styles.cardHeader}>
+          <h2>Upcoming & Past Events</h2>
+          <span className={styles.countBadge}>{events.length} Events</span>
+        </div>
+        
+        <div className={styles.tableWrapper}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>Event Name</th>
+                <th>Location</th>
+                <th>Date</th>
+                <th className={styles.textRight}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {events.length > 0 ? (
+                events.map((event) => (
+                  <tr key={event.id}>
+                    <td className={styles.titleCell}>{event.title}</td>
+                    <td>{event.location}</td>
+                    <td>{new Date(event.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</td>
+                    <td className={styles.actions}>
+                      <button onClick={() => handleEdit(event)} className={styles.editBtn} title="Edit">
+                        <Edit2 size={16} />
+                      </button>
+                      <button onClick={() => handleDelete(event.id)} className={styles.deleteBtn} title="Delete">
+                        <Trash2 size={16} />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" className={styles.emptyRow}>No events found. Start by adding one above.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
   );
 };

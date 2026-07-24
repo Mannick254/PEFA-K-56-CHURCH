@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
-import ReactPlayer from 'react-player';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { Search, Calendar, User, PlayCircle, VideoOff } from 'lucide-react';
+import { Search, Calendar, User, PlayCircle, BookOpen, Clock, ArrowRight } from 'lucide-react';
 import styles from '../styles/Sermons.module.css';
 import JesusLessons from '../components/JesusLessons';
+import Seo from '../components/Seo';
 
 const Sermons = () => {
   const [sermons, setSermons] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [playingId, setPlayingId] = useState(null);
 
@@ -26,9 +26,9 @@ const Sermons = () => {
         .order('date', { ascending: false });
 
       if (error) throw error;
-      setSermons(data);
+      setSermons(data || []);
     } catch (err) {
-      setError(err.message);
+      console.error("Error fetching sermons:", err.message);
     } finally {
       setLoading(false);
     }
@@ -41,40 +41,51 @@ const Sermons = () => {
     );
   }, [sermons, searchTerm]);
 
-  if (loading) return <div className={styles.loader}>Loading Library...</div>;
+  if (loading) return (
+    <div className={styles.loaderContainer}>
+      <div className={styles.spinner}></div>
+      <p>Loading Library...</p>
+    </div>
+  );
 
   return (
     <div className={styles.container}>
+      <Seo title="Sermon Library | PEFA Kawangware 56" description="Watch and read life-changing sermons." />
+      
       <header className={styles.header}>
-        <h1 className={styles.pageTitle}>Sermon Library</h1>
-        <div className={styles.searchWrapper}>
-          <Search className={styles.searchIcon} size={18} />
-          <input
-            type="text"
-            placeholder="Search by title or preacher..."
-            className={styles.searchInput}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+        <div className={styles.headerContent}>
+          <h1 className={styles.pageTitle}>Sermon <span>Library</span></h1>
+          <p className={styles.subtitle}>Equipping the saints through the power of the Word.</p>
+          <div className={styles.searchWrapper}>
+            <Search className={styles.searchIcon} size={20} />
+            <input
+              type="text"
+              placeholder="Search by title, topic, or preacher..."
+              className={styles.searchInput}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
         </div>
       </header>
 
-      {error && <div className={styles.errorCard}>⚠️ {error}</div>}
-
-      <div className={styles.sermonsGrid}>
+      <main className={styles.sermonsGrid}>
         {filteredSermons.map((sermon) => (
           <SermonCard 
             key={sermon.id} 
             sermon={sermon} 
-            playingId={playingId}
-            setPlayingId={setPlayingId}
-            setError={setError}
+            isPlaying={playingId === sermon.id}
+            onPlay={() => setPlayingId(sermon.id)}
           />
         ))}
-      </div>
+      </main>
 
-      {!loading && filteredSermons.length === 0 && (
-        <div className={styles.emptyState}>No matches found for "{searchTerm}"</div>
+      {filteredSermons.length === 0 && (
+        <div className={styles.emptyState}>
+          <BookOpen size={48} />
+          <p>No sermons found matching "{searchTerm}"</p>
+          <button onClick={() => setSearchTerm('')} className={styles.resetBtn}>Clear Search</button>
+        </div>
       )}
       
       <JesusLessons />
@@ -82,98 +93,100 @@ const Sermons = () => {
   );
 };
 
-const SermonCard = ({ sermon, playingId, setPlayingId, setError }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  const toggleExpand = () => setIsExpanded(!isExpanded);
-
+const SermonCard = ({ sermon, isPlaying, onPlay }) => {
   const content = sermon.content || '';
-  const canTruncate = content.length > 280;
+  const hasText = content.trim().length > 0;
+  
+  // Helper to extract YouTube ID
+  const getYoutubeId = (url) => {
+    if (!url) return null;
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+  };
 
-  const hasVideo = !!sermon.video_url;
-  const hasImage = !!sermon.image_url;
-  const isPlaying = playingId === sermon.id;
+  const videoId = getYoutubeId(sermon.video_url);
+  const videoThumbnail = videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : null;
+  const imageToDisplay = sermon.image_url || videoThumbnail;
 
-  const backgroundImage = sermon.image_url || 'https://images.unsplash.com/photo-1507692049790-de58290a4334?q=80&w=1000';
+  // IMPORTANT: Modern check to see if we should even show a media frame
+  const showMediaFrame = !!(sermon.video_url || sermon.image_url);
 
   return (
-    <article className={styles.sermonCard}>
-      <div className={styles.mediaContainer}>
-        {isPlaying && hasVideo ? (
-          <div className={styles.playerWrapper}>
-            <ReactPlayer
-              url={sermon.video_url}
-              width="100%"
-              height="100%"
-              controls
-              playing
-              muted
-              onError={(e) => {
-                console.error('Player error:', e);
-                setError(`Failed to load video for "${sermon.title}".`);
-                setPlayingId(null);
-              }}
-              className={styles.reactPlayer}
-            />
-            <button
-              className={styles.pipBtn}
-              onClick={() => {
-                const videoEl = document.querySelector('video');
-                if (videoEl && videoEl.readyState >= 1) {
-                  videoEl.requestPictureInPicture().catch(err => console.error(err));
-                }
-              }}
+    <article className={`${styles.sermonCard} ${!showMediaFrame ? styles.noMediaCard : ''}`}>
+      {showMediaFrame && (
+        <div className={styles.mediaContainer}>
+          {isPlaying && videoId ? (
+            <iframe
+              className={styles.videoPlayer}
+              src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              title={sermon.title}
+            ></iframe>
+          ) : (
+            <div 
+              className={styles.thumbnailWrapper}
+              onClick={videoId ? onPlay : undefined}
             >
-              Enable PiP
-            </button>
-          </div>
-        ) : hasVideo ? (
-          <div
-            className={styles.videoFacade}
-            onClick={() => setPlayingId(sermon.id)}
-            style={{ backgroundImage: `url(${backgroundImage})` }}
-          >
-            <div className={styles.overlay}>
-              <PlayCircle size={64} className={styles.playIcon} />
-              <span>Watch Sermon</span>
+              <img 
+                src={imageToDisplay || '/placeholder-sermon.jpg'} 
+                alt={sermon.title} 
+                className={styles.thumbnail}
+                loading="lazy"
+              />
+              <div className={styles.mediaOverlay}>
+                {videoId ? (
+                  <div className={styles.playAction}>
+                    <PlayCircle size={50} strokeWidth={1.5} />
+                    <span>Watch Now</span>
+                  </div>
+                ) : (
+                  <Link to={`/sermons/${sermon.id}`} className={styles.playAction}>
+                    <BookOpen size={50} strokeWidth={1.5} />
+                    <span>Read Notes</span>
+                  </Link>
+                )}
+              </div>
             </div>
-          </div>
-        ) : hasImage ? (
-          <div
-            className={styles.videoFacade}
-            style={{ backgroundImage: `url(${sermon.image_url})`, cursor: 'default' }}
-          />
-        ) : (
-          <div className={styles.noVideo}>
-            <VideoOff size={40} />
-            <p>Audio only / No video</p>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
 
       <div className={styles.cardBody}>
-        <div className={styles.tagRow}>
-          <span className={styles.dateBadge}>
-            <Calendar size={14} /> {new Date(sermon.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+        <div className={styles.meta}>
+          <span className={styles.date}>
+            <Calendar size={14} /> 
+            {new Date(sermon.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+          </span>
+          <span className={styles.preacher}>
+            <User size={14} /> {sermon.preacher}
           </span>
         </div>
-        <h2 className={styles.sermonTitle}>{sermon.title}</h2>
-        <p className={styles.preacherName}>
-          <User size={14} /> {sermon.preacher}
-        </p>
+
+        <Link to={`/sermons/${sermon.id}`} className={styles.titleLink}>
+          <h2 className={styles.sermonTitle}>{sermon.title}</h2>
+        </Link>
         
-        <div className={`${styles.sermonDescription} ${canTruncate && !isExpanded ? styles.truncated : ''}`}>
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
+        <div className={styles.excerpt}>
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {content.length > 120 ? `${content.substring(0, 120)}...` : content}
+          </ReactMarkdown>
         </div>
 
-        {canTruncate && (
-          <button onClick={toggleExpand} className={`${styles.readMoreBtn} ${isExpanded ? styles.showLess : ''}`}>
-            {isExpanded ? 'Show Less' : 'Read More'}
-          </button>
-        )}
+        <div className={styles.cardFooter}>
+          <Link to={`/sermons/${sermon.id}`} className={styles.readMoreLink}>
+            Details <ArrowRight size={16} />
+          </Link>
+          {videoId && !isPlaying && (
+            <button onClick={onPlay} className={styles.quickWatchBtn}>
+              <PlayCircle size={16} /> Video
+            </button>
+          )}
+        </div>
       </div>
     </article>
   );
-}
+};
 
 export default Sermons;

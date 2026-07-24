@@ -1,217 +1,247 @@
+
 /* Hero.module.css */
 
+:root {
+  --primary-gold: #c0a062;
+  --secondary-gold: #e6d0a6;
+  --bg-dark: #0a0a0a;
+  --text-white: #f0f0f0;
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --mesh-color-1: rgba(192, 160, 98, 0.15);
+  --mesh-color-2: rgba(100, 80, 20, 0.2);
+}
+
+/* 1. Container & Viewport Logic */
 .heroContainer {
   position: relative;
-  height: 100vh;
   width: 100%;
+  height: 100vh;
+  height: 100svh; /* Solves mobile browser chrome jumping */
+  background-color: var(--bg-dark);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background-color: #050505; /* Deep base color */
 }
 
-/* Cinematic Media Handling */
+/* 2. Background Layering */
 .heroMedia {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   z-index: 1;
 }
 
 .imageWrapper {
+  position: relative;
   width: 100%;
-  height: 110%; /* Extra height for parallax movement */
-  position: absolute;
-  top: 0;
+  height: 110%; /* Extra height for the parallax movement */
 }
 
 .heroImg {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: brightness(0.7) contrast(1.1);
+  filter: contrast(1.05) brightness(0.75);
+  animation: zoomSlow 40s ease-in-out infinite;
+  will-change: transform;
 }
 
-/* High-contrast gradient for text readability */
-.vignetteOverlay {
+/* 3. The "Mesh" Animated Overlay */
+.overlayGradient {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.3) 0%,
-    rgba(0, 0, 0, 0.2) 40%,
-    rgba(0, 0, 0, 0.8) 100%
-  ),
-  radial-gradient(
-    circle at center,
-    transparent 0%,
-    rgba(0, 0, 0, 0.4) 100%
-  );
+  background-color: transparent;
+  background-image: 
+    radial-gradient(at 0% 0%, var(--mesh-color-1) 0, transparent 50%),
+    radial-gradient(at 100% 0%, var(--mesh-color-2) 0, transparent 50%),
+    radial-gradient(at 100% 100%, var(--mesh-color-1) 0, transparent 50%),
+    radial-gradient(at 0% 100%, var(--mesh-color-2) 0, transparent 50%),
+    linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.7) 100%);
+  background-size: 300% 300%;
+  animation: meshFlow 40s ease infinite;
   z-index: 2;
+  will-change: background-position;
 }
 
-/* Content Layout */
+@keyframes meshFlow {
+  0% { background-position: 0% 0%; }
+  25% { background-position: 100% 50%; }
+  50% { background-position: 50% 100%; }
+  75% { background-position: 0% 50%; }
+  100% { background-position: 0% 0%; }
+}
+
+/* 4. Content Layout */
 .contentWrapper {
   position: relative;
   z-index: 10;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1000px;
   padding: 0 1.5rem;
-  display: flex;
-  justify-content: center;
+  margin-top: 2rem;
 }
 
 .heroContent {
-  max-width: 850px;
-  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 }
 
-/* Badge Styling */
+/* 5. Modern Elements */
 .heroBadge {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  padding: 0.6rem 1.2rem;
+  padding: 0.5rem 1rem;
+  background: rgba(192, 160, 98, 0.1);
+  border: 1px solid rgba(192, 160, 98, 0.2);
+  backdrop-filter: blur(10px);
   border-radius: 100px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  margin-bottom: 2rem;
-  font-size: 0.75rem;
+  color: var(--secondary-gold);
+  font-size: 0.7rem;
   font-weight: 600;
-  letter-spacing: 0.1rem;
-  text-transform: uppercase;
-  color: #fff;
+  letter-spacing: 0.1em;
+  margin-bottom: 2rem;
+  box-shadow: 0 0 20px rgba(192, 160, 98, 0.1);
+  animation: float 6s ease-in-out infinite;
 }
 
-.goldText {
-  color: #ffb800; /* Gold Accent */
+.goldIcon {
+  color: var(--primary-gold);
 }
 
-/* Typography */
+/* Cinematic Typography */
 .heroDisplayTitle {
-  font-size: clamp(2.5rem, 8vw, 5.5rem);
-  font-weight: 850;
-  color: #ffffff;
-  line-height: 1;
+  font-size: clamp(2.2rem, 10vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.1;
+  color: #fff;
+  text-transform: uppercase;
   margin-bottom: 1.5rem;
-  letter-spacing: -0.03em;
-  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  letter-spacing: -0.02em;
+  background: linear-gradient(180deg, #ffffff 40%, #b0b0b0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 8px 15px rgba(0,0,0,0.3));
+}
+
+.wordOverflow {
+  display: inline-block;
+  overflow: hidden;
+  padding-bottom: 0.1em;
+}
+
+.wordInner {
+  display: inline-block;
 }
 
 .heroLeadText {
-  font-size: clamp(1.1rem, 2vw, 1.4rem);
-  line-height: 1.6;
+  font-size: clamp(1rem, 4.5vw, 1.2rem);
   color: rgba(255, 255, 255, 0.85);
-  max-width: 650px;
+  max-width: 600px;
+  line-height: 1.7;
   margin-bottom: 3rem;
-  text-wrap: balance;
+  font-weight: 400;
 }
 
-/* Modern Button Group */
+/* 6. High-Gloss Buttons */
 .heroButtonGroup {
   display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
+  gap: 1.2rem;
+  width: 100%;
+  max-width: 400px;
 }
 
 .btnPrimary {
-  display: inline-flex;
+  position: relative;
+  display: flex;
   align-items: center;
-  gap: 0.75rem;
-  background: #ffffff;
-  color: #000;
-  padding: 1.1rem 2.2rem;
-  border-radius: 12px;
-  font-weight: 700;
+  justify-content: center;
+  gap: 0.8rem;
+  padding: 1.2rem 2.5rem;
+  background: linear-gradient(45deg, var(--primary-gold), var(--secondary-gold));
+  color: #0a0a0a;
   text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 600;
+  border-radius: 100px;
+  border: none;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+  box-shadow: 0 8px 25px rgba(192, 160, 98, 0.25);
 }
 
 .btnPrimary:hover {
-  background: #ffb800;
-  transform: translateY(-3px);
-  box-shadow: 0 15px 30px rgba(255, 184, 0, 0.3);
+  transform: scale(1.03);
+  box-shadow: 0 12px 30px rgba(192, 160, 98, 0.3);
 }
 
 .btnOutline {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 0.75rem;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  color: #ffffff;
-  padding: 1.1rem 2.2rem;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  font-weight: 600;
+  justify-content: center;
+  gap: 0.8rem;
+  padding: 1.2rem 2.5rem;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(15px);
+  color: var(--text-white);
   text-decoration: none;
+  font-weight: 500;
+  border-radius: 100px;
   transition: all 0.3s ease;
 }
 
 .btnOutline:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: #ffffff;
-  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Scroll Hint Indicator */
-.scrollHint {
-  position: absolute;
-  bottom: 2.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.8rem;
-  z-index: 10;
-  opacity: 0.6;
-  transition: opacity 0.3s ease;
-}
-
-.scrollHint:hover {
-  opacity: 1;
-}
-
-.scrollText {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.3rem;
-  font-weight: 700;
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-  .heroContent {
-    padding: 0 1rem;
-  }
-
+/* 7. Desktop Adaptations */
+@media (min-width: 768px) {
   .heroButtonGroup {
-    flex-direction: column;
-    width: 100%;
-    max-width: 320px;
-  }
-
-  .btnPrimary, .btnOutline {
-    width: 100%;
+    flex-direction: row;
+    max-width: none;
     justify-content: center;
   }
 
-  .heroDisplayTitle {
-    margin-bottom: 1rem;
+  .btnPrimary, .btnOutline {
+    width: auto;
+    min-width: 200px;
   }
+}
+
+/* 8. Loader & Animations */
+.loaderContainer {
+  position: absolute;
+  inset: 0;
+  background: var(--bg-dark);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 2px solid rgba(192, 160, 98, 0.1);
+  border-left-color: var(--primary-gold);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes zoomSlow {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
 }

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { motion, useScroll, useSpring, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
 import { supabase } from '../supabaseClient';
 import styles from '../styles/About.module.css';
-import { Compass, Church, Feather, Heart, ShieldCheck, Globe, ArrowRight } from 'lucide-react';
+import { Compass, Feather, Heart, ShieldCheck, Globe, ArrowRight } from 'lucide-react';
 import { FaDove } from 'react-icons/fa';
+import Seo from '../components/Seo';
+import Breadcrumb from '../components/Breadcrumb';
 
 // Sub-components
 import MarkdownDisplay from '../components/MarkdownDisplay';
@@ -27,6 +29,7 @@ const About = () => {
 
   if (!aboutContent) return (
     <div className={styles.loadingScreen}>
+      <Seo title="About Us" />
       <motion.div 
         animate={{ rotate: 360, opacity: [0.5, 1, 0.5] }} 
         transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
@@ -42,7 +45,12 @@ const About = () => {
 
   return (
     <div className={styles.mainWrapper}>
+      <Seo title="About Us" description={aboutContent.subtitle} keywords="About PEFA, Church history, our mission, our beliefs" />
       <motion.div className={styles.progressLine} style={{ scaleX }} />
+
+      <div className={styles.container}>
+        <Breadcrumb />
+      </div>
 
       {/* --- MODERN HERO SECTION --- */}
       <section className={styles.heroSection}>
@@ -64,11 +72,11 @@ const About = () => {
               transition={{ duration: 1, delay: 0.2 }}
               className={styles.heroTitle}
             >
-              {aboutContent.title}
+              <MarkdownDisplay markdown={aboutContent.title} />
             </motion.h1>
-            <motion.p className={styles.heroSubtitle}>
-              {aboutContent.subtitle}
-            </motion.p>
+            <motion.div className={styles.heroSubtitle}>
+              <MarkdownDisplay markdown={aboutContent.subtitle} />
+            </motion.div>
           </motion.div>
         </div>
         
@@ -90,10 +98,10 @@ const About = () => {
               className={styles.storyText}
             >
               <div className={styles.iconBox}><Compass size={32} /></div>
-              <h2 className={styles.serifTitle}>{aboutContent.our_story_title}</h2>
+              <h2 className={styles.serifTitle}><MarkdownDisplay markdown={aboutContent.our_story_title} /></h2>
               <div className={styles.accentBar} />
-              <p className={styles.pLead}>{aboutContent.our_story_p1}</p>
-              <p className={styles.pBody}>{aboutContent.our_story_p2}</p>
+              <div className={styles.pLead}><MarkdownDisplay markdown={aboutContent.our_story_p1} /></div>
+              <div className={styles.pBody}><MarkdownDisplay markdown={aboutContent.our_story_p2} /></div>
             </motion.div>
 
             <motion.div 
@@ -130,8 +138,8 @@ const About = () => {
           viewport={{ margin: "-100px" }}
         >
           <FaDove className={styles.missionIcon} />
-          <h2 className={styles.missionTitle}>{aboutContent.our_mission_title}</h2>
-          <p className={styles.missionText}>{aboutContent.our_mission_p1}</p>
+          <h2 className={styles.missionTitle}><MarkdownDisplay markdown={aboutContent.our_mission_title} /></h2>
+          <div className={styles.missionText}><MarkdownDisplay markdown={aboutContent.our_mission_p1} /></div>
           <div className={styles.missionDivider} />
         </motion.div>
       </section>
@@ -161,13 +169,13 @@ const About = () => {
             <motion.div whileHover={{ y: -10 }} className={styles.bentoCard}>
               <Globe className={styles.bentoIcon} />
               <h3>Our Outreach</h3>
-              <p>{aboutContent.digital_age_p1}</p>
+              <div><MarkdownDisplay markdown={aboutContent.digital_age_p1} /></div>
             </motion.div>
 
             <motion.div whileHover={{ y: -10 }} className={`${styles.bentoCard} ${styles.wide} ${styles.ctaBackground}`}>
               <div className={styles.ctaContent}>
-                <h3>{aboutContent.join_us_title}</h3>
-                <p>{aboutContent.join_us_p1}</p>
+                <h3><MarkdownDisplay markdown={aboutContent.join_us_title} /></h3>
+                <div><MarkdownDisplay markdown={aboutContent.join_us_p1} /></div>
                 <button className={styles.modernButton}>
                   Start Your Journey <ArrowRight size={18} />
                 </button>
