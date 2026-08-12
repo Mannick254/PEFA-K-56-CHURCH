@@ -61,7 +61,12 @@ const Events = () => {
 
   return (
     <div className={styles.container}>
-      <Seo title="Events" description="Stay up to date with the latest events at PEFA Kawangware 56." />
+      <Seo 
+        title="Events" 
+        description="Stay up to date with the latest events at PEFA Kawangware 56."
+        url="/events"
+        type="website"
+      />
       
       <header className={styles.header}>
         <h1 className={styles.title}>Church Events</h1>

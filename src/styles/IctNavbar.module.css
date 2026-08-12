@@ -1,0 +1,296 @@
+/* ==========================================
+   THEME VARIABLES (Scoped to Navbar)
+   ========================================== */
+   .navbar {
+    --nav-bg: #0f172a; /* Dark slate solid */
+    --nav-bg-solid: #0f172a;
+    --nav-text: #f8fafc;
+    --nav-text-muted: #94a3b8;
+    --nav-accent: #3b82f6; /* Modern crisp blue */
+    --nav-accent-hover: #2563eb;
+    --nav-border: rgba(255, 255, 255, 0.08);
+    --nav-height: 76px;
+    --nav-height-scrolled: 64px;
+    --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--nav-height);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    background: var(--nav-bg-solid);
+    border-bottom: 1px solid var(--nav-border);
+    transition:
+      height var(--transition-smooth),
+      background-color var(--transition-smooth),
+      border-color var(--transition-smooth),
+      box-shadow var(--transition-smooth);
+  }
+  
+  /* Scrolled state */
+  .navbar.scrolled {
+    height: var(--nav-height-scrolled);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* ==========================================
+     CONTAINER & BRAND
+     ========================================== */
+  .navContainer {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .navbarBrand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: var(--nav-text);
+    z-index: 1001; /* Keeps logo above mobile drawer */
+  }
+  
+  .logo {
+    height: 38px;
+    width: auto;
+    transition: transform var(--transition-smooth);
+  }
+  
+  .navbarBrand:hover .logo {
+    transform: scale(1.05);
+  }
+  
+  .brandText {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+  }
+  
+  .brandMain {
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--nav-text);
+  }
+  
+  .brandSub {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--nav-accent);
+    text-transform: uppercase;
+  }
+  
+  /* ==========================================
+     MODERN MOBILE TOGGLE BUTTON (HAMBURGER)
+     ========================================== */
+  .menuToggle {
+    display: none; /* Hidden on desktop */
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    padding: 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 6px; /* Space between bars */
+    z-index: 1001;
+    transition: background-color var(--transition-smooth), border-color var(--transition-smooth);
+  }
+  
+  .menuToggle:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .bar {
+    width: 22px;
+    height: 2px;
+    background-color: var(--nav-text);
+    border-radius: 4px;
+    transition: transform 0.3s cubic-bezier(0.68, -0.6, 0.32, 1.6),
+                opacity 0.2s ease,
+                width 0.3s ease;
+    transform-origin: center;
+  }
+  
+  /* Asymmetric touch on normal state for a modern tech feel */
+  .menuToggle:not(.toggleActive):hover .bar:nth-child(2) {
+    width: 16px;
+  }
+  
+  /* MORPH TO "X" STATE */
+  .toggleActive .bar:nth-child(1) {
+    /* 2px bar + 6px gap = 8px downward shift + 45 deg rotation */
+    transform: translateY(8px) rotate(45deg);
+  }
+  
+  .toggleActive .bar:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  
+  .toggleActive .bar:nth-child(3) {
+    /* 8px upward shift + -45 deg rotation */
+    transform: translateY(-8px) rotate(-45deg);
+  }
+  
+  /* ==========================================
+     DESKTOP NAVIGATION
+     ========================================== */
+  .navMenu {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navList {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .navLink {
+    position: relative;
+    text-decoration: none;
+    color: var(--nav-text-muted);
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 0.5rem 0;
+    transition: color var(--transition-smooth);
+  }
+  
+  .navLink:hover,
+  .navLink.active {
+    color: var(--nav-text);
+  }
+  
+  /* Animated Underline Indicator */
+  .activeIndicator {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--nav-accent);
+    border-radius: 2px;
+    box-shadow: 0 0 8px var(--nav-accent);
+  }
+  
+  /* CTA Button */
+  .ctaButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem 1.25rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: #ffffff;
+    background: var(--nav-accent);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.25);
+    transition:
+      background-color var(--transition-smooth),
+      transform 0.15s ease,
+      box-shadow var(--transition-smooth);
+  }
+  
+  .ctaButton:hover {
+    background: var(--nav-accent-hover);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
+    transform: translateY(-1px);
+  }
+  
+  .ctaButton:active {
+    transform: translateY(1px);
+  }
+  
+  /* ==========================================
+     MOBILE RESPONSIVE STYLES (Max Width: 768px)
+     ========================================== */
+  @media (max-width: 768px) {
+    .menuToggle {
+      display: flex;
+    }
+  
+    .navMenu {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 1rem;
+      right: 1rem;
+      background: var(--nav-bg-solid);
+      border: 1px solid var(--nav-border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      
+      /* Hide by default using smooth transitions */
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-12px) scale(0.98);
+      transition:
+        opacity var(--transition-smooth),
+        transform var(--transition-smooth),
+        visibility var(--transition-smooth);
+    }
+  
+    /* Active Menu Dropdown Card */
+    .navMenu.menuOpen {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+  
+    .navList {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.5rem;
+    }
+  
+    .navLink {
+      display: block;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      font-size: 1rem;
+      background: transparent;
+    }
+  
+    .navLink:hover,
+    .navLink.active {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--nav-text);
+    }
+  
+    /* Remove desktop absolute bottom indicator on mobile */
+    .activeIndicator {
+      display: none;
+    }
+  
+    /* Make CTA Button Full Width on Mobile */
+    .ctaWrapper {
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--nav-border);
+    }
+  
+    .ctaButton {
+      width: 100%;
+      padding: 0.8rem 1.25rem;
+      font-size: 1rem;
+    }
+  }

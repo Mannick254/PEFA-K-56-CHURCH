@@ -9,138 +9,136 @@ const Hero = () => {
   const [heroData, setHeroData] = useState({
     title: "THEME OF THE YEAR 2026",
     subtitle: "ABIDING IN CHRIST (John 15:4)",
-    image_url: 'https://res.cloudinary.com/dtcb3ffnv/image/upload/v1779698892/PK56_uh2j35.jpg',
+    image_url: '',
     cta_primary_text: 'About Us',
     cta_primary_link: '/about',
     cta_secondary_text: 'Watch Online',
     cta_secondary_link: '/sermons'
   });
-  const [isLoading, setIsLoading] = useState(true);
-  const containerRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
 
+  const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"]
   });
 
-  // Parallax and fade effects
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Parallax and Fade effects
   const yImage = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const opacityText = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const scaleText = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
+  const opacityContent = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+  const scaleContent = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
 
   useEffect(() => {
-    const fetchHeroData = async () => {
+    async function fetchHero() {
       try {
-        const { data } = await supabase.from('hero').select('*').eq('published', true).single();
+        const { data, error } = await supabase.from('hero').select('*').eq('published', true).single();
         if (data) setHeroData(prev => ({ ...prev, ...data }));
       } catch (err) {
-        console.error('Error fetching hero:', err);
-      } finally {
-        setTimeout(() => setIsLoading(false), 800); 
+        console.error("Error fetching hero:", err);
       }
-    };
-    fetchHeroData();
+    }
+    fetchHero();
   }, []);
 
   const containerVariants = {
-    visible: { transition: { staggerChildren: 0.15 } }
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.15, delayChildren: 0.3 }
+    }
   };
 
-  const wordMaskVariants = {
-    hidden: { y: "115%" },
-    visible: { 
-      y: 0, 
-      transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } 
+  const itemVariants = {
+    hidden: { y: 30, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] }
     }
   };
 
   return (
     <section ref={containerRef} className={styles.heroContainer}>
-      {/* Background Media Layer */}
+      {/* Background Layer */}
       <div className={styles.heroMedia}>
         <motion.div style={{ y: yImage }} className={styles.imageWrapper}>
-          <img src={heroData.image_url} alt="" aria-hidden="true" className={styles.heroImg} />
+          {heroData.image_url ? (
+            <img
+              src={heroData.image_url}
+              alt="Hero Background"
+              fetchPriority="high"
+              className={styles.heroImg}
+            />
+          ) : (
+            <div className={styles.placeholderBg} />
+          )}
           <div className={styles.overlayGradient} />
         </motion.div>
       </div>
 
-      {/* Main Content Layer */}
-      <div className={styles.contentWrapper}>
-        <AnimatePresence mode="wait">
-          {isLoading ? (
-            <motion.div key="loader" exit={{ opacity: 0 }} className={styles.loaderContainer}>
-              <div className={styles.spinner} />
-            </motion.div>
-          ) : (
+      {/* Content Layer */}
+      <motion.div
+        style={{ opacity: opacityContent, scale: scaleContent }}
+        className={styles.contentWrapper}
+      >
+        <motion.div 
+          className={styles.heroContent}
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.div variants={itemVariants} className={styles.heroBadge}>
+            <Sparkles size={16} className={styles.goldIcon} />
+            <span>A PLACE TO BELONG & GROW</span>
+          </motion.div>
+
+          <motion.h1 variants={itemVariants} className={styles.heroDisplayTitle}>
+            {heroData.title}
+          </motion.h1>
+
+          <motion.p variants={itemVariants} className={styles.heroLeadText}>
+            {heroData.subtitle}
+          </motion.p>
+
+          <motion.div variants={itemVariants} className={styles.heroButtonGroup}>
+            <Link to={heroData.cta_primary_link} className={styles.btnPrimary}>
+              <span>{heroData.cta_primary_text}</span>
+              <MoveRight size={20} />
+            </Link>
+
+            <Link to={heroData.cta_secondary_link} className={styles.btnOutline}>
+              <PlayCircle size={20} />
+              <span>{heroData.cta_secondary_text}</span>
+            </Link>
+          </motion.div>
+        </motion.div>
+      </motion.div>
+
+      {/* Scroll Indicator */}
+      {!isMobile && (
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2 }}
+          className={styles.scrollIndicator}
+        >
+          <div className={styles.mouse}>
             <motion.div 
-              key="content"
-              style={{ opacity: opacityText, scale: scaleText }} 
-              className={styles.heroContent}
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              {/* Badge */}
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className={styles.heroBadge}
-              >
-                <Sparkles size={14} className={styles.goldIcon} />
-                <span>A PLACE TO BELONG & GROW</span>
-              </motion.div>
-              
-              {/* Title with Split Text Effect */}
-              <h1 className={styles.heroDisplayTitle}>
-                {heroData.title.split(" ").map((word, i) => (
-                  <span key={i} className={styles.wordOverflow}>
-                    <motion.span variants={wordMaskVariants} className={styles.wordInner}>
-                      {word}&nbsp;
-                    </motion.span>
-                  </span>
-                ))}
-              </h1>
-
-              {/* Subtitle */}
-              <motion.p 
-                variants={{
-                  hidden: { opacity: 0, filter: "blur(10px)" },
-                  visible: { opacity: 1, filter: "blur(0px)", transition: { duration: 1 } }
-                }}
-                className={styles.heroLeadText}
-              >
-                {heroData.subtitle}
-              </motion.p>
-
-              {/* Action Buttons */}
-              <motion.div 
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
-                }}
-                className={styles.heroButtonGroup}
-              >
-                <Link to={heroData.cta_primary_link} className={styles.btnPrimary}>
-                  <span>{heroData.cta_primary_text}</span>
-                  <MoveRight size={20} className={styles.btnIcon} />
-                </Link>
-
-                <Link to={heroData.cta_secondary_link} className={styles.btnOutline}>
-                  <PlayCircle size={20} className={styles.btnIcon} /> 
-                  <span>{heroData.cta_secondary_text}</span>
-                </Link>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-
-      {/* Scroll Indicator (Desktop Only) */}
-      <div className={styles.scrollIndicator}>
-        <div className={styles.mouse}>
-          <div className={styles.wheel} />
-        </div>
-      </div>
+              animate={{ y: [0, 10, 0] }}
+              transition={{ repeat: Infinity, duration: 1.5 }}
+              className={styles.wheel} 
+            />
+          </div>
+          <span className={styles.scrollText}>Scroll to explore</span>
+        </motion.div>
+      )}
     </section>
   );
 };

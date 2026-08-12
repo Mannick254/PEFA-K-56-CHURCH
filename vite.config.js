@@ -112,7 +112,7 @@ export default defineConfig({
       }
     }),
     // Optional: bundle analyzer
-    visualizer({ filename: 'stats.html', template: 'treemap' })
+    visualizer({ filename: 'stats.html', template: 'treemap' }),
   ],
   resolve: {
     alias: {
@@ -129,7 +129,6 @@ export default defineConfig({
     sourcemap: false,
     chunkSizeWarningLimit: 2000,
     rollupOptions: {
-      external: ['puppeteer', 'puppeteer-core', 'cosmiconfig'], // ✅ exclude Node-only libs
       output: {
         manualChunks: {
           react: ['react', 'react-dom'],

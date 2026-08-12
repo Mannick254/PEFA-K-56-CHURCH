@@ -30,7 +30,7 @@
     {
       "name": "Sermons",
       "short_name": "Sermons",
-      "description": "Listen to the latest sermons",
+      "description": "Access a rich library of sermons from PEFA Kawangware 56 Church. Listen to inspiring messages, biblical teachings, and uplifting worship to deepen your faith and understanding of God's Word.",
       "url": "/sermons",
       "icons": [
         {
@@ -42,7 +42,7 @@
     {
       "name": "Events",
       "short_name": "Events",
-      "description": "View upcoming church events",
+      "description": "Stay connected with the PEFA Kawangware 56 Church community by exploring our upcoming events. From special services and workshops to community outreach and fellowship gatherings, there's always a way to get involved.",
       "url": "/events",
       "icons": [
         {
@@ -54,7 +54,7 @@
     {
       "name": "Prayers",
       "short_name": "Prayers",
-      "description": "Post and view prayer requests",
+      "description": "Join our prayer community. Share your prayer requests, intercede for others, and witness the power of collective prayer. A place for support, hope, and encouragement.",
       "url": "/prayers",
       "icons": [
         {

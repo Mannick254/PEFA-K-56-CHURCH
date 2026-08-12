@@ -1,0 +1,164 @@
+.givePage {
+  background-color: #f8fafc;
+}
+
+.hero {
+  background: linear-gradient(rgba(17, 24, 39, 0.7), rgba(17, 24, 39, 0.7)), url('https://images.unsplash.com/photo-1579361376326-b33a571d3igh?auto=format&fit=crop&w=1950&q=80') no-repeat center center/cover;
+  padding: 6rem 1.5rem;
+  text-align: center;
+  color: white;
+}
+
+.heroContent h1 {
+  font-family: 'Lora', serif;
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.heroContent p {
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 0 auto;
+  opacity: 0.9;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+.intro {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.intro h2 {
+  font-family: 'Lora', serif;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #111827;
+}
+
+.intro p {
+  font-size: 1.1rem;
+  color: #4b5563;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.waysToGive {
+  margin-bottom: 4rem;
+}
+
+.waysToGive h2 {
+  font-family: 'Lora', serif;
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  color: #111827;
+}
+
+.giveGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.giveCard {
+  background: #fff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e5e7eb;
+}
+
+.giveCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.08);
+}
+
+.cardIcon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  color: #fff;
+  font-size: 1.8rem;
+}
+.cardIcon.mpesa { background-color: #e53e3e; }
+.cardIcon.bank { background-color: #3b82f6; }
+.cardIcon.person { background-color: #10b981; }
+
+.giveCard h3 {
+  font-family: 'Lora', serif;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #111827;
+}
+
+.giveCard p {
+  color: #6b7280;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.details {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 1rem;
+  font-size: 0.95rem;
+}
+
+.details hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 1rem 0;
+}
+
+.details p {
+  margin-bottom: 0.5rem;
+  color: #374151;
+}
+
+.details p:last-child {
+  margin-bottom: 0;
+}
+
+.thankYou {
+  background: #fff;
+  border-radius: 12px;
+  padding: 3rem;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+}
+
+.thankYou svg {
+  color: #3b82f6;
+  margin-bottom: 1rem;
+}
+
+.thankYou h2 {
+  font-family: 'Lora', serif;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.thankYou p {
+  color: #4b5563;
+  font-size: 1.1rem;
+}
+
+.thankYou a {
+  color: #3b82f6;
+  font-weight: 500;
+}

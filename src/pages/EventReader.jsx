@@ -68,7 +68,15 @@ const EventReader = () => {
 
   return (
     <div className={styles.pageWrapper}>
-      <Seo title={event.title} description={event.description} />
+      <Seo 
+        title={event.title} 
+        description={event.description}
+        url={`/event/${event.id}`}
+        type="event"
+        imageData={event.image_url}
+        location={event.location}
+        startDate={event.date}
+      />
       
       <div className={styles.topNav}>
         <Breadcrumb paths={[{ name: 'Events', path: '/events' }, { name: event.title }]} />

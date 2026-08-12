@@ -1,0 +1,100 @@
+.wrapper {
+    padding: 80px 5%;
+    background-color: #ffffff;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+
+    @media (min-width: 768px) {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.ctaCard {
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.ctaCard:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.iconWrapper {
+    margin-bottom: 20px;
+    display: inline-block;
+    padding: 18px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.cardTitle {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+}
+
+.cardDescription {
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 24px;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ctaButton {
+    display: inline-block;
+    padding: 12px 28px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+/* Give Card Specifics */
+.giveCard {
+    background-color: #fff4e6;
+    color: #8a5a2b;
+}
+
+.giveCard .iconWrapper {
+    background-color: rgba(138, 90, 43, 0.1);
+}
+
+.giveCard .ctaButton {
+    background-color: #8a5a2b;
+    color: #fff;
+}
+
+.giveCard .ctaButton:hover {
+    background-color: #6b4620;
+}
+
+/* Connect Card Specifics */
+.connectCard {
+    background-color: #e6f7ff;
+    color: #1d6a96;
+}
+
+.connectCard .iconWrapper {
+    background-color: rgba(29, 106, 150, 0.1);
+}
+
+.connectCard .ctaButton {
+    background-color: #1d6a96;
+    color: #fff;
+}
+
+.connectCard .ctaButton:hover {
+    background-color: #144a69;
+}

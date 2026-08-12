@@ -1,4 +1,3 @@
-
 :root {
   --primary: #a78bfa;
   --primary-dark: #8b5cf6;
@@ -238,6 +237,16 @@
   100% { background-position: -200% 0; }
 }
 
+/* --- MOBILE CAROUSEL --- */
+.mobileCarousel {
+  display: none; /* Hidden by default */
+  position: relative;
+  width: 100%;
+  height: 450px; /* Adjust as needed */
+  overflow: hidden;
+}
+
+
 /* Responsive */
 @media (max-width: 768px) {
   .header {
@@ -248,4 +257,16 @@
   .desktopViewAll { display: none; }
   .mobileViewAll { display: block; }
   .title { font-size: 2rem; }
+  
+  .grid {
+    display: none; /* Hide grid on mobile */
+  }
+
+  .mobileCarousel {
+    display: block; /* Show carousel on mobile */
+  }
+  
+  .imageWrapper {
+    aspect-ratio: 16 / 10; /* Wider cards for mobile scrolling */
+  }
 }

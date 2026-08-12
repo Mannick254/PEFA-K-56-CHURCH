@@ -152,7 +152,16 @@ const SermonReader = () => {
 
   return (
     <div className={styles.readerContainer}>
-      <Seo title={sermon.title} description={sermon.content.substring(0, 160)} />
+      <Seo 
+        title={sermon.title} 
+        description={sermon.content.substring(0, 160)} 
+        url={`/sermons/${sermon.id}`}
+        type="article"
+        imageData={sermon.image_url}
+        author={sermon.preacher}
+        datePublished={sermon.date}
+        dateModified={sermon.date}
+      />
       
       {/* Reading Progress Bar */}
       <div className={styles.progressBar} style={{ width: `${readingProgress}%` }} />

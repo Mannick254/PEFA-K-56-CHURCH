@@ -1,217 +1,170 @@
 .wrapper {
-    padding: 120px 5%;
-    background-color: #ffffff;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .container {
-    max-width: 1250px;
+    padding: 60px 5%;
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.container {
+    max-width: 1100px;
     margin: 0 auto;
-  }
-  
-  .editorialLayout {
+}
+
+.editorialLayout {
     display: grid;
-    grid-template-columns: 1fr 1.6fr;
-    gap: 100px;
-    align-items: start;
-  }
-  
-  /* Info Column (Left) */
-  .infoColumn {
-    position: sticky;
-    top: 120px;
-  }
-  
-  .badge {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    align-items: center;
+
+    @media (min-width: 768px) {
+        grid-template-columns: 1fr 1.2fr;
+        gap: 60px;
+    }
+}
+
+.infoColumn {
+    text-align: center;
+    @media (min-width: 768px) {
+        text-align: left;
+    }
+}
+
+.badge {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: #f8fafc;
     padding: 8px 16px;
-    border-radius: 50px;
-    font-size: 0.75rem;
-    font-weight: 800;
-    color: #D4AF37;
-    letter-spacing: 2px;
-    margin-bottom: 25px;
-    border: 1px solid #e2e8f0;
-  }
-  
-  .flameIcon {
-    color: #ef4444; /* Spiritual fire accent */
-  }
-  
-  .title {
-    font-size: 3.8rem;
-    line-height: 1;
-    color: #1a1a1a;
-    margin-bottom: 25px;
-    font-family: 'Instrument Serif', serif;
-  }
-  
-  .title span {
-    display: block;
-    color: #64748b;
-    font-style: italic;
-  }
-  
-  .description {
-    font-size: 1.15rem;
+    background-color: #e9ecef;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #8a795d;
+    margin-bottom: 1.5rem;
+}
+
+.flameIcon {
+    color: #d9534f;
+}
+
+.title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: #212529;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+
+    @media (min-width: 768px) {
+        font-size: 2.4rem;
+    }
+}
+
+.title span {
+    color: #8a795d;
+}
+
+.description {
+    color: #6c757d;
     line-height: 1.7;
-    color: #475569;
-    margin-bottom: 40px;
-    max-width: 400px;
-  }
-  
-  .mainCta {
+    max-width: 450px;
+    margin: 0 auto 2rem auto;
+
+    @media (min-width: 768px) {
+        margin: 0 0 2rem 0;
+    }
+}
+
+.mainCta {
     display: inline-flex;
     align-items: center;
-    gap: 12px;
-    font-weight: 700;
-    color: #1a1a1a;
-    text-decoration: none;
-    padding: 14px 28px;
-    border: 1.5px solid #1a1a1a;
-    border-radius: 50px;
-    transition: 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-  
-  .mainCta:hover {
-    background: #1a1a1a;
+    gap: 8px;
+    background: #8a795d;
     color: #fff;
-    transform: translateX(5px);
-  }
-  
-  /* Feed Column (Right) */
-  .feedColumn {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .prayerRow {
-    padding: 50px 0;
-    border-bottom: 1px solid #f1f5f9;
-    transition: 0.3s ease;
-  }
-  
-  .prayerRow:first-child {
-    padding-top: 0;
-  }
-  
-  .rowHeader {
+    padding: 12px 24px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.mainCta:hover {
+    background-color: #212529;
+    transform: translateY(-2px);
+}
+
+.feedColumn {
+    width: 100%;
+}
+
+.loadingState, .noPrayerState {
+    text-align: center;
+    padding: 30px;
+    font-style: italic;
+    color: #6c757d;
+}
+
+.prayerRow {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+    border: 1px solid #dee2e6;
+}
+
+.rowHeader {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 15px;
-  }
-  
-  .prayerTitle {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #1a1a1a;
-    letter-spacing: -0.02em;
-  }
-  
-  .date {
-    font-size: 0.85rem;
-    color: #94a3b8;
-    font-weight: 600;
-  }
-  
-  .requestText {
-    font-size: 1.2rem;
-    line-height: 1.8;
-    color: #64748b;
-    font-style: italic;
-    margin-bottom: 25px;
-    font-family: 'Inter', sans-serif;
-    letter-spacing: -0.01em;
-  }
-  
-  .rowActions {
-    display: flex;
     align-items: center;
-    gap: 25px;
-  }
-  
-  .amenAction {
+    margin-bottom: 1rem;
+}
+
+.prayerTitle {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #343a40;
+}
+
+.date {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.requestText {
+    color: #495057;
+    font-style: italic;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+.rowActions {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.amenAction {
+    display: inline-flex;
     align-items: center;
     gap: 8px;
     background: none;
-    border: none;
-    color: #D4AF37;
-    font-weight: 700;
-    font-size: 0.9rem;
+    border: 1px solid #d9534f;
+    color: #d9534f;
+    padding: 8px 16px;
+    border-radius: 20px;
     cursor: pointer;
-    padding: 0;
-    transition: 0.2s;
-  }
-  
-  .amenAction:hover {
-    color: #1a1a1a;
-    transform: scale(1.05);
-  }
-  
-  .intercessionTag {
-    display: flex;
+    transition: all 0.3s ease;
+}
+
+.amenAction:hover {
+    background: #d9534f;
+    color: #fff;
+}
+
+.intercessionTag {
+    display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 0.75rem;
-    color: #94a3b8;
-    text-transform: uppercase;
-    font-weight: 700;
-    letter-spacing: 1px;
-  }
-  
-  /* Loading State */
-  .loadingState {
-    font-family: 'Instrument Serif', serif;
-    font-size: 2rem;
-    color: #cbd5e1;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 1100px) {
-    .editorialLayout {
-      grid-template-columns: 1fr;
-      gap: 60px;
-    }
-  
-    .infoColumn {
-      position: static;
-      text-align: center;
-    }
-  
-    .description {
-      max-width: 100%;
-    }
-  
-    .title {
-      font-size: 3rem;
-    }
-  }
-  
-  @media (max-width: 600px) {
-    .title {
-      font-size: 2.5rem;
-    }
-  
-    .prayerTitle {
-      font-size: 1.2rem;
-    }
-  
-    .requestText {
-      font-size: 1.05rem;
-    }
-  
-    .rowHeader {
-      flex-direction: column;
-      gap: 5px;
-    }
-  
-    .wrapper {
-      padding: 70px 5%;
-    }
-  }
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #28a745;
+}

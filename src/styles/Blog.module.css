@@ -1,0 +1,170 @@
+/* src/styles/Blog.module.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
+
+.blogPage {
+  background-color: #f8fafc;
+  font-family: 'Inter', sans-serif;
+  padding: 40px 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* --- Blog Header --- */
+.header {
+  text-align: center;
+  margin-bottom: 60px;
+  padding: 40px 20px;
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://res.cloudinary.com/dtcb3ffnv/image/upload/v1781692303/IMG_20260609_194629_lmtpxr.jpg') no-repeat center center/cover;
+  border-radius: 16px;
+}
+
+.header h1 {
+  font-family: 'Lora', serif;
+  font-size: 3.5rem;
+  color: #fff;
+  font-weight: 700;
+  margin: 0;
+  text-shadow: 1px 1px 10px rgba(0,0,0,0.3);
+}
+
+.header p {
+  font-size: 1.25rem;
+  color: rgba(255,255,255,0.85);
+  max-width: 600px;
+  margin: 10px auto 0;
+}
+
+/* --- Featured Post --- */
+.featuredPost {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+  margin-bottom: 80px;
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+}
+
+.featuredImageWrapper {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.featuredImageWrapper img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.featuredContent .category {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #6366f1;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.featuredContent h2 {
+  font-family: 'Lora', serif;
+  font-size: 2.5rem;
+  margin: 0 0 15px 0;
+  line-height: 1.2;
+}
+
+.featuredContent .excerpt {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 25px;
+}
+
+.authorInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.authorInfo img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+/* --- Post Grid --- */
+.sectionTitle {
+  font-family: 'Lora', serif;
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 40px;
+  color: #333;
+}
+
+.postGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 30px;
+}
+
+.postCard {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+}
+
+.postCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.07);
+}
+
+.postCardImage {
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+}
+
+.postCardContent {
+  padding: 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.postCardContent .category {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #6366f1;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.postCardContent h3 {
+  font-family: 'Lora', serif;
+  font-size: 1.4rem;
+  margin: 0 0 10px 0;
+  line-height: 1.3;
+  flex-grow: 1;
+}
+
+.postCardMeta {
+  font-size: 0.8rem;
+  color: #777;
+  margin-top: auto;
+}

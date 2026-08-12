@@ -75,6 +75,7 @@ const Sidebar = ({ isMobileView, isCollapsed, isMobileOpen, toggleSidebar, toggl
         { to: "/admin/home-page", label: "Home Layout", icon: <FaHome /> },
         { to: "/admin/hero-admin", label: "Hero Admin", icon: <FaHome /> },
         { to: "/admin/sermons", label: "Sermon Library", icon: <FaBook /> },
+        { to: "/admin/blog", label: "Blog", icon: <FaBook /> },
         { to: "/admin/events", label: "Events Manager", icon: <FaCalendarAlt /> },
         { to: "/admin/prayers", label: "Prayer Wall", icon: <FaPray /> },
         { to: "/admin/statement-of-faith", label: "Faith Statement", icon: <FaFileAlt /> },

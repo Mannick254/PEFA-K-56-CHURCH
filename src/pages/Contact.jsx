@@ -7,7 +7,12 @@ import Seo from '../components/Seo';
 const Contact = () => {
   return (
     <div className={styles.contactPage}>
-        <Seo title="Contact Us" description="Get in touch with PEFA Kawangware 56. We'd love to hear from you."/>
+        <Seo 
+            title="Contact Us" 
+            description="Get in touch with PEFA Kawangware 56. We'd love to hear from you."
+            url="/contact"
+            type="website"
+        />
       <header className={styles.header}>
         <h1>Get in Touch</h1>
         <p>We'd love to hear from you. Whether you have a question, a prayer request, or just want to say hello, feel free to reach out.</p>

@@ -87,6 +87,8 @@ const Footer = () => {
               <li><Link to="/contact">Contact Us</Link></li>
               <li><Link to="/k56-gallery">Gallery</Link></li>
               <li><Link to="/live">Live page</Link></li>
+              <li><Link to="/give">Give</Link></li>
+              <li><Link to="/blog">Blog</Link></li>
             </ul>
           </motion.div>
           
@@ -105,6 +107,7 @@ const Footer = () => {
             <ul className={styles.linkList}>
               <li><Link to="/terms">Terms of Service</Link></li>
               <li><Link to="/privacy">Privacy Policy</Link></li>
+              <li><Link to="/ict-team">ICT Team</Link></li>
             </ul>
           </motion.div>
         </motion.div>
@@ -119,7 +122,7 @@ const Footer = () => {
                     &copy; {currentYear} PEFA Kawangware 56. All Rights Reserved.
                 </motion.p>
                 <motion.p className={styles.designCredit} variants={fadeInChild}>
-                    Designed by <a href="#" target="_blank" rel="noopener noreferrer">PEFAK56 ICT TEAM</a>
+                    Designed by <Link to="/ict-team">PEFAK56 ICT TEAM</Link>
                 </motion.p>
             </div>
           <motion.div className={styles.socialIcons} variants={fadeInChild}>

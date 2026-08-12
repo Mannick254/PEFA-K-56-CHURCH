@@ -1,13 +1,14 @@
-
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, MapPin, ArrowRight, Clock } from 'lucide-react';
 import styles from '../styles/UpcomingEvents.module.css';
 
 const UpcomingEvents = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     const fetchUpcomingEvents = async () => {
@@ -32,6 +33,16 @@ const UpcomingEvents = () => {
 
     fetchUpcomingEvents();
   }, []);
+  
+    useEffect(() => {
+    if (events.length > 0) {
+      const timer = setTimeout(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % events.length);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [currentIndex, events]);
+
 
   const formatDate = (dateString) => {
     if (!dateString) {
@@ -60,6 +71,22 @@ const UpcomingEvents = () => {
     
     return date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
   };
+  
+  const mobileCardVariants = {
+    enter: {
+      x: '100%',
+      opacity: 0
+    },
+    center: {
+      x: 0,
+      opacity: 1
+    },
+    exit: {
+      x: '-100%',
+      opacity: 0
+    }
+  };
+
 
   if (loading) {
     return (
@@ -138,6 +165,67 @@ const UpcomingEvents = () => {
           );
         })}
       </div>
+      
+      <div className={styles.mobileCarousel}>
+        <AnimatePresence initial={false} custom={currentIndex}>
+          <motion.div
+            key={currentIndex}
+            variants={mobileCardVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+          >
+            {events[currentIndex] &&
+              (() => {
+                const event = events[currentIndex];
+                const { day, month, fullDate } = formatDate(event.date);
+                const time = formatTime(event.date);
+                return (
+                  <Link to={`/event/${event.id}`} key={event.id} className={styles.card}>
+                    <div className={styles.imageWrapper}>
+                      <img 
+                        src={event.image_url || 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80'} 
+                        alt={event.title} 
+                        className={styles.image}
+                      />
+                      <div className={styles.dateOverlay}>
+                        <span className={styles.dateDay}>{day}</span>
+                        <span className={styles.dateMonth}>{month}</span>
+                      </div>
+                    </div>
+                    <div className={styles.content}>
+                      <h3 className={styles.eventTitle}>{event.title}</h3>
+                      <div className={styles.meta}>
+                        <div className={styles.metaItem}>
+                          <Calendar size={14} className={styles.icon} />
+                          <span>{fullDate}</span>
+                        </div>
+                        {time && (
+                          <div className={styles.metaItem}>
+                            <Clock size={14} className={styles.icon} />
+                            <span>{time}</span>
+                          </div>
+                        )}
+                        <div className={styles.metaItem}>
+                          <MapPin size={14} className={styles.icon} />
+                          <span className={styles.truncate}>{event.location}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className={styles.cardFooter}>
+                      <span className={styles.learnMore}>Event Details</span>
+                      <div className={styles.arrowCircle}>
+                        <ArrowRight size={16} />
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })()}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
 
       <div className={styles.mobileViewAll}>
         <Link to="/events" className={styles.viewAllButton}>

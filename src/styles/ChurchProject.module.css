@@ -1,0 +1,121 @@
+:root {
+    --primary: #2563eb;
+    --bg-light: #f8fafc;
+    --surface: #ffffff;
+    --text-main: #0f172a;
+    --text-dim: #64748b;
+    --glass-border: rgba(0, 0, 0, 0.1);
+    --font-family: "Inter", sans-serif;
+  }
+  
+  .projectSection {
+    padding: 80px 0;
+    background-color: var(--bg-light);
+    font-family: var(--font-family);
+    color: var(--text-main);
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+  
+  .subtitle {
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+  
+  .title {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    margin-top: 0;
+    line-height: 1.2;
+  }
+  
+  .description {
+    max-width: 700px;
+    margin: 20px auto 0;
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+  
+  .mainContent {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  
+  .imageContainer {
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+  }
+  
+  .projectImage {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+  }
+  
+  .textContainer {
+    padding: 20px;
+  }
+  
+  .subheading {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 24px;
+  }
+  
+  .goalList {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 30px 0;
+  }
+  
+  .goalList li {
+    position: relative;
+    padding-left: 30px;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 16px;
+  }
+  
+  .goalList li::before {
+    content: '\2713'; /* Checkmark icon */
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--primary);
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+  
+  .textContainer p {
+    font-size: 1rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+  
+  /* --- Responsive Design --- */
+  @media (max-width: 968px) {
+    .mainContent {
+      grid-template-columns: 1fr;
+    }
+    .textContainer {
+      order: -1; /* Move text above image on mobile */
+    }
+  }
+  

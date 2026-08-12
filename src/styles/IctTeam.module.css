@@ -1,0 +1,204 @@
+/* Variables for consistency */
+:root {
+    --primary-glow: #00d2ff;
+    --secondary-glow: #3a7bd5;
+    --bg-dark: #0a0b10;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --text-main: #f0f0f0;
+    --text-dim: #a0a0a0;
+  }
+  
+  .pageWrapper {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: 'Inter', -apple-system, sans-serif;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
+  
+  /* Hero Section with Animated Gradient Background */
+  .hero {
+    position: relative;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    background: radial-gradient(circle at 50% 50%, #1a1b25 0%, #0a0b10 100%);
+    overflow: hidden;
+  }
+  
+  /* Animated glow effect in the background */
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow));
+    opacity: 0.05;
+    animation: rotate 20s linear infinite;
+    z-index: 0;
+  }
+  
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  .heroContent {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+  }
+  
+  .badge {
+    background: rgba(0, 210, 255, 0.1);
+    color: var(--primary-glow);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid rgba(0, 210, 255, 0.2);
+  }
+  
+  .glitchTitle {
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    margin: 1.5rem 0;
+    background: linear-gradient(to right, #fff, #888);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 900;
+  }
+  
+  .heroSubtext {
+    font-size: 1.25rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+  }
+  
+  .heroSubtext span {
+    color: var(--primary-glow);
+    font-weight: 600;
+  }
+  
+  /* Buttons */
+  .ctaGroup {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+  }
+  
+  .primaryBtn {
+    background: var(--primary-glow);
+    color: #000;
+    padding: 12px 32px;
+    border-radius: 8px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .primaryBtn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 210, 255, 0.3);
+  }
+  
+  .secondaryBtn {
+    border: 1px solid var(--glass-border);
+    color: #fff;
+    padding: 12px 32px;
+    border-radius: 8px;
+    text-decoration: none;
+    backdrop-filter: blur(5px);
+    transition: background 0.3s ease;
+  }
+  
+  .secondaryBtn:hover {
+    background: var(--card-bg);
+  }
+  
+  /* Tech Stack Section */
+  .techStack {
+    padding: 4rem 2rem;
+    text-align: center;
+  }
+  
+  .techStack h3 {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 2rem;
+  }
+  
+  .stackGrid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    opacity: 0.6;
+  }
+  
+  .stackGrid span {
+    font-size: 1.5rem;
+    font-weight: 700;
+    filter: grayscale(100%);
+    transition: 0.3s;
+  }
+  
+  .stackGrid span:hover {
+    filter: grayscale(0%);
+    color: var(--primary-glow);
+    opacity: 1;
+  }
+  
+  /* Main Container Layout */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  
+  .section {
+    padding: 100px 0;
+  }
+  
+  /* Responsive Grid for Services/Projects */
+  /* Apply these classes in your child components */
+  .cardGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+  
+  /* Standard Glassmorphism Card Style */
+  .glassCard {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  
+  .glassCard:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: var(--primary-glow);
+  }
+  
+  /* Mobile Adjustments */
+  @media (max-width: 768px) {
+    .ctaGroup {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .glitchTitle {
+      font-size: 2.8rem;
+    }
+  }

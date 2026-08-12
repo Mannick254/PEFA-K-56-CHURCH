@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import { STATIC_MINISTRIES } from '../data/ministries';
 
-const ChurchDepartmentsSection = () => {
+const ChurchDepartmentsSection = ({ limit }) => {
   const [departments, setDepartments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -36,19 +36,19 @@ const ChurchDepartmentsSection = () => {
           };
         });
 
-        setDepartments(merged.slice(0, 4));
+        setDepartments(limit ? merged.slice(0, limit) : merged);
         setError(null);
       } catch (err) {
         console.error("Fetch error:", err);
         setError("Unable to load ministries at this moment.");
-        setDepartments(STATIC_MINISTRIES.slice(0, 4));
+        setDepartments(limit ? STATIC_MINISTRIES.slice(0, limit) : STATIC_MINISTRIES);
       } finally {
         setLoading(false);
       }
     };
 
     fetchDepartments();
-  }, []);
+  }, [limit]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -96,7 +96,7 @@ const ChurchDepartmentsSection = () => {
 
         {loading ? (
           <div className={styles.grid}>
-            {[...Array(4)].map((_, i) => (
+            {[...Array(limit || 4)].map((_, i) => (
               <div key={i} className={styles.skeletonCard}>
                 <div className={styles.skeletonImage} />
                 <div className={styles.skeletonLine} style={{ width: '70%' }} />

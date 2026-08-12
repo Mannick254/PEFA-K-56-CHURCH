@@ -22,10 +22,16 @@ const supabase = createClient(
 );
 
 async function createAdmin() {
+  // Check if required environment variables are set
+  if (!process.env.ADMIN_EMAIL || !process.env.ADMIN_PASSWORD) {
+    console.error('❌ Error: ADMIN_EMAIL and ADMIN_PASSWORD environment variables must be set.');
+    return;
+  }
+
   try {
     const { data, error } = await supabase.auth.signUp({
-      email: 'nicksonochieng64@gmail.com', // hidden email, used internally
-      password: 'PK56Tech@2026!',          // strong password
+      email: process.env.ADMIN_EMAIL,       // Use email from env vars
+      password: process.env.ADMIN_PASSWORD, // Use password from env vars
       options: {
         data: {
           username: 'PEFAK56',             // custom username

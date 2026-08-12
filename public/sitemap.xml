@@ -2,81 +2,129 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
-    <loc>https://pefa-k-56-church.vercel.app/-about</loc>
-    <lastmod>2026-07-18</lastmod>
+    <loc>https://www.pefak56church.top/about</loc>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pefa-k-56-church.vercel.app/-church-department</loc>
-    <lastmod>2026-07-18</lastmod>
+    <loc>https://www.pefak56church.top/academy</loc>
+    <lastmod>2026-07-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.pefak56church.top/academy-about</loc>
+    <lastmod>2026-07-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.pefak56church.top/blog</loc>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pefa-k-56-church.vercel.app/-connect</loc>
-    <lastmod>2026-07-18</lastmod>
+    <loc>https://www.pefak56church.top/church-department</loc>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pefa-k-56-church.vercel.app/-contact</loc>
-    <lastmod>2026-07-18</lastmod>
+    <loc>https://www.pefak56church.top/connect</loc>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pefa-k-56-church.vercel.app/-events</loc>
-    <lastmod>2026-07-18</lastmod>
+    <loc>https://www.pefak56church.top/contact</loc>
+    <lastmod>2026-07-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pefa-k-56-church.vercel.app/</loc>
-    <lastmod>2026-07-18</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://pefa-k-56-church.vercel.app/-jesus-lessons</loc>
-    <lastmod>2026-07-18</lastmod>
+    <loc>https://www.pefak56church.top/events</loc>
+    <lastmod>2026-07-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pefa-k-56-church.vercel.app/-k56-gallery</loc>
-    <lastmod>2026-07-18</lastmod>
+    <loc>https://www.pefak56church.top/give</loc>
+    <lastmod>2026-07-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pefa-k-56-church.vercel.app/-prayers</loc>
-    <lastmod>2026-07-18</lastmod>
+    <loc>https://www.pefak56church.top</loc>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pefa-k-56-church.vercel.app/-privacy</loc>
-    <lastmod>2026-07-18</lastmod>
+    <loc>https://www.pefak56church.top/jesus-lessons</loc>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pefa-k-56-church.vercel.app/-sermons</loc>
-    <lastmod>2026-07-18</lastmod>
+    <loc>https://www.pefak56church.top/k56-gallery</loc>
+    <lastmod>2026-08-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pefa-k-56-church.vercel.app/-statement-of-faith</loc>
-    <lastmod>2026-07-18</lastmod>
+    <loc>https://www.pefak56church.top/live</loc>
+    <lastmod>2026-07-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pefa-k-56-church.vercel.app/-terms</loc>
-    <lastmod>2026-07-18</lastmod>
+    <loc>https://www.pefak56church.top/prayers</loc>
+    <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.pefak56church.top/privacy</loc>
+    <lastmod>2026-07-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.pefak56church.top/sermons</loc>
+    <lastmod>2026-07-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.pefak56church.top/statement-of-faith</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.pefak56church.top/terms</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.pefak56church.top/academy/academics</loc>
+    <lastmod>2026-07-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.pefak56church.top/academy/admissions</loc>
+    <lastmod>2026-07-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.pefak56church.top/academy/contact</loc>
+    <lastmod>2026-07-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
 </urlset>

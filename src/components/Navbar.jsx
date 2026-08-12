@@ -60,8 +60,10 @@ const Navbar = () => {
     { name: 'Live', path: '/live' },
     { name: 'Sermons', path: '/sermons' },
     { name: 'Events', path: '/events' },
-    { name: 'Prayers', path: '/prayers' },
+    { name: 'Blog', path: '/blog' },
     { name: 'Ministries', path: '/church-department' },
+    { name: 'Give', path: '/give' },
+    { name: 'Academy', path: '/academy' },
   ];
 
   return (
@@ -115,6 +117,7 @@ const Navbar = () => {
                 <NavLink to="/about" onClick={closeAll}>About Us</NavLink>
                 <NavLink to="/contact" onClick={closeAll}>Contact</NavLink>
                 <NavLink to="/statement-of-faith" onClick={closeAll}>Faith</NavLink>
+                <NavLink to="/prayers" onClick={closeAll}>Prayers</NavLink>
               </div>
             </li>
 

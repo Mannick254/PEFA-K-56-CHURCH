@@ -1,0 +1,131 @@
+.pageHeader {
+    background: linear-gradient(rgba(17, 24, 39, 0.6), rgba(17, 24, 39, 0.6)), url('https://images.unsplash.com/photo-1543162837-ac54d89613f1?auto=format&fit=crop&w=1950&q=80') no-repeat center center/cover;
+    padding: 4rem 1.5rem;
+    text-align: center;
+    color: white;
+}
+
+.pageHeader h1 {
+    font-family: 'Lora', serif;
+    font-size: 2.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.pageHeader p {
+    font-size: 1.15rem;
+    max-width: 600px;
+    margin: 0 auto;
+    opacity: 0.9;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+}
+
+.curriculumOverview {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.curriculumOverview h2 {
+    font-family: 'Lora', serif;
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+    color: #111827;
+}
+
+.curriculumOverview p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    max-width: 800px;
+    margin: 0 auto;
+    color: #374151;
+}
+
+.programs h2 {
+    font-family: 'Lora', serif;
+    font-size: 2.2rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: #111827;
+}
+
+.programGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.programCard {
+    background-color: #fff;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.programCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.programCard h3 {
+    font-family: 'Lora', serif;
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+    color: #4f46e5;
+}
+
+.programCard p {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: #4b5563;
+}
+
+.extraCurricular {
+    background-color: #f9fafb;
+    padding: 3rem;
+    border-radius: 12px;
+}
+
+.extraCurricular h2 {
+    font-family: 'Lora', serif;
+    font-size: 2.2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #111827;
+}
+
+.extraCurricular p {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #374151;
+    margin-bottom: 2rem;
+}
+
+.extraCurricular ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.extraCurricular li {
+    background-color: #fff;
+    padding: 0.8rem 1.5rem;
+    border-radius: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+    font-weight: 500;
+    color: #4f46e5;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.extraCurricular li:hover {
+    background-color: #4f46e5;
+    color: #fff;
+}

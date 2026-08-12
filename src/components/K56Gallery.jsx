@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '../supabaseClient';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import { 
   Maximize2, X, Share2, Calendar, 
-  ChevronLeft, ChevronRight, Download, Info // Added Info icon
+  ChevronLeft, ChevronRight, Download, Copy, Check, Film, Image
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import styles from '../styles/K56Gallery.module.css';
@@ -11,164 +11,223 @@ import styles from '../styles/K56Gallery.module.css';
 const CATEGORIES = ['All', 'Events', 'Sunday Service', 'Special Programs', 'Outreach', 'Kids & Youth', 'Workshops', 'Community', 'Behind the Scenes', 'Testimonies'];
 
 const K56Gallery = ({ limit }) => {
-  const [images, setImages] = useState([]);
-  const [filteredImages, setFilteredImages] = useState([]);
+  const [media, setMedia] = useState([]);
+  const [filteredMedia, setFilteredMedia] = useState([]);
   const [activeCategory, setActiveCategory] = useState('All');
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    fetchImages();
-  }, []);
-
-  useEffect(() => {
-    setFilteredImages(activeCategory === 'All' ? images : images.filter(img => img.category === activeCategory));
-  }, [activeCategory, images]);
-
-  const fetchImages = async () => {
-    setIsLoading(true);
-    const { data, error } = await supabase.from('k56_gallery').select('*').order('created_at', { ascending: false });
-    if (error) console.error('Error:', error);
-    else setImages(data || []);
-    setIsLoading(false);
-  };
-
-  const nextImage = useCallback((e) => {
-    e?.stopPropagation();
-    setSelectedIndex(prev => (prev + 1) % filteredImages.length);
-  }, [filteredImages.length]);
-
-  const prevImage = useCallback((e) => {
-    e?.stopPropagation();
-    setSelectedIndex(prev => (prev - 1 + filteredImages.length) % filteredImages.length);
-  }, [filteredImages.length]);
-
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (selectedIndex === null) return;
-      if (e.key === 'ArrowRight') nextImage();
-      if (e.key === 'ArrowLeft') prevImage();
-      if (e.key === 'Escape') setSelectedIndex(null);
+    const fetchMedia = async () => {
+      setIsLoading(true);
+      try {
+        let query = supabase.from('k56_gallery').select('*').order('created_at', { ascending: false });
+        if (limit) query = query.limit(limit);
+        
+        const { data, error } = await query;
+        if (error) throw error;
+        setMedia(data || []);
+        setFilteredMedia(data || []);
+      } catch (err) {
+        console.error('Error:', err.message);
+      } finally {
+        setIsLoading(false);
+      }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedIndex, nextImage, prevImage]);
+    fetchMedia();
+  }, [limit]);
 
-  const handleShare = async (img) => {
-    try {
-      await navigator.share({ title: 'K56 Gallery', text: img.caption, url: img.image_url });
-    } catch {
-      navigator.clipboard.writeText(img.image_url);
+  useEffect(() => {
+    const filtered = activeCategory === 'All' 
+      ? media 
+      : media.filter(item => item.category === activeCategory);
+    setFilteredMedia(filtered);
+  }, [activeCategory, media]);
+
+  const nextItem = useCallback((e) => {
+    e?.stopPropagation();
+    setSelectedIndex(prev => (prev + 1) % filteredMedia.length);
+  }, [filteredMedia.length]);
+
+  const prevItem = useCallback((e) => {
+    e?.stopPropagation();
+    setSelectedIndex(prev => (prev - 1 + filteredMedia.length) % filteredMedia.length);
+  }, [filteredMedia.length]);
+
+  const handleShare = async (item) => {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: 'K56 Gallery', text: item.caption, url: item.image_url });
+      } catch (err) { console.log(err); }
+    } else {
+      navigator.clipboard.writeText(item.image_url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     }
   };
-
-  const handleDownload = (url, filename) => {
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
-  const displayImages = limit ? filteredImages.slice(0, limit) : filteredImages;
 
   return (
     <section className={styles.gallerySection}>
       <div className={styles.container}>
         <header className={styles.galleryHeader}>
-            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}>
-                <span className={styles.subtitle}>Moments & Milestones</span>
-                <h2 className={styles.title}>K56 Media Gallery</h2>
-            </motion.div>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <span className={styles.subtitle}>Moments & Milestones</span>
+            <h2 className={styles.title}>K56 Media Gallery</h2>
+          </motion.div>
+
+          <div className={styles.filterWrapper}>
             <div className={styles.filterBar}>
-                {CATEGORIES.map(cat => (
-                    <button 
-                        key={cat}
-                        className={`${styles.filterBtn} ${activeCategory === cat ? styles.active : ''}`}
-                        onClick={() => setActiveCategory(cat)}
-                        data-category={cat} // For CSS targeting
-                    >
-                        {cat}
-                    </button>
-                ))}
+              {CATEGORIES.map(cat => (
+                <button 
+                  key={cat}
+                  className={`${styles.filterBtn} ${activeCategory === cat ? styles.active : ''}`}
+                  onClick={() => setActiveCategory(cat)}
+                >
+                  {cat}
+                  {activeCategory === cat && (
+                    <motion.div layoutId="activeTab" className={styles.activeUnderline} />
+                  )}
+                </button>
+              ))}
             </div>
+          </div>
         </header>
 
         {isLoading ? (
-          <div className={styles.skeletonGrid}>
-            {[...Array(limit || 8)].map((_, i) => <div key={i} className={styles.skeletonCard} />)}
+          <div className={styles.imageGrid}>
+            {[...Array(limit || 8)].map((_, i) => (
+              <div key={i} className={`${styles.skeletonCard} ${styles.pulse}`} />
+            ))}
           </div>
         ) : (
-          <motion.div layout className={styles.imageGrid}>
-            <AnimatePresence mode='popLayout'>
-              {displayImages.map((image, index) => (
-                <motion.div 
-                  key={image.id} layout
-                  initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }} transition={{ duration: 0.3 }}
-                  className={styles.imageCard} onClick={() => setSelectedIndex(index)} >
-                  <div className={styles.imageWrapper}>
-                    <img src={image.image_url} alt={image.caption} loading="lazy" />
-                    <div className={styles.overlay}>
-                      <Maximize2 size={24} className={styles.maxIcon} />
-                      <div className={styles.overlayInfo}>
-                        <span className={styles.tag}>{image.category || 'General'}</span>
-                        <p>{image.caption}</p>
+          <LayoutGroup>
+            <motion.div layout className={styles.imageGrid}>
+              <AnimatePresence mode='popLayout'>
+                {filteredMedia.map((item, index) => (
+                  <motion.div 
+                    layout
+                    key={item.id}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.3 }}
+                    className={`${styles.imageCard} ${item.media_type === 'video' ? styles.videoCard : ''}`} 
+                    onClick={() => setSelectedIndex(index)} 
+                  >
+                    <div className={styles.imageWrapper}>
+                      {item.media_type === 'video' ? (
+                        <video 
+                          src={item.image_url} 
+                          muted 
+                          loop 
+                          playsInline 
+                          autoPlay 
+                          preload="metadata" 
+                          className={styles.mediaPreview} 
+                        />
+                      ) : (
+                        <img src={item.image_url} alt={item.caption} loading="lazy" />
+                      )}
+                      <div className={styles.overlay}>
+                        <div className={styles.overlayContent}>
+                          <span className={styles.tag}>{item.category}</span>
+                           <p className={styles.captionText}>{item.caption}</p>
+                           <div className={styles.mediaIcon}>
+                            {item.media_type === 'video' ? <Film size={20} /> : <Image size={20} />}
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </motion.div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </motion.div>
+          </LayoutGroup>
         )}
 
-        {limit && images.length > limit && (
+        {limit && media.length > limit && (
           <div className={styles.viewAllContainer}>
-            <Link to="/k56-gallery" className={styles.viewAllButton}>Explore Full Gallery</Link>
+            <Link to="/k56-gallery" className={styles.viewAllButton}>
+              Explore Full Gallery
+              <ChevronRight size={18} />
+            </Link>
           </div>
         )}
       </div>
 
-      {/* --- Enhanced Lightbox --- */}
+      {/* Modern Lightbox */}
       <AnimatePresence>
         {selectedIndex !== null && (
-          <motion.div className={styles.lightbox} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          <motion.div 
+            className={styles.lightbox}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
             <div className={styles.lightboxBackdrop} onClick={() => setSelectedIndex(null)} />
             
-            <motion.button className={`${styles.navBtn} ${styles.closeBtnMain}`}
-             onClick={() => setSelectedIndex(null)} initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}>
-              <X size={24} />
-            </motion.button>
+            <div className={styles.lightboxContent}>
+              <div className={styles.mainImageArea}>
+                {filteredMedia[selectedIndex].media_type === 'video' ? (
+                  <video 
+                    key={filteredMedia[selectedIndex].id}
+                    src={filteredMedia[selectedIndex].image_url} 
+                    controls 
+                    autoPlay
+                    muted
+                    playsInline
+                    preload="metadata"
+                    className={styles.lightboxMedia}
+                  />
+                ) : (
+                  <motion.img 
+                    key={filteredMedia[selectedIndex].id}
+                    src={filteredMedia[selectedIndex].image_url} 
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ type: "spring", damping: 25 }}
+                    className={styles.lightboxMedia}
+                  />
+                )}
+                
+                <button className={`${styles.navBtn} ${styles.prevBtn}`} onClick={prevItem}><ChevronLeft /></button>
+                <button className={`${styles.navBtn} ${styles.nextBtn}`} onClick={nextItem}><ChevronRight /></button>
+                <button className={styles.closeBtn} onClick={() => setSelectedIndex(null)}><X /></button>
+              </div>
 
-            <motion.button className={`${styles.navBtn} ${styles.prevBtn}`} onClick={prevImage} initial={{ x: -50 }} animate={{ x: 0 }} exit={{ x: -50 }}>
-              <ChevronLeft size={32} />
-            </motion.button>
-            <motion.button className={`${styles.navBtn} ${styles.nextBtn}`} onClick={nextImage} initial={{ x: 50 }} animate={{ x: 0 }} exit={{ x: 50 }}>
-              <ChevronRight size={32} />
-            </motion.button>
+              <div className={styles.infoSidebar}>
+                <div className={styles.infoHead}>
+                  <span className={styles.imageCounter}>
+                    {selectedIndex + 1} / {filteredMedia.length}
+                  </span>
+                  <h3 className={styles.lightboxTitle}>{filteredMedia[selectedIndex].caption}</h3>
+                  <div className={styles.lightboxMeta}>
+                    <div className={styles.metaBadge}><Calendar size={14}/> {new Date(filteredMedia[selectedIndex].created_at).toLocaleDateString()}</div>
+                    <div className={styles.metaBadge}>{filteredMedia[selectedIndex].category}</div>
+                     <div className={styles.metaBadge}>{filteredMedia[selectedIndex].media_type === 'video' ? <Film size={14}/> : <Image size={14} />} {filteredMedia[selectedIndex].media_type}</div>
+                  </div>
+                </div>
 
-            <div className={styles.lightboxContainer}>
-                <motion.div className={styles.lightboxImageWrapper} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }}>
-                    <img src={filteredImages[selectedIndex].image_url} alt="Full view" />
-                </motion.div>
-                <motion.div className={styles.lightboxInfoPanel} initial={{ x: 100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: 100, opacity: 0 }} transition={{ delay: 0.1 }}>
-                    <h3 className={styles.lightboxTitle}>{filteredImages[selectedIndex].caption}</h3>
-                    <div className={styles.lightboxMeta}>
-                        <span className={styles.metaItem}><Calendar size={14} /> {new Date(filteredImages[selectedIndex].created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-                        <span className={`${styles.metaItem} ${styles.metaCategory}`}>{filteredImages[selectedIndex].category}</span>
-                    </div>
-                    <p className={styles.lightboxDesc}>This moment was captured with care, reflecting the vibrant life and community at K56. More descriptive text can be added here if available in the database.</p>
-                    <div className={styles.lightboxActions}>
-                        <button onClick={() => handleDownload(filteredImages[selectedIndex].image_url, `K56-${selectedIndex}.jpg`)}>
-                            <Download size={20} /> Download
-                        </button>
-                        <button onClick={() => handleShare(filteredImages[selectedIndex])}>
-                            <Share2 size={20} /> Share
-                        </button>
-                    </div>
-                </motion.div>
+                <p className={styles.lightboxDesc}>
+                  Captured during {filteredMedia[selectedIndex].category}. 
+                  This moment represents the growth and community spirit of K56.
+                </p>
+
+                <div className={styles.lightboxActions}>
+                  <button onClick={() => window.open(filteredMedia[selectedIndex].image_url)} className={styles.actionBtn}>
+                    <Download size={18} /> Download
+                  </button>
+                  <button onClick={() => handleShare(filteredMedia[selectedIndex])} className={styles.actionBtn}>
+                    {copied ? <Check size={18} color="#10b981" /> : <Share2 size={18} />}
+                    {copied ? 'Copied!' : 'Share'}
+                  </button>
+                </div>
+              </div>
             </div>
           </motion.div>
         )}

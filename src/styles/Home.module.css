@@ -1,4 +1,6 @@
 
+
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
@@ -161,11 +163,18 @@
 }
 
 .bentoCard {
-  background: var(--bg-soft);
+  background: white;
   padding: 40px;
-  border-radius: 32px;
-  border: 1px solid rgba(0,0,0,0.04);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.02);
+  border-radius: 24px;
+  border: 1px solid #eef2f7;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.02);
+  transition: all 0.3s ease-in-out;
+}
+
+.bentoCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.04);
+  border-color: var(--gold-light);
 }
 
 .cardHighlight {
@@ -503,52 +512,73 @@
 
 
 .visionSection {
-  background: linear-gradient(135deg, #f5f7fa, #e0e5ec);
-  color: #5a6a85;
-  padding: 60px 0;
-  text-align: center;
+  background-color: #f0f4f8;
+  padding: 80px 0;
   position: relative;
+  overflow: hidden;
 }
 
-.visionInner {
+.visionCard {
+  background: var(--white);
   max-width: 800px;
   margin: 0 auto;
+  padding: 60px;
+  border-radius: 32px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.visionIconWrapper {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: var(--navy);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+  border: 4px solid var(--white);
 }
 
 .visionTitle {
   font-family: 'Inter', sans-serif;
-  font-size: 3rem;
-  margin: 20px 0;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
   font-weight: 700;
-  color: #3a4a65;
+  color: var(--navy);
 }
 
 .visionText {
-  font-size: 1.2rem;
-  line-height: 1.7;
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: var(--slate);
   opacity: 0.9;
-  font-weight: 400;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 
 .visionBtn {
-  display: inline-block;
-  margin-top: 25px;
-  padding: 14px 35px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 32px;
   background: var(--gold);
   color: var(--navy);
   border-radius: 50px;
   text-decoration: none;
   font-weight: 600;
   transition: var(--transition-smooth);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  will-change: transform;
 }
 
 .visionBtn:hover {
-  transform: scale(1.03);
-  background: var(--white);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(212, 175, 55, 0.25);
 }
 
 .contactSection {
@@ -602,6 +632,49 @@
  box-shadow: 0 10px 20px rgba(212, 175, 55, 0.4);
 }
 
+.givingSection {
+  background: var(--bg-soft);
+  padding: 60px 0;
+  text-align: center;
+}
+
+.givingSection .container {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    gap: 40px;
+}
+
+.givingSection .givingInner,
+.givingSection .contactInner {
+    margin: 0;
+    flex: 1;
+}
+
+.givingInner {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.givingIcon {
+  color: var(--gold);
+  margin-bottom: 20px;
+}
+
+.givingTitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 2.5rem;
+  color: var(--navy);
+  margin-bottom: 15px;
+}
+
+.givingDescription {
+  color: var(--slate);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
 /* RESPONSIVE DESIGN */
 @media (max-width: 1200px) {
   .bentoGrid { grid-template-columns: 1fr 1fr; }
@@ -610,8 +683,61 @@
 
 @media (max-width: 900px) {
   .magazineGrid { grid-template-columns: 1fr; }
-  .bentoGrid { grid-template-columns: 1fr; }
-  .locationCard { grid-column: span 1; }
+  .bentoGrid { 
+    grid-template-columns: 1fr; 
+    gap: 0;
+  }
+  .givingSection .container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .bentoCard {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 30px 10px;
+    border-bottom: 1px solid #eef2f7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .timelineItem {
+    text-align: left;
+  }
+  
+  .bentoCard:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: transparent;
+  }
+
+  .bentoGrid > .bentoCard:last-of-type {
+    border-bottom: none;
+  }
+
+  .locationCard {
+    grid-column: span 1;
+    color: var(--slate);
+    text-align: center;
+    padding: 0;
+  }
+
+  .locationCard h3 {
+    color: var(--navy);
+    margin-top: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .locationCard .subtext {
+    margin-bottom: 10px;
+  }
+  
+  .locationCard .mapBtn {
+    padding: 8px 20px;
+  }
 }
 
 @media (max-width: 600px) {
@@ -621,4 +747,6 @@
   .container { padding: 0 20px; }
   .serifTitle { font-size: 2.2rem; }
   .featuredSermonCard { padding: 30px; height: 350px; }
+  .visionCard { padding: 60px 30px 40px; }
+  .visionTitle { font-size: 2rem; }
 }

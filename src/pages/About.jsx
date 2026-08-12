@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
 import { supabase } from '../supabaseClient';
@@ -28,14 +29,16 @@ const About = () => {
   }, []);
 
   if (!aboutContent) return (
-    <div className={styles.loadingScreen}>
-      <Seo title="About Us" />
-      <motion.div 
-        animate={{ rotate: 360, opacity: [0.5, 1, 0.5] }} 
-        transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
-        className={styles.loaderLogo}
-      ><Feather size={48} /></motion.div>
-    </div>
+    <>
+      <Seo title="About Us" url="/about" />
+      <div className={styles.loadingScreen}>
+        <motion.div 
+          animate={{ rotate: 360, opacity: [0.5, 1, 0.5] }} 
+          transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
+          className={styles.loaderLogo}
+        ><Feather size={48} /></motion.div>
+      </div>
+    </>
   );
 
   const revealVariant = {
@@ -45,7 +48,13 @@ const About = () => {
 
   return (
     <div className={styles.mainWrapper}>
-      <Seo title="About Us" description={aboutContent.subtitle} keywords="About PEFA, Church history, our mission, our beliefs" />
+      <Seo 
+        title="About Us" 
+        description={aboutContent.subtitle} 
+        keywords="About PEFA, Church history, our mission, our beliefs" 
+        url="/about"
+        type="website"
+      />
       <motion.div className={styles.progressLine} style={{ scaleX }} />
 
       <div className={styles.container}>

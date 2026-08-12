@@ -1,200 +1,165 @@
-/* SermonsDisplay.module.css */
+:root {
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --danger: #ef4444;
+  --danger-hover: #dc2626;
+  --success: #10b981;
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
 
 .container {
-  padding: 2rem;
-  background-color: #f9fafb;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  font-family: 'Inter', -apple-system, sans-serif;
+  background-color: var(--bg-main);
   min-height: 100vh;
 }
 
+/* Header */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
-  border-bottom: 1px solid #e5e7eb;
-  padding-bottom: 1.5rem;
 }
 
 .header h1 {
-  font-size: 2.25rem;
+  font-size: 2rem;
   font-weight: 800;
-  color: #111827;
+  color: var(--text-main);
+  margin: 0;
 }
 
 .header p {
-  font-size: 1.1rem;
-  color: #6b7280;
-  margin-top: 0.25rem;
+  color: var(--text-muted);
+  margin: 0.25rem 0 0 0;
 }
 
-.addBtn, .closeBtn {
-  display: flex;
+/* Buttons */
+.addBtn, .submitBtn, .editBtn, .deleteBtn, .readMoreBtn {
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.25rem;
-  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.5rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s;
   border: none;
 }
 
 .addBtn {
-  background-color: #4f46e5;
+  background-color: var(--primary);
   color: white;
-}
-
-.addBtn:hover {
-  background-color: #4338ca;
 }
 
 .closeBtn {
-  background-color: #ef4444;
-  color: white;
+  background-color: var(--text-muted);
 }
 
-.closeBtn:hover {
-  background-color: #dc2626;
+.submitBtn {
+  background-color: var(--success);
+  color: white;
+  width: 100%;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.submitBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 /* Form Styling */
 .formCard {
-  background: white;
+  background: var(--bg-card);
   padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
-  margin-bottom: 2rem;
+  border-radius: 1rem;
+  box-shadow: var(--shadow);
+  margin-bottom: 2.5rem;
+  border: 1px solid var(--border);
+  animation: slideDown 0.3s ease-out;
 }
 
-.mainForm {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .formGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .inputGroup {
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .inputGroup label {
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-  color: #374151;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-main);
 }
 
 .inputGroup input, .inputGroup textarea {
-  width: 100%;
   padding: 0.75rem;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
   font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
 }
 
 .inputGroup input:focus, .inputGroup textarea:focus {
-  outline: none;
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
-}
-
-.inputGroup textarea {
-  min-height: 120px;
-  resize: vertical;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .markdownGuide {
-  font-size: 0.85rem;
-  color: #6b7280;
+  font-size: 0.75rem;
+  color: var(--text-muted);
   margin-top: 0.5rem;
+  font-style: italic;
 }
 
-/* Media (Upload & Preview) */
+/* Media Section in Form */
 .mediaGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
-  align-items: flex-start;
-}
-
-.uploadSection, .videoPreviewSection {
-  background: #f9fafb;
-  padding: 1.5rem;
-  border-radius: 8px;
-  border: 1px dashed #d1d5db;
-}
-
-.uploadSection label, .videoPreviewSection label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
-
-.urlInput {
-  margin-top: 1rem;
+  margin: 1.5rem 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
 }
 
 .miniPlayer {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background: #e5e7eb;
-  border-radius: 6px;
+  aspect-ratio: 16/9;
+  background: #000;
+  border-radius: 0.5rem;
   overflow: hidden;
-}
-
-.playerPlaceholder {
-  width: 100%;
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #9ca3af;
 }
 
-/* Form Actions */
-.formActions {
+.playerPlaceholder {
+  color: #475569;
   display: flex;
-  justify-content: flex-end;
-}
-
-.submitBtn {
-  padding: 0.8rem 2rem;
-  background-color: #10b981;
-  color: white;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 0.5rem;
 }
-
-.submitBtn:hover {
-  background-color: #059669;
-}
-
-.submitBtn:disabled {
-  background-color: #d1d5db;
-  cursor: not-allowed;
-}
-
-.spinner {
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
 
 /* Search Bar */
 .searchBar {
@@ -207,56 +172,46 @@
   left: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 
 .searchBar input {
   width: 100%;
   padding: 1rem 1rem 1rem 3rem;
-  border-radius: 8px;
-  border: 1px solid #d1d5db;
+  border-radius: 50px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
   font-size: 1rem;
+  outline: none;
 }
 
-/* Banners & States */
-.errorBanner {
-  background-color: #fef2f2;
-  color: #991b1b;
-  padding: 1rem;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
-}
-
-.loadingState, .emptyState {
-  text-align: center;
-  padding: 4rem 0;
-  color: #6b7280;
-}
-
-
-/* Sermon Grid & Cards */
+/* Sermon Cards Grid */
 .sermonGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 2rem;
 }
 
 .sermonCard {
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+  background: var(--bg-card);
+  border-radius: 1rem;
   overflow: hidden;
+  border: 1px solid var(--border);
+  transition: transform 0.2s, box-shadow 0.2s;
   display: flex;
   flex-direction: column;
 }
 
+.sermonCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
 .cardImage {
   width: 100%;
-  aspect-ratio: 16 / 9;
-  background-color: #e5e7eb;
+  aspect-ratio: 16/9;
+  background: #e2e8f0;
+  overflow: hidden;
 }
 
 .cardImage img {
@@ -266,19 +221,18 @@
 }
 
 .imagePlaceholder {
-  width: 100%;
   height: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
-  color: #9ca3af;
+  justify-content: center;
+  color: var(--text-muted);
 }
 
 .cardContent {
   padding: 1.5rem;
-  flex-grow: 1;
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
 }
 
 .cardHeader {
@@ -289,21 +243,21 @@
 }
 
 .cardHeader h3 {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: #1f2937;
-  line-height: 1.4;
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--text-main);
+  flex: 1;
 }
 
 .dateBadge {
+  font-size: 0.75rem;
+  background: var(--bg-main);
+  padding: 0.25rem 0.6rem;
+  border-radius: 1rem;
+  color: var(--text-muted);
   display: flex;
   align-items: center;
-  gap: 0.35rem;
-  font-size: 0.8rem;
-  background-color: #eef2ff;
-  color: #4338ca;
-  padding: 0.25rem 0.6rem;
-  border-radius: 9999px;
+  gap: 0.4rem;
   white-space: nowrap;
 }
 
@@ -311,139 +265,138 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #6b7280;
-  font-weight: 500;
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 0.9rem;
   margin-bottom: 1rem;
 }
 
+/* Markdown Content Styling */
 .summary {
-  color: #4b5563;
-  line-height: 1.6;
-  flex-grow: 1;
-  margin-bottom: 1.5rem;
   font-size: 0.95rem;
+  line-height: 1.6;
+  color: #475569;
+  margin-bottom: 1rem;
 }
 
-.summary.truncated {
-  max-height: 100px; /* Adjust as needed */
+.truncated {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  position: relative;
 }
 
-.summary.truncated::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 30px;
-  background: linear-gradient(to top, white, rgba(255,255,255,0));
+.summary h1, .summary h2, .summary h3 {
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
 }
 
 .readMoreBtn {
-  background: none;
-  border: none;
-  color: #4f46e5;
-  font-weight: 600;
-  cursor: pointer;
+  background: transparent;
+  color: var(--primary);
   padding: 0;
-  margin-top: -1rem; /* Overlap the gradient */
   margin-bottom: 1rem;
-  align-self: flex-start;
-}
-
-.readMoreBtn.showLess {
-  margin-top: 1rem;
-}
-
-/* Markdown Content Styling in Sermon Cards */
-.summary h1, .summary h2, .summary h3 {
-  font-weight: 700;
-  margin-top: 1.2em;
-  margin-bottom: 0.6em;
-  color: #111827;
-}
-.summary h1 { font-size: 1.4em; }
-.summary h2 { font-size: 1.2em; }
-.summary h3 { font-size: 1.1em; }
-
-.summary p {
-  margin-bottom: 1em;
-}
-
-.summary strong {
-  font-weight: 700;
-  color: #1f2937;
-}
-
-.summary em {
-  font-style: italic;
-  color: #4f46e5;
-}
-
-.summary ul, .summary ol {
-  padding-left: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.summary li {
-  margin-bottom: 0.5rem;
-}
-
-.summary a {
-  color: #4f46e5;
+  font-size: 0.875rem;
   text-decoration: underline;
 }
-.summary a:hover {
-  color: #3730a3;
+
+/* Video Wrapper */
+.videoWrapper {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  height: 0;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+  background: #000;
 }
 
-/* Video Player */
-.videoWrapper {
+.videoWrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 8px;
-  overflow: hidden;
-  margin-top: auto; /* Pushes video to bottom if content is short */
-  margin-bottom: 1.5rem;
+  height: 100%;
 }
 
 /* Card Actions */
 .cardActions {
+  margin-top: auto;
   display: flex;
-  gap: 0.75rem;
-  margin-top: auto; /* Pushes buttons to the bottom */
+  gap: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid #f3f4f6;
-}
-
-.editBtn, .deleteBtn {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px solid transparent;
-  transition: all 0.2s ease;
+  border-top: 1px solid var(--border);
 }
 
 .editBtn {
-  background-color: #f3f4f6;
-  color: #374151;
+  background: #f1f5f9;
+  color: var(--text-main);
+  flex: 1;
+  justify-content: center;
 }
 
 .editBtn:hover {
-  background-color: #e5e7eb;
+  background: #e2e8f0;
 }
 
 .deleteBtn {
-  background-color: #fee2e2;
-  color: #b91c1c;
+  background: #fef2f2;
+  color: var(--danger);
+  flex: 1;
+  justify-content: center;
 }
 
 .deleteBtn:hover {
-  background-color: #fecaca;
-  border-color: #fecaca;
+  background: #fee2e2;
+}
+
+/* States */
+.errorBanner {
+  background: #fef2f2;
+  color: var(--danger);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid #fee2e2;
+}
+
+.loadingState, .emptyState {
+  text-align: center;
+  padding: 4rem;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .mediaGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .addBtn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .sermonGrid {
+    grid-template-columns: 1fr;
+  }
 }

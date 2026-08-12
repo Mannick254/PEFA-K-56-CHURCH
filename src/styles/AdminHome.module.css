@@ -1,0 +1,74 @@
+.homeContainer {
+  padding: 2rem;
+  background-color: #f8f9fa;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: #343a40;
+}
+
+.groupsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.groupCard {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  transition: box-shadow 0.3s ease;
+}
+
+.groupCard:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.groupTitle {
+  display: flex;
+  align-items: center;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.groupTitle svg {
+  margin-right: 0.75rem;
+  color: #007bff;
+}
+
+.linksContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.linkCard {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #495057;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.linkCard:hover {
+  background-color: #e9ecef;
+  color: #212529;
+  transform: translateX(5px);
+}
+
+.linkCard svg {
+  margin-right: 0.75rem;
+  color: #868e96;
+}

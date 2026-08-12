@@ -1,247 +1,158 @@
 
-/* Hero.module.css */
-
-:root {
-  --primary-gold: #c0a062;
-  --secondary-gold: #e6d0a6;
-  --bg-dark: #0a0a0a;
-  --text-white: #f0f0f0;
-  --glass-bg: rgba(255, 255, 255, 0.03);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --mesh-color-1: rgba(192, 160, 98, 0.15);
-  --mesh-color-2: rgba(100, 80, 20, 0.2);
-}
-
-/* 1. Container & Viewport Logic */
 .heroContainer {
   position: relative;
-  width: 100%;
   height: 100vh;
-  height: 100svh; /* Solves mobile browser chrome jumping */
-  background-color: var(--bg-dark);
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
+  color: white;
   overflow: hidden;
 }
 
-/* 2. Background Layering */
 .heroMedia {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   z-index: 1;
 }
 
 .imageWrapper {
-  position: relative;
   width: 100%;
-  height: 110%; /* Extra height for the parallax movement */
+  height: 100%;
 }
 
 .heroImg {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: contrast(1.05) brightness(0.75);
-  animation: zoomSlow 40s ease-in-out infinite;
-  will-change: transform;
 }
 
-/* 3. The "Mesh" Animated Overlay */
+.placeholderBg {
+  width: 100%;
+  height: 100%;
+  background: #222;
+}
+
 .overlayGradient {
   position: absolute;
-  inset: 0;
-  background-color: transparent;
-  background-image: 
-    radial-gradient(at 0% 0%, var(--mesh-color-1) 0, transparent 50%),
-    radial-gradient(at 100% 0%, var(--mesh-color-2) 0, transparent 50%),
-    radial-gradient(at 100% 100%, var(--mesh-color-1) 0, transparent 50%),
-    radial-gradient(at 0% 100%, var(--mesh-color-2) 0, transparent 50%),
-    linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.7) 100%);
-  background-size: 300% 300%;
-  animation: meshFlow 40s ease infinite;
-  z-index: 2;
-  will-change: background-position;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7));
 }
 
-@keyframes meshFlow {
-  0% { background-position: 0% 0%; }
-  25% { background-position: 100% 50%; }
-  50% { background-position: 50% 100%; }
-  75% { background-position: 0% 50%; }
-  100% { background-position: 0% 0%; }
-}
-
-/* 4. Content Layout */
 .contentWrapper {
   position: relative;
-  z-index: 10;
-  width: 100%;
-  max-width: 1000px;
-  padding: 0 1.5rem;
-  margin-top: 2rem;
+  z-index: 2;
+  padding: 20px;
 }
 
 .heroContent {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-/* 5. Modern Elements */
 .heroBadge {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.5rem 1rem;
-  background: rgba(192, 160, 98, 0.1);
-  border: 1px solid rgba(192, 160, 98, 0.2);
-  backdrop-filter: blur(10px);
-  border-radius: 100px;
-  color: var(--secondary-gold);
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  margin-bottom: 2rem;
-  box-shadow: 0 0 20px rgba(192, 160, 98, 0.1);
-  animation: float 6s ease-in-out infinite;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
 }
 
 .goldIcon {
-  color: var(--primary-gold);
+  color: #d4af37;
 }
 
-/* Cinematic Typography */
 .heroDisplayTitle {
-  font-size: clamp(2.2rem, 10vw, 4.5rem);
-  font-weight: 800;
-  line-height: 1.1;
-  color: #fff;
-  text-transform: uppercase;
-  margin-bottom: 1.5rem;
-  letter-spacing: -0.02em;
-  background: linear-gradient(180deg, #ffffff 40%, #b0b0b0 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 8px 15px rgba(0,0,0,0.3));
-}
-
-.wordOverflow {
-  display: inline-block;
-  overflow: hidden;
-  padding-bottom: 0.1em;
-}
-
-.wordInner {
-  display: inline-block;
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
 }
 
 .heroLeadText {
-  font-size: clamp(1rem, 4.5vw, 1.2rem);
-  color: rgba(255, 255, 255, 0.85);
-  max-width: 600px;
-  line-height: 1.7;
-  margin-bottom: 3rem;
-  font-weight: 400;
+  font-size: 1.25rem;
+  margin: 1rem 0 2rem;
+  opacity: 0.9;
 }
 
-/* 6. High-Gloss Buttons */
 .heroButtonGroup {
   display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-  width: 100%;
-  max-width: 400px;
+  justify-content: center;
+  gap: 1rem;
 }
 
-.btnPrimary {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.8rem;
-  padding: 1.2rem 2.5rem;
-  background: linear-gradient(45deg, var(--primary-gold), var(--secondary-gold));
-  color: #0a0a0a;
+.btnPrimary, .btnOutline {
+  padding: 12px 24px;
+  border-radius: 50px;
   text-decoration: none;
   font-weight: 600;
-  border-radius: 100px;
-  border: none;
-  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
-  box-shadow: 0 8px 25px rgba(192, 160, 98, 0.25);
-}
-
-.btnPrimary:hover {
-  transform: scale(1.03);
-  box-shadow: 0 12px 30px rgba(192, 160, 98, 0.3);
-}
-
-.btnOutline {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.8rem;
-  padding: 1.2rem 2.5rem;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(15px);
-  color: var(--text-white);
-  text-decoration: none;
-  font-weight: 500;
-  border-radius: 100px;
+  gap: 8px;
   transition: all 0.3s ease;
 }
 
+.btnPrimary {
+  background-color: #d4af37;
+  color: #111;
+}
+
+.btnPrimary:hover {
+  transform: scale(1.05);
+}
+
+.btnOutline {
+  border: 2px solid white;
+  color: white;
+}
+
 .btnOutline:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(255, 255, 255, 0.2);
+  background-color: white;
+  color: #111;
 }
 
-/* 7. Desktop Adaptations */
-@media (min-width: 768px) {
-  .heroButtonGroup {
-    flex-direction: row;
-    max-width: none;
-    justify-content: center;
-  }
-
-  .btnPrimary, .btnOutline {
-    width: auto;
-    min-width: 200px;
-  }
-}
-
-/* 8. Loader & Animations */
-.loaderContainer {
+.scrollIndicator {
   position: absolute;
-  inset: 0;
-  background: var(--bg-dark);
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  z-index: 100;
+  gap: 8px;
+  z-index: 2;
 }
 
-.spinner {
-  width: 50px;
-  height: 50px;
-  border: 2px solid rgba(192, 160, 98, 0.1);
-  border-left-color: var(--primary-gold);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+.mouse {
+  width: 24px;
+  height: 40px;
+  border: 2px solid white;
+  border-radius: 12px;
+  position: relative;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+.wheel {
+  width: 4px;
+  height: 6px;
+  background: white;
+  border-radius: 2px;
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-
-@keyframes zoomSlow {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.03); }
+.scrollText {
+  font-size: 0.8rem;
+  opacity: 0.8;
 }

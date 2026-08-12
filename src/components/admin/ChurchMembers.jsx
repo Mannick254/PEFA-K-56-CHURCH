@@ -5,9 +5,8 @@ import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { 
   UserPlus, Search, Download, Edit2, Trash2, 
-  Sparkles, Phone, Mail, Filter, X, MoreVertical, Briefcase, Plus, Eye
+  Sparkles, Phone, Mail, Filter, X, MoreVertical, Briefcase, Plus, Eye, User, Heart, Calendar, Star
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import CountUp from 'react-countup';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -17,13 +16,13 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const ChurchMembers = () => {
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showForm, setShowForm] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterTalent, setFilterTalent] = useState('All');
   const [formData, setFormData] = useState({
     name: '', email: '', phone: '', occupation: '', talent: '', gender: 'Men', join_date: new Date().toISOString().split('T')[0]
   });
-  const [editing, setEditing] = useState(null);
+  const [editingId, setEditingId] = useState(null);
   const [previewUri, setPreviewUri] = useState(null);
 
   useEffect(() => { fetchMembers(); }, []);
@@ -34,29 +33,39 @@ const ChurchMembers = () => {
     if (data) setMembers(data);
     setLoading(false);
   };
+  
+  const handleInputChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const action = editing 
-      ? supabase.from('members').update(formData).eq('id', editing.id)
+    const action = editingId 
+      ? supabase.from('members').update(formData).eq('id', editingId)
       : supabase.from('members').insert([formData]);
     
     const { error } = await action;
-    if (!error) { fetchMembers(); closeForm(); }
+    if (!error) { 
+        fetchMembers();
+        setIsDrawerOpen(false);
+    }
     setLoading(false);
   };
 
-  const closeForm = () => {
-    setShowForm(false);
-    setEditing(null);
-    setFormData({ name: '', email: '', phone: '', occupation: '', talent: '', gender: 'Men', join_date: new Date().toISOString().split('T')[0] });
+  const openDrawer = (member = null) => {
+    if (member) {
+      setEditingId(member.id);
+      setFormData(member);
+    } else {
+      setEditingId(null);
+      setFormData({ name: '', email: '', phone: '', occupation: '', talent: '', gender: 'Men', join_date: new Date().toISOString().split('T')[0] });
+    }
+    setIsDrawerOpen(true);
   };
 
-  const handleEdit = (member) => {
-    setEditing(member);
-    setFormData(member);
-    setShowForm(true);
+  const closeDrawer = () => {
+    setIsDrawerOpen(false);
+    setEditingId(null);
+    setFormData({ name: '', email: '', phone: '', occupation: '', talent: '', gender: 'Men', join_date: new Date().toISOString().split('T')[0] });
   };
 
   const handleDelete = async (id) => {
@@ -102,7 +111,6 @@ const ChurchMembers = () => {
 
   return (
     <div className={styles.dashboard}>
-      {/* 1. RESPONSIVE HEADER */}
       <header className={styles.header}>
         <div className={styles.titleArea}>
           <h1>Member Directory</h1>
@@ -111,11 +119,10 @@ const ChurchMembers = () => {
         <div className={styles.desktopActions}>
           <button onClick={() => generatePDF('preview')} className={styles.secondaryBtn}><Eye size={18}/> Preview PDF</button>
           <button onClick={() => generatePDF('download')} className={styles.secondaryBtn}><Download size={18}/> Download PDF</button>
-          <button onClick={() => setShowForm(true)} className={styles.primaryBtn}><UserPlus size={18}/> Add Member</button>
+          <button onClick={() => openDrawer()} className={styles.primaryBtn}><UserPlus size={18}/> Add Member</button>
         </div>
       </header>
 
-      {/* 2. ANALYTICS (Hides on very small screens to save space) */}
       <section className={styles.analyticsSection}>
         <div className={styles.statCard}>
           <div className={styles.chartWrapper}>
@@ -143,7 +150,6 @@ const ChurchMembers = () => {
         </div>
       </section>
 
-      {/* 3. SEARCH & QUICK FILTER CHIPS */}
       <div className={styles.stickySearch}>
         <div className={styles.searchWrapper}>
           <Search size={18} />
@@ -167,9 +173,7 @@ const ChurchMembers = () => {
         </div>
       </div>
 
-      {/* 4. MAIN LIST AREA */}
       <div className={styles.listContainer}>
-        {/* DESKTOP TABLE */}
         <div className={styles.desktopTable}>
           <table className={styles.modernTable}>
             <thead>
@@ -196,7 +200,7 @@ const ChurchMembers = () => {
                   <td><span className={styles.badge}>{member.talent}</span></td>
                   <td>{new Date(member.join_date).toLocaleDateString()}</td>
                   <td>
-                    <button onClick={() => handleEdit(member)} className={styles.iconBtn}><Edit2 size={14}/></button>
+                    <button onClick={() => openDrawer(member)} className={styles.iconBtn}><Edit2 size={14}/></button>
                     <button onClick={() => handleDelete(member.id)} className={styles.iconBtn}><Trash2 size={14}/></button>
                   </td>
                 </tr>
@@ -205,16 +209,12 @@ const ChurchMembers = () => {
           </table>
         </div>
 
-        {/* MOBILE CARD LIST (Hidden on Desktop) */}
         <div className={styles.mobileCards}>
-          <AnimatePresence>
             {filteredMembers.map(member => (
-              <motion.div 
-                layout
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
+              <div 
                 key={member.id} 
                 className={styles.mCard}
+                onClick={() => openDrawer(member)}
               >
                 <div className={styles.mCardHeader}>
                   <div className={styles.mAvatar}>{member.name.charAt(0)}</div>
@@ -223,8 +223,8 @@ const ChurchMembers = () => {
                     <p>{member.occupation || 'Member'}</p>
                   </div>
                   <div className={styles.mActions}>
-                    <button onClick={() => handleEdit(member)} className={styles.mEditBtn}><Edit2 size={16}/></button>
-                    <button onClick={() => handleDelete(member.id)} className={styles.mDeleteBtn}><Trash2 size={16}/></button>
+                    <button onClick={(e) => {e.stopPropagation(); openDrawer(member)}} className={styles.mEditBtn}><Edit2 size={16}/></button>
+                    <button onClick={(e) => {e.stopPropagation(); handleDelete(member.id)}} className={styles.mDeleteBtn}><Trash2 size={16}/></button>
                   </div>
                 </div>
                 <div className={styles.mCardBody}>
@@ -232,65 +232,73 @@ const ChurchMembers = () => {
                   <div className={styles.mInfo}><Sparkles size={14}/> {member.talent || 'General'}</div>
                   <div className={styles.mInfo}>{member.gender}</div>
                 </div>
-              </motion.div>
+              </div>
             ))}
-          </AnimatePresence>
         </div>
       </div>
 
-      {/* 5. MOBILE FLOATING ACTION BUTTONS */}
-       <div className={styles.fabContainer}>
+      <div className={styles.fabContainer}>
         <button className={styles.fab} style={{background: '#D4AF37'}} onClick={() => generatePDF('download')} title="Download PDF">
           <Download size={24} />
         </button>
         <button className={styles.fab} style={{background: '#334155'}} onClick={() => generatePDF('preview')} title="Preview PDF">
           <Eye size={24} />
         </button>
-        <button className={styles.fab} onClick={() => setShowForm(true)} title="Add Member">
+        <button className={styles.fab} onClick={() => openDrawer()} title="Add Member">
           <Plus size={24} />
         </button>
       </div>
 
-      {/* 6. DRAWER (Responsive Width) */}
-      <AnimatePresence>
-        {showForm && (
-          <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={closeForm} className={styles.overlay} />
-            <motion.aside initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }} transition={{ type: 'spring', damping: 25 }} className={styles.drawer}>
-              <div className={styles.drawerHeader}>
-                <h2>{editing ? 'Edit Member' : 'New Member'}</h2>
-                <button onClick={closeForm} className={styles.closeBtn}><X /></button>
+      {isDrawerOpen && (
+        <>
+          <div className={styles.overlay} onClick={() => setIsDrawerOpen(false)} />
+          <div className={styles.drawer}>
+            <div className={styles.drawerHeader}>
+              <h2>{editingId ? 'Edit Member' : 'New Member'}</h2>
+              <button className={styles.iconBtn} onClick={() => setIsDrawerOpen(false)}><X size={24} /></button>
+            </div>
+            <form onSubmit={handleSubmit} className={styles.form}>
+              <div className={styles.inputGroup}>
+                <label><User size={12} /> Full Name</label>
+                <input name="name" value={formData.name} onChange={handleInputChange} required />
               </div>
-              <form onSubmit={handleSubmit} className={styles.drawerForm}>
+              <div className={styles.inputGroup}>
+                  <label><Mail size={12} /> Email</label>
+                  <input name="email" value={formData.email} onChange={handleInputChange} />
+              </div>
+              <div className={styles.formRow}>
                 <div className={styles.inputGroup}>
-                  <label>Full Name</label>
-                  <input type="text" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} required />
-                </div>
-                <div className={styles.inputGroup}>
-                  <label>Phone Number</label>
-                  <input type="tel" value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} required />
-                </div>
-                 <div className={styles.inputGroup}>
                   <label>Gender</label>
-                  <select name="gender" value={formData.gender} onChange={(e) => setFormData({...formData, gender: e.target.value})}>
-                    <option value="Men">Men</option>
-                    <option value="Women">Women</option>
+                  <select name="gender" value={formData.gender} onChange={handleInputChange}>
+                    <option value="Male">Men</option>
+                    <option value="Female">Women</option>
                   </select>
                 </div>
-                <div className={styles.inputGroup}>
-                  <label>Skill / Talent</label>
-                  <input type="text" value={formData.talent} onChange={(e) => setFormData({...formData, talent: e.target.value})} placeholder="e.g. Choir, Tech" />
-                </div>
-                <button type="submit" className={styles.submitBtn}>
-                  {editing ? 'Update Member' : 'Register Member'}
-                </button>
-              </form>
-            </motion.aside>
-          </>
-        )}
-      </AnimatePresence>
+              </div>
+              <div className={styles.inputGroup}>
+                <label><Phone size={12} /> Personal Phone</label>
+                <input name="phone" value={formData.phone} onChange={handleInputChange} />
+              </div>
+              <div className={styles.inputGroup}>
+                <label><Briefcase size={12} /> Occupation</label>
+                <input name="occupation" value={formData.occupation} onChange={handleInputChange} />
+              </div>
+              <div className={styles.inputGroup}>
+                <label><Star size={12} /> Talent / Skill</label>
+                <input name="talent" value={formData.talent} onChange={handleInputChange} />
+              </div>
+              <div className={styles.inputGroup}>
+                <label><Calendar size={12} /> Joined Date</label>
+                <input type="date" name="join_date" value={formData.join_date} onChange={handleInputChange} required />
+              </div>
+              <button type="submit" className={styles.submitBtn} disabled={loading}>
+                {loading ? 'Processing...' : 'Save Member'}
+              </button>
+            </form>
+          </div>
+        </>
+      )}
 
-      {/* 7. PDF Preview Modal */}
       {previewUri && (
         <div className={styles.overlay} onClick={() => setPreviewUri(null)} style={{ zIndex: 1001 }}>
           <div className={styles.drawer} style={{width: '90%', maxWidth: '900px', height: '90vh', padding: '0'}}>

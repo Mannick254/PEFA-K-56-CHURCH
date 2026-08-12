@@ -1,0 +1,110 @@
+/* IctServices.module.css */
+
+.pageWrapper {
+  background-color: #0f172a; /* Dark slate blue */
+  color: #e2e8f0; /* Light slate gray */
+}
+
+.mainContent {
+  padding-top: 80px; /* Adjust based on your navbar height */
+}
+
+/* Hero Section */
+.hero {
+  text-align: center;
+  padding: 6rem 1.5rem;
+  background-color: #1e293b; /* Slightly lighter dark slate */
+  border-bottom: 1px solid #334155;
+}
+
+.heroContent {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  background-color: #3b82f6; /* Blue */
+  color: white;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.heroTitle {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.heroSubtext {
+  font-size: 1.2rem;
+  color: #94a3b8; /* Lighter slate gray */
+  margin-bottom: 2rem;
+}
+
+.ctaGroup {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.primaryBtn {
+  padding: 0.75rem 1.5rem;
+  background-color: #3b82f6; /* Blue */
+  color: white;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.primaryBtn:hover {
+  background-color: #2563eb; /* Darker blue */
+}
+
+/* Services Section */
+.servicesSection {
+  padding: 4rem 1.5rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.serviceCard {
+  background-color: #1e293b; /* Slightly lighter dark slate */
+  padding: 2rem;
+  border-radius: 0.75rem;
+  border: 1px solid #334155;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.serviceCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.serviceIcon {
+  margin-bottom: 1.5rem;
+  color: #3b82f6; /* Blue */
+}
+
+.serviceTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.serviceDescription {
+  color: #94a3b8; /* Lighter slate gray */
+}

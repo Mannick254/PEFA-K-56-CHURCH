@@ -3,78 +3,91 @@ import { supabase } from '../supabaseClient';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Maximize2, X, Share2, Calendar, 
-  ChevronLeft, ChevronRight, Download, Filter 
+  ChevronLeft, ChevronRight, Download, Film, Image
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import styles from '../styles/K56Gallery.module.css';
 import Seo from '../components/Seo';
 
-const CATEGORIES = ['All', 'Events', 'Sunday Service', 'Special Programs', 'Outreach', 'Kids & Youth', 'Workshops', 'Community', 'Behind the Scenes', 'Testimonies'];
+const CATEGORIES = ['All', 'Events', 'Sunday Service', 'Outreach', 'Community', 'Youth', 'Behind the Scenes'];
 
 const K56GalleryPage = ({ limit }) => {
-  const [images, setImages] = useState([]);
-  const [filteredImages, setFilteredImages] = useState([]);
+  const [items, setItems] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
   const [activeCategory, setActiveCategory] = useState('All');
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetchImages();
+    fetchItems();
   }, []);
 
   useEffect(() => {
     if (activeCategory === 'All') {
-      setFilteredImages(images);
+      setFilteredItems(items);
     } else {
-      setFilteredImages(images.filter(img => img.category === activeCategory));
+      setFilteredItems(items.filter(item => item.category === activeCategory));
     }
-  }, [activeCategory, images]);
+    setSelectedIndex(null);
+  }, [activeCategory, items]);
 
-  const fetchImages = async () => {
+  const fetchItems = async () => {
     setIsLoading(true);
     const { data, error } = await supabase
       .from('k56_gallery')
       .select('*')
       .order('created_at', { ascending: false });
 
-    if (error) console.error('Error:', error);
-    else setImages(data || []);
+    if (error) console.error('Error fetching items:', error);
+    else setItems(data || []);
     setIsLoading(false);
   };
 
-  // Navigation Logic
-  const nextImage = useCallback((e) => {
-    e?.stopPropagation();
-    setSelectedIndex((prev) => (prev + 1) % filteredImages.length);
-  }, [filteredImages.length]);
+  const openLightbox = (index) => {
+    const globalIndex = items.findIndex(item => item.id === filteredItems[index].id);
+    setSelectedIndex(globalIndex);
+  };
+  
+  const closeLightbox = () => setSelectedIndex(null);
 
-  const prevImage = useCallback((e) => {
+  const nextItem = useCallback((e) => {
     e?.stopPropagation();
-    setSelectedIndex((prev) => (prev - 1 + filteredImages.length) % filteredImages.length);
-  }, [filteredImages.length]);
+    if (selectedIndex === null) return;
+    setSelectedIndex((prev) => (prev + 1) % items.length);
+  }, [selectedIndex, items.length]);
 
-  // Keyboard support
+  const prevItem = useCallback((e) => {
+    e?.stopPropagation();
+    if (selectedIndex === null) return;
+    setSelectedIndex((prev) => (prev - 1 + items.length) % items.length);
+  }, [selectedIndex, items.length]);
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (selectedIndex === null) return;
-      if (e.key === 'ArrowRight') nextImage();
-      if (e.key === 'ArrowLeft') prevImage();
-      if (e.key === 'Escape') setSelectedIndex(null);
+      if (e.key === 'ArrowRight') nextItem(e);
+      if (e.key === 'ArrowLeft') prevItem(e);
+      if (e.key === 'Escape') closeLightbox();
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedIndex, nextImage, prevImage]);
+  }, [selectedIndex, nextItem, prevItem]);
 
-  const handleShare = async (img) => {
+  const handleShare = async (item) => {
+    if (!item) return;
     try {
-      await navigator.share({
-        title: 'K56 Gallery',
-        text: img.caption,
-        url: img.image_url,
-      });
-    } catch {
-      navigator.clipboard.writeText(img.image_url);
-      // You can trigger your Notification component here
+      if (navigator.share) {
+        await navigator.share({
+          title: 'PEFA Kawangware 56 Gallery',
+          text: item.caption,
+          url: window.location.href,
+        });
+      } else {
+        throw new Error('Web Share API not supported');
+      }
+    } catch (err) {
+      navigator.clipboard.writeText(item.image_url);
+      // Consider adding a notification for "Link copied to clipboard"
     }
   };
 
@@ -82,125 +95,159 @@ const K56GalleryPage = ({ limit }) => {
     const link = document.createElement('a');
     link.href = url;
     link.download = filename;
+    link.target = '_blank';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
 
-  const displayImages = limit ? filteredImages.slice(0, limit) : filteredImages;
+  const displayItems = limit ? filteredItems.slice(0, limit) : filteredItems;
+  const currentItem = selectedIndex !== null ? items[selectedIndex] : null;
 
   return (
     <section className={styles.gallerySection}>
-       <Seo title="K56 Gallery" description="Explore moments and milestones from PEFA Kawangware 56 events, community, projects, and behind the scenes." />
+      <Seo title="K56 Gallery" description="Explore moments and milestones from PEFA Kawangware 56 events, community projects, and worship services." />
       <div className={styles.container}>
-        <header className={styles.galleryHeader}>
-          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}>
-            <span className={styles.subtitle}>Moments & Milestones</span>
-            <h2 className={styles.title}>K56 Media Gallery</h2>
-          </motion.div>
+        {!limit && (
+          <header className={styles.galleryHeader}>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+              <span className={styles.subtitle}>Moments & Milestones</span>
+              <h2 className={styles.title}>K56 Media Gallery</h2>
+            </motion.div>
 
-          <div className={styles.filterBar}>
-            {CATEGORIES.map(cat => (
-              <button 
-                key={cat}
-                className={`${styles.filterBtn} ${activeCategory === cat ? styles.active : ''}`}
-                onClick={() => setActiveCategory(cat)}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </header>
+            <div className={styles.filterWrapper}>
+              <div className={styles.filterBar}>
+                {CATEGORIES.map(cat => (
+                  <button 
+                    key={cat}
+                    className={`${styles.filterBtn} ${activeCategory === cat ? styles.active : ''}`}
+                    onClick={() => setActiveCategory(cat)}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </header>
+        )}
 
-        {isLoading ? (
-          <div className={styles.skeletonGrid}>
-            {[...Array(limit || 8)].map((_, i) => (
-              <div key={i} className={styles.skeletonCard} />
-            ))}
-          </div>
-        ) : (
-          <motion.div layout className={styles.imageGrid}>
-            <AnimatePresence mode='popLayout'>
-              {displayImages.map((image, index) => (
+        <motion.div layout className={styles.imageGrid}>
+          {isLoading ? (
+            [...Array(limit || 12)].map((_, i) => (
+              <div key={i} className={`${styles.skeletonCard} ${styles.pulse}`} />
+            ))
+          ) : (
+            <AnimatePresence>
+              {displayItems.map((item, index) => (
                 <motion.div 
-                  key={image.id}
+                  key={item.id}
                   layout
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.3 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                   className={styles.imageCard}
-                  onClick={() => setSelectedIndex(index)}
+                  onClick={() => setSelectedIndex(filteredItems.indexOf(item))}
                 >
                   <div className={styles.imageWrapper}>
-                    <img src={image.image_url} alt={image.caption} loading="lazy" />
+                    {item.media_type === 'video' ? (
+                      <video src={item.image_url} loading="lazy" muted loop autoPlay playsInline />
+                    ) : (
+                      <img src={item.image_url} alt={item.caption} loading="lazy" />
+                    )}
                     <div className={styles.overlay}>
-                      <Maximize2 size={24} className={styles.maxIcon} />
-                      <div className={styles.overlayInfo}>
-                        <span className={styles.tag}>{image.category || 'General'}</span>
-                        <p>{image.caption}</p>
+                      <div className={styles.overlayContent}>
+                        <span className={styles.tag}>{item.category}</span>
+                        <p className={styles.captionText}>{item.caption}</p>
+                         <div className={styles.mediaIcon}>
+                            {item.media_type === 'video' ? <Film size={20} /> : <Image size={20} />}
+                          </div>
                       </div>
                     </div>
                   </div>
+                  <div className={styles.descriptionBar}>
+      <p className={styles.descriptionText}>{item.description}</p>
+    </div>
                 </motion.div>
               ))}
             </AnimatePresence>
-          </motion.div>
-        )}
+          )}
+        </motion.div>
 
-        {limit && images.length > limit && (
+        {limit && items.length > limit && (
           <div className={styles.viewAllContainer}>
             <Link to="/k56-gallery" className={styles.viewAllButton}>Explore Full Gallery</Link>
           </div>
         )}
       </div>
 
-      {/* Modern Lightbox */}
       <AnimatePresence>
-        {selectedIndex !== null && (
+        {selectedIndex !== null && filteredItems[selectedIndex] && (
           <motion.div 
             className={styles.lightbox}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
           >
-            <div className={styles.lightboxBackdrop} onClick={() => setSelectedIndex(null)} />
+            <div className={styles.lightboxBackdrop} onClick={closeLightbox} />
             
-            <button className={styles.navBtn} style={{ left: '20px' }} onClick={prevImage}>
-              <ChevronLeft size={40} />
-            </button>
+            <button className={`${styles.navBtn} ${styles.closeBtn}`} onClick={closeLightbox}><X size={24} /></button>
+            <button className={`${styles.navBtn} ${styles.prevBtn}`} onClick={prevItem}><ChevronLeft size={32} /></button>
+            <button className={`${styles.navBtn} ${styles.nextBtn}`} onClick={nextItem}><ChevronRight size={32} /></button>
 
             <motion.div 
               className={styles.lightboxContent}
+              layoutId={`card-${filteredItems[selectedIndex].id}`}
               initial={{ y: 50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 50, opacity: 0 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className={styles.lightboxHeader}>
-                <div className={styles.headerInfo}>
-                  <h3>{filteredImages[selectedIndex].caption}</h3>
-                  <p><Calendar size={14} /> {new Date(filteredImages[selectedIndex].created_at).toLocaleDateString()}</p>
-                </div>
-                <div className={styles.headerActions}>
-                  <button onClick={() => handleDownload(filteredImages[selectedIndex].image_url, `K56-${selectedIndex}.jpg`)}>
-                    <Download size={20} />
-                  </button>
-                  <button onClick={() => handleShare(filteredImages[selectedIndex])}>
-                    <Share2 size={20} />
-                  </button>
-                  <button onClick={() => setSelectedIndex(null)} className={styles.closeBtn}>
-                    <X size={24} />
-                  </button>
-                </div>
+              <div className={styles.mainImageArea}>
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={filteredItems[selectedIndex].id}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {filteredItems[selectedIndex].media_type === 'video' ? (
+                      <video src={filteredItems[selectedIndex].image_url} controls autoPlay className={styles.lightboxVideo} />
+                    ) : (
+                      <img 
+                        src={filteredItems[selectedIndex].image_url} 
+                        alt={filteredItems[selectedIndex].caption}
+                      />
+                    )}
+                  </motion.div>
+                </AnimatePresence>
               </div>
+              <div className={styles.infoSidebar}>
+                <div>
+                  <span className={styles.imageCounter}>
+                    {selectedIndex + 1} / {filteredItems.length}
+                  </span>
+                  <h3 className={styles.lightboxTitle}>{filteredItems[selectedIndex].caption}</h3>
+                  <div className={styles.metaBadge}><Calendar size={14}/> {new Date(filteredItems[selectedIndex].created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+                  <div className={styles.metaBadge}>{filteredItems[selectedIndex].category}</div>
+                </div>
+                
+                <p className={styles.lightboxDesc}>
+                  {filteredItems[selectedIndex].description || `A moment from our ${filteredItems[selectedIndex].category} activities. This image reflects the vibrant life and community spirit at PEFA Kawangware 56.`}
+                </p>
 
-              <div className={styles.mainImageContainer}>
-                <img src={filteredImages[selectedIndex].image_url} alt="Full view" />
+                <div className={styles.lightboxActions}>
+                  <button className={styles.actionBtn} onClick={() => handleDownload(filteredItems[selectedIndex].image_url, `K56-Gallery-${filteredItems[selectedIndex].id}`)}>
+                    <Download size={18} /> Download
+                  </button>
+                  <button className={styles.actionBtn} onClick={() => handleShare(filteredItems[selectedIndex])}>
+                    <Share2 size={18} /> Share
+                  </button>
+                </div>
               </div>
             </motion.div>
-
-            <button className={styles.navBtn} style={{ right: '20px' }} onClick={nextImage}>
-              <ChevronRight size={40} />
-            </button>
           </motion.div>
         )}
       </AnimatePresence>

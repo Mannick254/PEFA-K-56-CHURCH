@@ -1,0 +1,47 @@
+.breadcrumb {
+    padding: 0.75rem 1rem;
+    background-color: #ffffff; /* White background to stand out */
+    border-radius: 0.5rem; /* Slightly larger radius */
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); /* Subtle shadow */
+}
+
+.breadcrumbList {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.breadcrumbItem {
+    display: flex;
+    align-items: center;
+}
+
+/* The separator (e.g., '/') */
+.breadcrumbItem + .breadcrumbItem::before {
+    content: '/';
+    display: inline-block;
+    margin: 0 0.5rem; /* mx-2 */
+    color: #64748b; /* slate-500 */
+}
+
+.breadcrumbItem a {
+    color: #475569; /* slate-600 */
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+.breadcrumbItem a:hover {
+    color: #1e293b; /* slate-800 */
+    text-decoration: underline;
+}
+
+/* The current, active page */
+.breadcrumbItem.active {
+    color: #1e293b; /* slate-800 */
+    font-weight: 500;
+}

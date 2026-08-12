@@ -50,7 +50,12 @@ const Sermons = () => {
 
   return (
     <div className={styles.container}>
-      <Seo title="Sermon Library | PEFA Kawangware 56" description="Watch and read life-changing sermons." />
+      <Seo 
+        title="Sermon Library | PEFA Kawangware 56" 
+        description="Watch and read life-changing sermons."
+        url="/sermons"
+        type="website"
+      />
       
       <header className={styles.header}>
         <div className={styles.headerContent}>

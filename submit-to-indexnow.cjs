@@ -1,12 +1,19 @@
+require('dotenv').config(); // Load environment variables from .env file
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
 
 async function submitToIndexNow() {
   const host = 'pefa-k-56-church.vercel.app';
-  const key = 'indexnowkey'; // The same key as in your .txt file
-  const keyLocation = `https://${host}/indexnowkey.txt`;
+  // Securely get the key from environment variables
+  const key = process.env.INDEXNOW_KEY;
+  const keyLocation = `https://${host}/${process.env.INDEXNOW_KEY_FILENAME}`;
   const sitemapPath = path.resolve(__dirname, './public/sitemap.xml');
+
+  if (!key) {
+    console.log('INDEXNOW_KEY environment variable not set. Skipping submission.');
+    return;
+  }
 
   try {
     const sitemap = await fs.promises.readFile(sitemapPath, 'utf8');
