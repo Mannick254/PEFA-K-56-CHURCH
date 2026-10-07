@@ -116,6 +116,46 @@ app.post('/trigger-daily-verse', async (req, res) => {
   }
 });
 
+app.post('/trigger-latest-sermon', async (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  const groupId = process.env.WHATSAPP_GROUP_ID;
+  if (!groupId) {
+    return res.status(500).json({ error: 'WHATSAPP_GROUP_ID environment variable is missing.' });
+  }
+
+  try {
+    if (!sock) {
+      return res.status(503).json({ error: 'WhatsApp socket not initialized yet.' });
+    }
+
+    if (!supabase) {
+      return res.status(500).json({ error: 'Supabase client not initialized.' });
+    }
+
+    const { data, error } = await supabase
+      .from('sermons')
+      .select('id, title, preacher')
+      .order('date', { ascending: false })
+      .limit(1)
+      .single();
+
+    if (error) throw error;
+
+    const sermonUrl = `https://www.pefak56church.top/sermons/${data.id}`;
+    const message = `🔥 *New Sermon Alert* 🔥\n\n*${data.title}*\nby ${data.preacher}\n\nWatch or read now: ${sermonUrl}`;
+
+    await sock.sendMessage(groupId, { text: message });
+    return res.json({ success: true, message: 'Sermon notification sent!', sermon: data });
+  } catch (err) {
+    console.error('Error sending sermon notification:', err);
+    return res.status(500).json({ error: err.message });
+  }
+});
+
 // 5. Helper Route: Fetch participating WhatsApp Groups & JIDs
 app.get('/groups', async (req, res) => {
   try {
@@ -126,6 +166,10 @@ app.get('/groups', async (req, res) => {
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
+});
+
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
 });
 
 const PORT = process.env.PORT || 3000;
