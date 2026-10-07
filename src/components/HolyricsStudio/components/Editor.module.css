@@ -1,0 +1,426 @@
+:root {
+  --editor-bg: #0f172a;
+  --panel-bg: #1e293b;
+  --border-color: #334155;
+  --accent-blue: #3b82f6;
+  --accent-green: #22c55e;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+}
+
+/* Container */
+.middleColumn {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background-color: var(--editor-bg);
+  border-right: 1px solid var(--border-color);
+  color: var(--text-main);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.editorContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.25rem;
+  gap: 1rem;
+  box-sizing: border-box;
+}
+
+/* Empty State */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  color: var(--text-muted);
+  padding: 2rem;
+}
+
+.emptyIconWrapper {
+  background: var(--panel-bg);
+  padding: 1.25rem;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  border: 1px solid var(--border-color);
+}
+
+.emptyState h2 {
+  color: var(--text-main);
+  font-size: 1.2rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.emptyState p {
+  font-size: 0.85rem;
+  max-width: 280px;
+}
+
+/* Header & Toolbar */
+.editorHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.headerTitle {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.headerTitle h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.closeButton {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.closeButton:hover {
+    background: var(--accent-blue);
+    color: #ffffff;
+    border-color: var(--accent-blue);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: rgba(30, 41, 59, 0.6);
+  padding: 0.35rem 0.6rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+}
+
+.toolGroup {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.toolItem {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.toolIcon {
+  color: var(--text-muted);
+}
+
+.selectControl {
+  background: var(--editor-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+  outline: none;
+}
+
+.numberInput {
+  width: 48px;
+  background: var(--editor-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.25rem 0.4rem;
+  font-size: 0.8rem;
+  text-align: center;
+  outline: none;
+}
+
+.numberInput:disabled {
+  background: #2a3a4a;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+
+.unitLabel {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-right: 0.25rem;
+}
+
+/* Color Picker Badge */
+.colorPickerWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background-color: var(--editor-bg);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.colorInput {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.colorBadge {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.colorIcon {
+  position: absolute;
+  pointer-events: none;
+  color: #ffffff;
+  mix-blend-mode: difference;
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  background-color: var(--border-color);
+  margin: 0 0.25rem;
+}
+
+/* Save Button */
+.saveBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: var(--accent-blue);
+  color: #ffffff;
+  border: none;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.saveBtn:hover {
+  background-color: #2563eb;
+}
+
+.savedState {
+  background-color: var(--accent-green) !important;
+  color: #000000 !important;
+}
+
+.setDefaultBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background-color: #4a5568;
+    color: var(--text-main);
+    border: none;
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.7rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.setDefaultBtn:hover {
+    background-color: #2d3748;
+}
+
+.setDefaultBtn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.setDefaultBtn.confirmed {
+    background-color: var(--accent-green);
+    color: #000000;
+}
+
+/* Form Group: Title & Key */
+.editorFormGroup {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.titleInputWrapper {
+  flex: 1;
+}
+
+.titleInput {
+  width: 100%;
+  background-color: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-main);
+  padding: 0.65rem 0.85rem;
+  font-size: 1rem;
+  font-weight: 600;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.titleInput:focus {
+  border-color: var(--accent-blue);
+}
+
+.keySelectWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0 0.65rem;
+}
+
+.keyIcon {
+  color: var(--accent-blue);
+}
+
+.keySelect {
+  background: transparent;
+  color: var(--text-main);
+  border: none;
+  padding: 0.65rem 0.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+}
+
+/* Quick Section Tags */
+.quickTagsBar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.quickTagsLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.tagChips {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.tagChip {
+  background-color: rgba(51, 65, 85, 0.5);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.2rem 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.tagChip:hover {
+  background-color: var(--accent-blue);
+  border-color: var(--accent-blue);
+  color: #ffffff;
+}
+
+/* Lyrics Textarea */
+.textareaWrapper {
+  flex: 1;
+  display: flex;
+}
+
+.lyricsEditor {
+  width: 100%;
+  height: 100%;
+  background-color: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-main);
+  padding: 1rem;
+  font-family: 'Fira Code', 'Courier New', monospace;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.lyricsEditor:focus {
+  border-color: var(--accent-blue);
+}
+
+.lyricsEditor::-webkit-scrollbar {
+  width: 8px;
+}
+
+.lyricsEditor::-webkit-scrollbar-thumb {
+  background-color: var(--border-color);
+  border-radius: 4px;
+}
+
+.toolButton {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: all 0.15s ease;
+}
+
+.toolButton:hover {
+    background: var(--panel-bg);
+    color: var(--text-main);
+}
+
+.toolButton.active {
+    background: var(--accent-blue);
+    color: #ffffff;
+    border-color: var(--accent-blue);
+}

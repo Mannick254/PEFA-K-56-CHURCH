@@ -1,24 +1,42 @@
 import React, { useState, useEffect, useRef } from 'react';
-import ReactMarkdown from 'react-markdown';
-import rehypeRaw from 'rehype-raw';
-import { Search, Book, Languages, Sparkles, Quote as QuoteIcon, ChevronDown, ChevronUp, Info } from 'lucide-react';
+import { 
+  Search, 
+  BookOpen, 
+  Languages, 
+  Sparkles, 
+  Quote as QuoteIcon, 
+  ChevronDown, 
+  ChevronUp, 
+  Info, 
+  Radio, 
+  Clock 
+} from 'lucide-react';
 import styles from '../styles/Bible.module.css';
 
+// Backup scriptures in case external APIs fail
+const FALLBACK_VERSES = [
+  { reference: 'Proverbs 3:5-6', text: 'Trust in the LORD with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight.' },
+  { reference: 'Philippians 4:13', text: 'I can do all this through him who gives me strength.' },
+  { reference: 'Jeremiah 29:11', text: '"For I know the plans I have for you," declares the LORD, "plans to prosper you and not to harm you, plans to give you hope and a future."' },
+  { reference: 'Psalm 118:24', text: 'This is the day that the LORD has made; let us rejoice and be glad in it.' },
+  { reference: 'Isaiah 40:31', text: 'But those who hope in the LORD will renew their strength. They will soar on wings like eagles; they will run and not grow weary, they will walk and not be faint.' }
+];
+
 // Helper function to generate a reflective insight based on the verse
-const generateInsight = (verseText, verseReference) => {
+const generateInsight = (verseText = '', verseReference = '') => {
   const lowerCaseText = verseText.toLowerCase();
-  let generatedInsight = `This verse, ${verseReference}, encourages us to reflect on the deeper meanings of our faith. It\'s a call to integrate spiritual truths into our everyday lives and to find strength in them.`;
+  let generatedInsight = `This passage from ${verseReference} offers essential ethical and spiritual guidance. It challenges readers to align daily conduct with enduring truths and find resilient faith amidst life's complexities.`;
 
   if (lowerCaseText.includes('love')) {
-    generatedInsight = `In ${verseReference}, the theme of love is central. It reminds us of the importance of unconditional love for one another, as a reflection of divine love. This verse calls us to act with compassion and kindness in all our interactions.`;
+    generatedInsight = `${verseReference} establishes unconditional love as a primary imperative. It urges individuals toward radical empathy, selfless community service, and active reconciliation across social boundaries.`;
   } else if (lowerCaseText.includes('faith')) {
-    generatedInsight = `${verseReference} speaks powerfully about faith. It\'s a reminder that faith is not just a belief, but a deep trust and confidence in the divine. This verse encourages us to live by faith, especially in moments of uncertainty.`;
+    generatedInsight = `In ${verseReference}, faith is defined not as passive agreement, but as decisive trust in action. It serves as an anchor during institutional or personal crises.`;
   } else if (lowerCaseText.includes('hope')) {
-    generatedInsight = `The message of hope in ${verseReference} is a beacon of light. It encourages us to hold on to hope, even in difficult times, and to trust in the promise of a brighter future. This verse is a source of comfort and strength.`;
+    generatedInsight = `The commentary surrounding ${verseReference} highlights hope as a transformative power. It encourages perseverance when facing adversity, offering confidence in long-term restoration.`;
   } else if (lowerCaseText.includes('god') || lowerCaseText.includes('lord')) {
-    generatedInsight = `This passage, ${verseReference}, draws our attention to the nature of God. It highlights His power, wisdom, and grace, urging us to deepen our relationship with Him and to trust in His divine plan.`;
+    generatedInsight = `${verseReference} emphasizes divine sovereignty and wisdom. It invites believers to realign priorities around higher purpose, justice, and transcendent truth.`;
   } else if (lowerCaseText.includes('jesus') || lowerCaseText.includes('christ')) {
-    generatedInsight = `${verseReference} offers a profound insight into the life and teachings of Jesus Christ. It calls us to follow His example of humility, service, and love, and to find salvation through Him.`;
+    generatedInsight = `${verseReference} captures core tenets of Christ's teaching—servant leadership, restorative mercy, and sacrificial love as a blueprint for contemporary living.`;
   }
 
   return generatedInsight;
@@ -28,79 +46,106 @@ const VerseOfTheDay = ({ setNotification }) => {
   const [verseData, setVerseData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showAnalysis, setShowAnalysis] = useState(false);
-  const [error, setError] = useState('');
   const [insight, setInsight] = useState('');
   const [insightLoading, setInsightLoading] = useState(false);
 
   useEffect(() => {
     const fetchVerseOfTheDay = async () => {
       try {
-        const response = await fetch('https://beta.ourmanna.com/api/v1/get?format=json&order=daily', { mode: 'cors' });
-        if (!response.ok) throw new Error('Failed to fetch');
+        // Updated to OurManna API (free public VOTD service)
+        const response = await fetch('https://beta.ourmanna.com/api/v1/get?format=json&order=daily');
+        if (!response.ok) throw new Error('Primary VOTD API offline');
         const data = await response.json();
-        setVerseData(data);
+
+        const cleanText = data.verse.details.text.replace(/<[^>]*>?/gm, '').trim();
+        const adaptedData = {
+          verse: {
+            details: {
+              text: cleanText,
+              reference: data.verse.details.reference,
+            },
+          },
+        };
+
+        setVerseData(adaptedData);
         if (setNotification) {
           setNotification({
-            message: `Verse of the Day: ${data.verse.details.reference} - ${data.verse.details.text}`,
-            type: 'success'
+            message: `Daily Scripture: ${adaptedData.verse.details.reference} loaded successfully.`,
+            type: 'success',
           });
         }
       } catch (err) {
-        setError('Could not load daily verse');
+        console.warn('VOTD API failed, switching to local backup scripture.', err);
+        const fallback = FALLBACK_VERSES[Math.floor(Math.random() * FALLBACK_VERSES.length)];
+        setVerseData({ verse: { details: fallback } });
       } finally {
         setLoading(false);
       }
     };
+
     fetchVerseOfTheDay();
   }, [setNotification]);
 
   useEffect(() => {
     if (verseData) {
       setInsightLoading(true);
-      // Simulate an async call for insight generation
-      setTimeout(() => {
-        const generatedInsight = generateInsight(verseData.verse.details.text, verseData.verse.details.reference);
+      const timer = setTimeout(() => {
+        const generatedInsight = generateInsight(
+          verseData.verse.details.text, 
+          verseData.verse.details.reference
+        );
         setInsight(generatedInsight);
         setInsightLoading(false);
-      }, 500);
+      }, 300);
+      return () => clearTimeout(timer);
     }
   }, [verseData]);
 
-  if (loading) return <div className={styles.votdSkeleton}></div>;
+  if (loading) {
+    return (
+      <div className={styles.cnnVotdSkeleton}>
+        <div className={styles.cnnSkeletonPulse} />
+      </div>
+    );
+  }
+
   if (!verseData) return null;
 
   return (
-    <div
-      className={`${styles.votdContainer} ${showAnalysis ? styles.active : ''}`}
-      onClick={() => setShowAnalysis(!showAnalysis)}
-    >
-      <div className={styles.votdHeader}>
-        <div className={styles.votdLabel}>
-          <Sparkles size={16} className={styles.sparkleIcon} />
-          <span>Verse of the Day</span>
+    <div className={styles.cnnVotdCard}>
+      {/* Top Header Bar */}
+      <div className={styles.cnnVotdHeader}>
+        <div className={styles.cnnLiveBadge}>
+          <Radio size={12} className={styles.livePulseIcon} />
+          <span>DAILY SCRIPTURE WIRE</span>
         </div>
-        {showAnalysis ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+        <button 
+          className={styles.cnnExpandBtn} 
+          onClick={() => setShowAnalysis(!showAnalysis)}
+          aria-label="Toggle Commentary"
+        >
+          <span>{showAnalysis ? 'Collapse Insight' : 'Editorial Commentary'}</span>
+          {showAnalysis ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+        </button>
       </div>
 
-      <blockquote className={styles.votdQuote}>
-        <p>\"{verseData.verse.details.text}\"</p>
-        <cite>— {verseData.verse.details.reference}</cite>
+      {/* Main Scripture Quote */}
+      <blockquote className={styles.cnnVotdQuote}>
+        <p className={styles.cnnVotdText}>"{verseData.verse.details.text}"</p>
+        <cite className={styles.cnnVotdRef}>— {verseData.verse.details.reference}</cite>
       </blockquote>
 
-      {!showAnalysis && (
-        <div className={styles.clickHint}>
-          <Info size={14} /> <span>Click to see meaning</span>
-        </div>
-      )}
-
+      {/* Editorial Commentary Drawer */}
       {showAnalysis && (
-        <div className={styles.analysisSection}>
-          <div className={styles.analysisDivider}></div>
-          <h4 className={styles.analysisTitle}>Reflective Insight</h4>
+        <div className={styles.cnnAnalysisDrawer}>
+          <div className={styles.cnnAnalysisHeader}>
+            <Sparkles size={14} className={styles.cnnIconRed} />
+            <h4>EDITORIAL & REFLECTIVE ANALYSIS</h4>
+          </div>
           {insightLoading ? (
-            <p className={styles.analysisText}>Generating insight...</p>
+            <p className={styles.cnnAnalysisText}>Synthesizing theological context...</p>
           ) : (
-            <p className={styles.analysisText}>{insight}</p>
+            <p className={styles.cnnAnalysisText}>{insight}</p>
           )}
         </div>
       )}
@@ -119,12 +164,12 @@ const Bible = ({ setNotification }) => {
   const searchContainerRef = useRef(null);
 
   const fetchVerse = async (passage, trans) => {
-    if (!passage) return;
+    if (!passage.trim()) return;
     setLoading(true);
     setError('');
     try {
-      const response = await fetch(`https://bible-api.com/${passage}?translation=${trans}`, { mode: 'cors' });
-      if (!response.ok) throw new Error('Verse not found. Try "John 3:16"');
+      const response = await fetch(`https://bible-api.com/${encodeURIComponent(passage)}?translation=${trans}`);
+      if (!response.ok) throw new Error('Passage not found. Try queries like "John 3:16" or "Romans 12".');
       const data = await response.json();
       setVerseText(data.text);
       setReference(data.reference);
@@ -136,7 +181,20 @@ const Bible = ({ setNotification }) => {
     }
   };
 
-  useEffect(() => { fetchVerse('John 3:16', 'kjv'); }, []);
+  useEffect(() => { 
+    fetchVerse('John 3:16', 'kjv'); 
+  }, []);
+
+  // Close auto-suggestions dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target)) {
+        setSuggestions([]);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleQueryChange = (e) => {
     const value = e.target.value;
@@ -150,77 +208,142 @@ const Bible = ({ setNotification }) => {
   };
 
   return (
-    <div className={styles.bibleWrapper}>
+    <div className={styles.cnnBibleWrapper}>
       <div className={styles.container}>
+        
+        {/* Header Section */}
+        <header className={styles.cnnBibleHeader}>
+          <div className={styles.cnnCategoryBadge}>
+            <BookOpen size={13} />
+            <span>PEFA KAWANGWARE 56 | SCRIPTURE INDEX</span>
+          </div>
+          <h2 className={styles.cnnMainTitle}>
+            Interactive <span className={styles.cnnHighlight}>Scripture Desk</span>
+          </h2>
+          <p className={styles.cnnSubtitle}>
+            Query canonical books, chapters, and verses across primary translations using our real-time search tool.
+          </p>
+        </header>
+
+        {/* Daily Verse Wire Card */}
         <VerseOfTheDay setNotification={setNotification} />
 
-        <div className={styles.searchSection}>
-          <div className={styles.titleArea}>
-            <h2 className={styles.mainTitle}>Explore the Scriptures</h2>
-            <p className={styles.subtitle}>Search for any passage, chapter, or verse</p>
-          </div>
-
-          <form onSubmit={(e) => { e.preventDefault(); fetchVerse(query, translation); }} className={styles.searchBar}>
-            <div className={styles.inputGroup} ref={searchContainerRef}>
-              <Search className={styles.searchIcon} size={20} />
+        {/* Search Console */}
+        <section className={styles.cnnSearchConsole}>
+          <form 
+            onSubmit={(e) => { 
+              e.preventDefault(); 
+              setSuggestions([]);
+              fetchVerse(query, translation); 
+            }} 
+            className={styles.cnnForm}
+          >
+            <div className={styles.cnnInputGroup} ref={searchContainerRef}>
+              <Search className={styles.cnnSearchIcon} size={18} />
               <input
                 type="text"
-                placeholder="Search (e.g. Romans 12:12)"
+                placeholder="Search scripture passage (e.g., Romans 12:12, Isaiah 40)"
                 value={query}
                 onChange={handleQueryChange}
-                className={styles.mainInput}
+                className={styles.cnnInput}
               />
               {suggestions.length > 0 && (
-                <ul className={styles.suggestions}>
+                <ul className={styles.cnnSuggestions}>
                   {suggestions.map(book => (
-                    <li key={book} onClick={() => { setQuery(book + " "); setSuggestions([]); }}>{book}</li>
+                    <li 
+                      key={book} 
+                      onClick={() => { 
+                        setQuery(book + " "); 
+                        setSuggestions([]); 
+                      }}
+                    >
+                      <span>{book}</span>
+                    </li>
                   ))}
                 </ul>
               )}
             </div>
 
-            <div className={styles.controls}>
-              <div className={styles.selectWrapper}>
-                <Languages size={16} className={styles.selectIcon} />
-                <select value={translation} onChange={(e) => setTranslation(e.target.value)}>
-                  <option value="kjv">KJV</option>
-                  <option value="bbe">BBE</option>
-                  <option value="web">WEB</option>
+            <div className={styles.cnnControls}>
+              <div className={styles.cnnSelectWrapper}>
+                <Languages size={15} className={styles.cnnSelectIcon} />
+                <select 
+                  value={translation} 
+                  onChange={(e) => {
+                    const newTrans = e.target.value;
+                    setTranslation(newTrans);
+                    fetchVerse(query, newTrans);
+                  }}
+                  className={styles.cnnSelect}
+                >
+                  <option value="kjv">KJV - King James Version</option>
+                  <option value="web">WEB - World English Bible</option>
+                  <option value="bbe">BBE - Bible in Basic English</option>
                 </select>
               </div>
-              <button type="submit" className={styles.searchBtn} disabled={loading}>
-                {loading ? <div className={styles.spinner}></div> : 'Read'}
+
+              <button type="submit" className={styles.cnnSearchBtn} disabled={loading}>
+                {loading ? <div className={styles.cnnSpinner} /> : 'Fetch Passage'}
               </button>
             </div>
           </form>
-        </div>
+        </section>
 
-        <main className={styles.displayArea}>
-          {error && <div className={styles.errorCard}>{error}</div>}
-          
-          {loading ? (
-            <div className={styles.loadingState}>
-              <div className={styles.skeletonLine}></div>
-              <div className={styles.skeletonLineShort}></div>
-            </div>
-          ) : verseText && (
-            <div className={styles.verseReader}>
-              <div className={styles.verseMeta}>
-                <Book size={20} />
-                <span>{reference}</span>
-              </div>
-              <div className={styles.verseContent}>
-                <QuoteIcon className={styles.bgQuote} size={80} />
-                <p className={styles.text}>{verseText.replace(/\n/g, ' ')}</p>
-              </div>
+        {/* Passage Display Area */}
+        <main className={styles.cnnDisplayArea}>
+          {error && (
+            <div className={styles.cnnErrorCard}>
+              <Info size={18} />
+              <span>{error}</span>
             </div>
           )}
+
+          {loading ? (
+            <div className={styles.cnnLoadingState}>
+              <div className={styles.cnnSkeletonLine} style={{ width: '90%' }} />
+              <div className={styles.cnnSkeletonLine} style={{ width: '75%' }} />
+              <div className={styles.cnnSkeletonLine} style={{ width: '80%' }} />
+            </div>
+          ) : verseText && (
+            <article className={styles.cnnReaderCard}>
+              <div className={styles.cnnReaderMeta}>
+                <div className={styles.cnnMetaPrimary}>
+                  <BookOpen size={18} className={styles.cnnIconRed} />
+                  <h3 className={styles.cnnReference}>{reference}</h3>
+                  <span className={styles.cnnTranslationTag}>{translation.toUpperCase()}</span>
+                </div>
+                <div className={styles.cnnMetaSecondary}>
+                  <span className={styles.cnnReadTime}>
+                    <Clock size={13} /> ~1 min read
+                  </span>
+                </div>
+              </div>
+
+              <div className={styles.cnnTextBody}>
+                <QuoteIcon className={styles.cnnWatermarkQuote} size={90} />
+                <p className={styles.cnnPassageText}>
+                  {verseText.replace(/\n/g, ' ')}
+                </p>
+              </div>
+            </article>
+          )}
         </main>
+
       </div>
     </div>
   );
 };
 
-const bibleBooks = ['Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy', 'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel', '1 Kings', '2 Kings', '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Esther', 'Job', 'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Solomon', 'Isaiah', 'Jeremiah', 'Lamentations', 'Ezekiel', 'Daniel', 'Hosea', 'Joel', 'Amos', 'Obadiah', 'Jonah', 'Micah', 'Nahum', 'Habakkuk', 'Zephaniah', 'Haggai', 'Zechariah', 'Malachi', 'Matthew', 'Mark', 'Luke', 'John', 'Acts', 'Romans', '1 Corinthians', '2 Corinthians', 'Galatians', 'Ephesians', 'Philippians', 'Colossians', '1 Thessalonians', '2 Thessalonians', '1 Timothy', '2 Timothy', 'Titus', 'Philemon', 'Hebrews', 'James', '1 Peter', '2 Peter', '1 John', '2 John', '3 John', 'Jude', 'Revelation'];
+const bibleBooks = [
+  'Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy', 'Joshua', 'Judges', 'Ruth', 
+  '1 Samuel', '2 Samuel', '1 Kings', '2 Kings', '1 Chronicles', '2 Chronicles', 'Ezra', 
+  'Nehemiah', 'Esther', 'Job', 'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Solomon', 
+  'Isaiah', 'Jeremiah', 'Lamentations', 'Ezekiel', 'Daniel', 'Hosea', 'Joel', 'Amos', 
+  'Obadiah', 'Jonah', 'Micah', 'Nahum', 'Habakkuk', 'Zephaniah', 'Haggai', 'Zechariah', 
+  'Malachi', 'Matthew', 'Mark', 'Luke', 'John', 'Acts', 'Romans', '1 Corinthians', 
+  '2 Corinthians', 'Galatians', 'Ephesians', 'Philippians', 'Colossians', '1 Thessalonians', 
+  '2 Thessalonians', '1 Timothy', '2 Timothy', 'Titus', 'Philemon', 'Hebrews', 'James', 
+  '1 Peter', '2 Peter', '1 John', '2 John', '3 John', 'Jude', 'Revelation'
+];
 
 export default Bible;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import { Mail, Lock, LogIn, CheckCircle2, AlertCircle } from 'lucide-react';
-import styles from '../styles/LoginUser.module.css';
+import styles from '../styles/LU.module.css';
 import Seo from '../components/Seo';
 
 const Login = () => {
@@ -43,7 +43,7 @@ const Login = () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: 'https://pefa-k-56-church.vercel.app'
+        redirectTo: 'https://pefak56church.top'
       }
     });
     if (error) {

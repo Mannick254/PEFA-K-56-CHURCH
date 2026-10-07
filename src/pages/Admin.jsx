@@ -5,7 +5,6 @@ import AdminBreadcrumb from '../components/admin/AdminBreadcrumb';
 import styles from '../styles/Admin.module.css';
 import Loading from '../components/Loading';
 import { DrawerProvider } from '../context/DrawerContext';
-import SmoothScroll from '../components/admin/SmoothScroll';
 
 const Admin = () => {
   const location = useLocation();
@@ -13,7 +12,7 @@ const Admin = () => {
 
   return (
     <DrawerProvider>
-      <SmoothScroll>
+      <>
         <div className={styles.adminLayout}>
           <AdminNavbar />
           <main className={styles.mainContent}>
@@ -27,7 +26,7 @@ const Admin = () => {
             </div>
           </main>
         </div>
-      </SmoothScroll>
+      </>
     </DrawerProvider>
   );
 };

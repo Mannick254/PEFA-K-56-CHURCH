@@ -1,203 +1,333 @@
-:root {
-  --brand-primary: #8a795d; /* Muted Gold */
-  --brand-dark: #212529; /* Dark, but not harsh black */
-  --brand-light: #f8f9fa; /* Softer white */
-  --text-muted: #6c757d; /* Softer grey */
-  --card-radius: 20px;
-  --transition-smooth: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
+/* ChurchImportance.module.css */
 
+/* Section Outer Container */
 .importanceSection {
-  padding: 80px 5%;
-  background-color: var(--brand-light);
-  position: relative;
-  overflow: hidden;
-  font-family: 'Roboto', sans-serif;
+  background-color: #f8fafc;
+  padding: 3.5rem 1.5rem;
+  color: #0f172a;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
-
-/* Subtle Background Pattern */
-.importanceSection::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-image: radial-gradient(circle at top right, rgba(138, 121, 93, 0.05), transparent 40%);
-  pointer-events: none;
-}
-
 
 .container {
-  max-width: 1300px;
+  max-width: 1240px;
   margin: 0 auto;
-  position: relative;
-  z-index: 2;
 }
 
-/* Header Styling */
+/* Header & Kicker Styling */
 .header {
-  text-align: center;
-  max-width: 800px;
-  margin: 0 auto 60px;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 1.5rem;
 }
 
-.kicker {
-  display: inline-block;
-  color: var(--brand-primary);
-  font-weight: 500;
-  font-size: 0.8rem;
+.kickerRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+}
+
+.kickerBadge {
+  color: #cc0000;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  margin-bottom: 1rem;
+}
+
+.kickerDivider {
+  color: #cbd5e1;
+}
+
+.kickerText {
+  color: #64748b;
+  text-transform: uppercase;
 }
 
 .sectionTitle {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(2.2rem, 5vw, 3.2rem);
-  color: var(--brand-dark);
-  font-weight: 700;
-  line-height: 1.2;
-  margin-bottom: 1rem;
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: #0f172a;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.15;
 }
 
 .accent {
-  color: var(--brand-primary);
-  font-style: italic;
+  color: #cc0000;
 }
 
-.titleUnderline {
-    display: none; /* Removed for a cleaner look */
+.headerBar {
+  width: 60px;
+  height: 4px;
+  background-color: #cc0000;
+  margin: 0.75rem 0 1rem 0;
 }
 
 .subtitle {
-  font-size: 1.1rem;
-  color: var(--text-muted);
-  line-height: 1.7;
-  font-weight: 300;
+  font-size: 1.05rem;
+  color: #475569;
+  max-width: 760px;
+  margin: 0;
+  line-height: 1.5;
 }
 
-/* Grid Layout */
+/* Grid Layout — Dense with zero wasted space */
 .pointsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 2.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
 }
 
-/* Card Design */
+/* Lead Feature Card (Spans 2 columns on desktop) */
+@media (min-width: 992px) {
+  .featuredCard {
+    grid-column: span 2;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+  }
+
+  .featuredCard .imageWrapper {
+    height: 100%;
+    min-height: 280px;
+  }
+}
+
+/* Base Card Styling */
 .pointCard {
   background: #ffffff;
-  border-radius: var(--card-radius);
-  border: 1px solid #e9ecef;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
   overflow: hidden;
-  transition: var(--transition-smooth);
+  cursor: pointer;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .pointCard:hover {
-  border-color: transparent;
-  transform: translateY(-8px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+  border-color: #cbd5e1;
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.08);
 }
 
+.pointCard:hover .readMoreText {
+  color: #cc0000;
+}
+
+.pointCard:hover .arrowIcon {
+  transform: translateX(4px);
+}
+
+/* Media Box */
 .imageWrapper {
   position: relative;
-  aspect-ratio: 16 / 10;
-  overflow: hidden;
+  width: 100%;
+  height: 210px;
+  background-color: #e2e8f0;
 }
 
 .pointImage {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s var(--transition-smooth);
+  display: block;
 }
 
-.pointCard:hover .pointImage {
-  transform: scale(1.08);
-}
-
-.iconCircle {
+.badgeOverlay {
   position: absolute;
-  bottom: 1rem;
-  left: 1rem;
-  width: 48px;
-  height: 48px;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(8px);
-  border-radius: 50%;
-  display: flex;
+  top: 0.75rem;
+  left: 0.75rem;
+}
+
+.categoryTag {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  color: var(--brand-primary);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  transition: var(--transition-smooth);
+  gap: 0.35rem;
+  background-color: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(4px);
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
 }
 
-.pointCard:hover .iconCircle {
-    transform: scale(1.1) rotate(-10deg);
-    background-color: var(--brand-primary);
-    color: #fff;
+.icon {
+  width: 13px;
+  height: 13px;
+  color: #cc0000;
 }
 
-
+/* Card Content Area */
 .cardContent {
-  padding: 1.8rem;
-  flex-grow: 1;
+  padding: 1.25rem;
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
+}
+
+.metaHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+}
+
+.metaTopic {
+  font-weight: 700;
+  color: #cc0000;
+}
+
+.dotSeparator {
+  color: #cbd5e1;
+}
+
+.metaTime {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .pointTitle {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.4rem;
-  color: var(--brand-dark);
+  font-size: 1.25rem;
   font-weight: 700;
-  margin-bottom: 0.8rem;
-  line-height: 1.4;
+  line-height: 1.3;
+  color: #0f172a;
+  margin: 0 0 0.5rem 0;
 }
 
 .pointDescription {
-  color: var(--text-muted);
-  line-height: 1.7;
-  margin-bottom: 1.5rem;
+  font-size: 0.925rem;
+  color: #475569;
+  line-height: 1.5;
+  margin: 0 0 1.25rem 0;
   flex-grow: 1;
-  font-weight: 300;
 }
 
-.readMoreBtn {
-  background: transparent;
-  border: none;
-  padding: 0;
-  display: flex;
+.cardFooter {
+  border-top: 1px solid #f1f5f9;
+  padding-top: 0.75rem;
+  margin-top: auto;
+}
+
+.readMoreText {
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  color: var(--brand-primary);
-  font-weight: 500;
-  cursor: pointer;
-  transition: var(--transition-smooth);
-  font-size: 0.9rem;
+  gap: 0.35rem;
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: #0f172a;
+  transition: color 0.2s ease;
 }
 
-.readMoreBtn:hover {
-  gap: 12px;
-  color: var(--brand-dark);
+.arrowIcon {
+  transition: transform 0.2s ease;
 }
 
-/* Skeletons */
-.skeletonHeader, .skeletonCard { /* Simplified skeleton styles */
-    background-color: #e9ecef;
-    border-radius: var(--card-radius);
+/* Skeleton Loaders */
+.skeletonHeader {
+  margin-bottom: 2rem;
 }
-.skeletonHeader { height: 150px; margin-bottom: 60px; }
-.skeletonCard { height: 450px; }
 
+.skeletonKicker {
+  width: 140px;
+  height: 14px;
+  background-color: #e2e8f0;
+  margin-bottom: 0.5rem;
+  border-radius: 3px;
+}
 
+.skeletonTitle {
+  width: 50%;
+  height: 32px;
+  background-color: #cbd5e1;
+  margin-bottom: 0.5rem;
+  border-radius: 4px;
+}
+
+.skeletonSub {
+  width: 75%;
+  height: 16px;
+  background-color: #e2e8f0;
+  border-radius: 3px;
+}
+
+.skeletonCard {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  height: 380px;
+  overflow: hidden;
+}
+
+.skeletonImage {
+  height: 190px;
+  background-color: #e2e8f0;
+}
+
+.skeletonBody {
+  padding: 1.25rem;
+}
+
+.skeletonLineShort {
+  width: 40%;
+  height: 12px;
+  background-color: #f1f5f9;
+  margin-bottom: 0.75rem;
+}
+
+.skeletonLineTitle {
+  width: 85%;
+  height: 20px;
+  background-color: #cbd5e1;
+  margin-bottom: 0.75rem;
+}
+
+.skeletonLineText {
+  width: 100%;
+  height: 48px;
+  background-color: #f1f5f9;
+}
+
+/* Error Banner */
+.errorState {
+  padding: 3rem 2rem;
+  text-align: center;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  color: #991b1b;
+}
+
+.errorState h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+}
+
+.errorState p {
+  margin: 0;
+  color: #7f1d1d;
+}
+
+/* Responsive Adjustments */
 @media (max-width: 768px) {
-  .pointsGrid {
-      grid-template-columns: 1fr;
-  }
-  
   .importanceSection {
-      padding: 60px 1rem;
+    padding: 2rem 1rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.75rem;
+  }
+
+  .pointsGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .imageWrapper {
+    height: 180px;
   }
 }

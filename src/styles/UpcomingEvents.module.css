@@ -1,170 +1,243 @@
-:root {
-  --primary: #a78bfa;
-  --primary-dark: #8b5cf6;
-  --text-main: #374151;
-  --text-muted: #6b7280;
-  --bg-card: #ffffff;
-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  --radius: 20px;
+/* ==========================================================================
+   CNN NEWSROOM STYLING - UPCOMING EVENTS (LIGHT THEME)
+   ========================================================================== */
+
+/* Main Section Wrapper */
+.cnnEventsSection {
+  background-color: #f8fafc;
+  color: #0f172a;
+  padding: 4rem 1.5rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  border-top: 4px solid #cc0000;
+  border-bottom: 1px solid #e2e8f0;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 4rem auto;
-  padding: 0 1.5rem;
-  font-family: 'Inter', system-ui, sans-serif;
+.cnnContainer {
+  max-width: 1280px;
+  margin: 0 auto;
 }
 
-.header {
+/* --------------------------------------------------------------------------
+   Header & Live Pulse
+   -------------------------------------------------------------------------- */
+.cnnHeader {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 3rem;
+  margin-bottom: 2.5rem;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 1.5rem;
 }
 
-.badge {
-  display: inline-block;
-  background: rgba(167, 139, 250, 0.1);
-  color: var(--primary);
-  padding: 0.35rem 1rem;
-  border-radius: 99px;
-  font-size: 0.8rem;
-  font-weight: 500;
+.cnnHeaderLeft {
+  max-width: 720px;
+}
+
+.cnnLiveBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: rgba(204, 0, 0, 0.08);
+  color: #cc0000;
+  border: 1px solid rgba(204, 0, 0, 0.25);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  border-radius: 2px;
+  text-transform: uppercase;
   margin-bottom: 0.75rem;
 }
 
-.title {
+.livePulseIcon {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.9); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.cnnMainTitle {
   font-size: 2.25rem;
-  font-weight: 700;
-  color: var(--text-main);
-  margin: 0;
-  letter-spacing: -0.025em;
-}
-
-.subtitle {
-  color: var(--text-muted);
-  font-size: 1.1rem;
-  margin-top: 0.5rem;
-  max-width: 500px;
-}
-
-.desktopViewAll {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--primary);
-  text-decoration: none;
-  font-weight: 500;
-  transition: transform 0.2s ease;
-}
-
-.desktopViewAll:hover {
-  transform: translateX(5px);
-}
-
-/* Grid Layout */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 2.5rem;
-}
-
-/* Card Styling */
-.card {
-  background: var(--bg-card);
-  border-radius: var(--radius);
-  overflow: hidden;
-  text-decoration: none;
-  color: inherit;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid #e5e7eb;
-  display: flex;
-  flex-direction: column;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07);
-  border-color: rgba(167, 139, 250, 0.5);
-}
-
-/* Image Section */
-.imageWrapper {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-}
-
-.image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.card:hover .image {
-  transform: scale(1.03);
-}
-
-.dateOverlay {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(8px);
-  padding: 0.6rem 0.85rem;
-  border-radius: 14px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 55px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-
-.dateDay {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--text-main);
-  line-height: 1;
-}
-
-.dateMonth {
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: var(--primary);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.5rem 0;
+  color: #0f172a;
   text-transform: uppercase;
 }
 
-/* Content Section */
-.content {
-  padding: 1.75rem;
-  flex-grow: 1;
+.cnnHighlight {
+  color: #cc0000;
+  position: relative;
 }
 
-.eventTitle {
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: var(--text-main);
+.cnnSubtitle {
+  color: #475569;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0;
 }
 
-.meta {
+.cnnDesktopViewAll {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #0f172a;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  padding: 10px 18px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-radius: 2px;
+}
+
+.cnnDesktopViewAll:hover {
+  background-color: #cc0000;
+  border-color: #cc0000;
+  color: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   Desktop Newsroom Grid
+   -------------------------------------------------------------------------- */
+.cnnGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+/* Event Card */
+.cnnEventCard {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-top: 3px solid #0f172a;
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-.metaItem {
+.cnnEventCard:hover {
+  transform: translateY(-4px);
+  border-color: #cbd5e1;
+  border-top-color: #cc0000;
+  box-shadow: 0 12px 24px -8px rgba(15, 23, 42, 0.12);
+}
+
+/* Image Wrapper */
+.cnnImageWrapper {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background-color: #f1f5f9;
+}
+
+.cnnImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.cnnEventCard:hover .cnnImage {
+  transform: scale(1.05);
+}
+
+.cnnDateBadge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background-color: #cc0000;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  padding: 6px 4px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  border-radius: 2px;
+}
+
+.cnnDateDay {
+  font-size: 1.25rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.cnnDateMonth {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  margin-top: 2px;
+}
+
+.cnnCategoryTag {
+  position: absolute;
+  bottom: 10px;
+  left: 12px;
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  color: #0f172a;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 3px 8px;
+  text-transform: uppercase;
+}
+
+/* Content Area */
+.cnnContent {
+  padding: 1.25rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.cnnEventTitle {
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1.35;
+  margin: 0 0 1rem 0;
+  color: #0f172a;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cnnMetaGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: auto;
+  border-top: 1px dashed #e2e8f0;
+  padding-top: 0.75rem;
+}
+
+.cnnMetaItem {
   display: flex;
   align-items: center;
-  gap: 0.7rem;
-  color: var(--text-muted);
-  font-size: 0.875rem;
+  gap: 8px;
+  color: #475569;
+  font-size: 0.8rem;
+  font-weight: 500;
 }
 
-.icon {
-  color: var(--primary);
+.cnnIconRed {
+  color: #cc0000;
+  flex-shrink: 0;
 }
 
 .truncate {
@@ -173,100 +246,163 @@
   text-overflow: ellipsis;
 }
 
-/* Footer */
-.cardFooter {
-  padding: 1.25rem 1.75rem;
-  border-top: 1px solid #e5e7eb;
+/* Footer / CTA */
+.cnnCardFooter {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  background: #fcfdff;
+  justify-content: space-between;
+  padding: 0.85rem 1.25rem;
+  background-color: #f1f5f9;
+  border-top: 1px solid #e2e8f0;
+  transition: background-color 0.2s ease;
 }
 
-.learnMore {
-  font-weight: 500;
-  font-size: 0.875rem;
-  color: var(--text-main);
+.cnnEventCard:hover .cnnCardFooter {
+  background-color: #e2e8f0;
 }
 
-.arrowCircle {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: var(--primary);
-  color: white;
+.cnnReadMore {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #0f172a;
+}
+
+.cnnArrowCircle {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s ease;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+  transition: all 0.2s ease;
 }
 
-.card:hover .arrowCircle {
-  background: var(--primary-dark);
+.cnnEventCard:hover .cnnArrowCircle {
+  background-color: #cc0000;
+  border-color: #cc0000;
+  color: #ffffff;
+  transform: translateX(3px);
 }
 
-/* Mobile View All */
-.mobileViewAll {
+/* --------------------------------------------------------------------------
+   Mobile Carousel & Controls
+   -------------------------------------------------------------------------- */
+.cnnMobileCarousel {
   display: none;
-  margin-top: 2rem;
 }
 
-.viewAllButton {
-  display: block;
-  width: 100%;
-  padding: 1rem;
-  background: var(--primary);
-  color: white;
-  text-align: center;
-  border-radius: var(--radius);
-  text-decoration: none;
-  font-weight: 500;
+.cnnMobileViewAll {
+  display: none;
 }
 
-/* Skeletons */
-.skeletonCard {
-  height: 400px;
-  background: linear-gradient(90deg, #f0f2f5 25%, #e6e8ec 50%, #f0f2f5 75%);
-  background-size: 200% 100%;
-  animation: loading 1.5s infinite;
-  border-radius: var(--radius);
+.cnnCarouselDots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 1.25rem;
 }
 
-@keyframes loading {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+.cnnDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #cbd5e1;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-/* --- MOBILE CAROUSEL --- */
-.mobileCarousel {
-  display: none; /* Hidden by default */
-  position: relative;
-  width: 100%;
-  height: 450px; /* Adjust as needed */
-  overflow: hidden;
+.cnnDotActive {
+  background-color: #cc0000;
+  transform: scale(1.2);
 }
 
+/* --------------------------------------------------------------------------
+   Skeletons
+   -------------------------------------------------------------------------- */
+.cnnSkeletonHeader {
+  height: 80px;
+  background-color: #e2e8f0;
+  margin-bottom: 2rem;
+  border-radius: 2px;
+  animation: skeletonPulse 1.5s infinite ease-in-out;
+}
 
-/* Responsive */
+.cnnSkeletonCard {
+  height: 380px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 2px;
+  animation: skeletonPulse 1.5s infinite ease-in-out;
+}
+
+@keyframes skeletonPulse {
+  0% { opacity: 0.7; }
+  50% { opacity: 0.3; }
+  100% { opacity: 0.7; }
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Layout Overrides
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .cnnGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
-  .header {
+  .cnnHeader {
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
   }
-  .desktopViewAll { display: none; }
-  .mobileViewAll { display: block; }
-  .title { font-size: 2rem; }
-  
-  .grid {
-    display: none; /* Hide grid on mobile */
+
+  .cnnDesktopViewAll {
+    display: none;
   }
 
-  .mobileCarousel {
-    display: block; /* Show carousel on mobile */
+  .cnnGrid {
+    display: none;
   }
-  
-  .imageWrapper {
-    aspect-ratio: 16 / 10; /* Wider cards for mobile scrolling */
+
+  .cnnMobileCarousel {
+    display: block;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cnnMobileViewAll {
+    display: block;
+    margin-top: 2rem;
+  }
+
+  .cnnMobileBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px;
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    color: #0f172a;
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    border-radius: 2px;
+  }
+
+  .cnnMobileBtn:active {
+    background-color: #cc0000;
+    color: #ffffff;
   }
 }

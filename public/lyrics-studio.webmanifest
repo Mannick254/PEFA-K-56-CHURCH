@@ -1,0 +1,26 @@
+{
+  "name": "Holyrics Studio",
+  "short_name": "Studio",
+  "description": "Create, manage, and present lyrics for live services in a powerful offline-first environment.",
+  "start_url": "/lyrics-studio",
+  "display": "fullscreen",
+  "background_color": "#1a1a1a",
+  "theme_color": "#4a90e2",
+  "lang": "en",
+  "scope": "/lyrics-studio",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "https://res.cloudinary.com/dtcb3ffnv/image/upload/w_192,h_192,c_fill/v1780723691/Untitled-design-24-_lfef05.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://res.cloudinary.com/dtcb3ffnv/image/upload/w_512,h_512,c_fill/v1780723691/Untitled-design-24-_lfef05.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ]
+}

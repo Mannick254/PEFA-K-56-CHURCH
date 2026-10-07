@@ -1,38 +1,44 @@
-/* src/App.css */
-
 /* Global Styles */
 html {
   scroll-behavior: smooth;
 }
+
 body, html, #root {
-    margin: 0;
-    padding: 0;
-    font-family: 'Helvetica Neue', 'Arial', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    background-color: #f8fafc; /* Light Gray Background */
-    overflow-x: hidden; /* Prevent horizontal scrolling */
-    font-weight: 300; /* Lighter font weight */
-  }
+  margin: 0;
+  padding: 0;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f8fafc; /* Light Gray Background */
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  font-weight: 300; /* Lighter font weight */
+}
 
-  /* Main content container */
+/* Main content container - FIXED OFFSET */
+.content-with-navbar {
+  padding-top: 72px; /* Matches exact fixed navbar height */
+}
+
+/* Mobile viewport adjustment */
+@media (max-width: 900px) {
   .content-with-navbar {
-    padding-top: 100px; /* Adjust for fixed navbar */
+    padding-top: 70px; /* Matches height on mobile devices */
   }
+}
 
-  /* Responsive Typography */
-  h1, h2, h3, h4, h5, h6 {
-    color: #1a365d; /* Navy Blue */
-  }
+/* Responsive Typography */
+h1, h2, h3, h4, h5, h6 {
+  color: #1a365d; /* Navy Blue */
+}
 
-  a {
-    color: #d69e2e; /* Gold */
-    text-decoration: none;
-  }
+a {
+  color: #d69e2e; /* Gold */
+  text-decoration: none;
+}
 
-  a:hover {
-    text-decoration: underline;
-  }
+a:hover {
+  text-decoration: underline;
+}
 
 .breadcrumb-container {
   position: absolute;

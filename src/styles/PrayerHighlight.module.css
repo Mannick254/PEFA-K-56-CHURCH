@@ -1,170 +1,289 @@
-.wrapper {
-    padding: 60px 5%;
-    background-color: #f8f9fa;
-    border-top: 1px solid #e9ecef;
-    border-bottom: 1px solid #e9ecef;
+/* ==========================================================================
+   PRAYER HIGHLIGHT COMPONENT STYLES
+   ========================================================================== */
+
+   .wrapper {
+    --primary-red: #cc0000;
+    --editorial-navy: #0f172a;
+    --editorial-dark: #1e293b;
+    --text-muted: #64748b;
+    --bg-light: #f8fafc;
+    --border-color: #e2e8f0;
+
+    background-color: #ffffff;
+    color: var(--editorial-dark);
+    padding: 3.5rem 0;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .container {
-    max-width: 1100px;
+    max-width: 1240px;
     margin: 0 auto;
+    padding: 0 1.25rem;
 }
 
 .editorialLayout {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 2.5rem;
     align-items: center;
+}
 
-    @media (min-width: 768px) {
-        grid-template-columns: 1fr 1.2fr;
-        gap: 60px;
+@media (min-width: 868px) {
+    .editorialLayout {
+        grid-template-columns: 1fr 1fr;
+        gap: 3.5rem;
     }
 }
 
-.infoColumn {
-    text-align: center;
-    @media (min-width: 768px) {
-        text-align: left;
-    }
-}
-
+/* 1. Left Info Column */
 .badge {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    background-color: #e9ecef;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: #8a795d;
-    margin-bottom: 1.5rem;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--primary-red);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
 }
 
 .flameIcon {
-    color: #d9534f;
+    color: var(--primary-red);
 }
 
 .title {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    color: #212529;
-    margin-bottom: 1rem;
-    line-height: 1.3;
-
-    @media (min-width: 768px) {
-        font-size: 2.4rem;
-    }
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--editorial-navy);
+    margin: 0 0 1rem;
 }
 
 .title span {
-    color: #8a795d;
+    color: var(--primary-red);
 }
 
 .description {
-    color: #6c757d;
-    line-height: 1.7;
-    max-width: 450px;
-    margin: 0 auto 2rem auto;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin-bottom: 1.75rem;
+}
 
-    @media (min-width: 768px) {
-        margin: 0 0 2rem 0;
-    }
+.ctaGroup {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
 }
 
 .mainCta {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    background: #8a795d;
-    color: #fff;
-    padding: 12px 24px;
-    border-radius: 30px;
+    gap: 0.5rem;
+    background-color: var(--editorial-navy);
+    color: #ffffff;
+    padding: 0.75rem 1.25rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 700;
     text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
+    transition: background-color 0.2s ease;
 }
 
 .mainCta:hover {
-    background-color: #212529;
-    transform: translateY(-2px);
+    background-color: var(--primary-red);
 }
 
+.secondaryCta {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--editorial-navy);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+/* 2. Right Live Feed Column */
 .feedColumn {
-    width: 100%;
+    background-color: var(--bg-light);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 1.5rem;
 }
 
-.loadingState, .noPrayerState {
-    text-align: center;
-    padding: 30px;
-    font-style: italic;
-    color: #6c757d;
+.liveIndicatorHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
 }
 
+.liveDotWrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pulseDot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--primary-red);
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(204, 0, 0, 0.4);
+    animation: pulse 1.8s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(204, 0, 0, 0.6);
+    }
+    70% {
+        box-shadow: 0 0 0 8px rgba(204, 0, 0, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(204, 0, 0, 0);
+    }
+}
+
+.liveText {
+    font-size: 0.725rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    color: var(--editorial-navy);
+}
+
+.privacyNote {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.725rem;
+    color: var(--text-muted);
+}
+
+/* 3. Prayer Card Row */
 .prayerRow {
-    background: #fff;
-    border-radius: 12px;
-    padding: 24px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
-    border: 1px solid #dee2e6;
+    background-color: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 1.25rem;
 }
 
 .rowHeader {
     display: flex;
+    align-items: flex-start;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
 }
 
 .prayerTitle {
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: #343a40;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--editorial-navy);
 }
 
 .date {
-    font-size: 0.8rem;
-    color: #6c757d;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    white-space: nowrap;
 }
 
 .requestText {
-    color: #495057;
+    font-size: 0.925rem;
+    line-height: 1.5;
+    color: var(--editorial-dark);
+    margin: 0 0 1.25rem;
     font-style: italic;
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
-    font-size: 1rem;
 }
 
 .rowActions {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
 }
 
 .amenAction {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    background: none;
-    border: 1px solid #d9534f;
-    color: #d9534f;
-    padding: 8px 16px;
-    border-radius: 20px;
+    gap: 0.4rem;
+    background-color: var(--bg-light);
+    border: 1px solid var(--border-color);
+    padding: 0.45rem 0.85rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--editorial-navy);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
 }
 
 .amenAction:hover {
-    background: #d9534f;
-    color: #fff;
+    border-color: var(--primary-red);
+    color: var(--primary-red);
+}
+
+.amenActive {
+    background-color: #fef2f2;
+    border-color: var(--primary-red);
+    color: var(--primary-red);
+}
+
+.heartFilled {
+    fill: var(--primary-red);
+    color: var(--primary-red);
+}
+
+.countBadge {
+    background-color: var(--border-color);
+    color: var(--editorial-navy);
+    font-size: 0.7rem;
+    padding: 0.1rem 0.4rem;
+    border-radius: 10px;
+    margin-left: 0.2rem;
+}
+
+.amenActive .countBadge {
+    background-color: var(--primary-red);
+    color: #ffffff;
 }
 
 .intercessionTag {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: #28a745;
+    gap: 0.25rem;
+    font-size: 0.725rem;
+    font-weight: 700;
+    color: var(--primary-red);
+}
+
+/* 4. States */
+.loadingState, .noPrayerState {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 2.5rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.spinningIcon {
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
 }

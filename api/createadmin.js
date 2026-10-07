@@ -1,54 +1,36 @@
-import 'dotenv/config';
+
 import { createClient } from '@supabase/supabase-js';
-import WebSocket from 'ws';
 
-// Supabase client options
-const options = {
-  auth: {
-    autoRefreshToken: false,
-    persistSession: false,
-    detectSessionInUrl: false,
-  },
-  realtime: {
-    transport: WebSocket,
-  },
-};
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-// Initialize Supabase client with environment variables
-const supabase = createClient(
-  process.env.VITE_SUPABASE_URL,
-  process.env.VITE_SUPABASE_ANON_KEY,
-  options
-);
-
-async function createAdmin() {
-  // Check if required environment variables are set
-  if (!process.env.ADMIN_EMAIL || !process.env.ADMIN_PASSWORD) {
-    console.error('❌ Error: ADMIN_EMAIL and ADMIN_PASSWORD environment variables must be set.');
-    return;
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    res.setHeader('Allow', ['POST']);
+    return res.status(405).json({ error: `Method ${req.method} Not Allowed` });
   }
+
+  const { email } = req.body;
+  if (!email) {
+    return res.status(400).json({ error: 'Email is required' });
+  }
+
+  const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
   try {
-    const { data, error } = await supabase.auth.signUp({
-      email: process.env.ADMIN_EMAIL,       // Use email from env vars
-      password: process.env.ADMIN_PASSWORD, // Use password from env vars
-      options: {
-        data: {
-          username: 'PEFAK56',             // custom username
-          role: 'admin',                   // role metadata
-        },
-      },
-    });
+    const { data, error } = await supabase.auth.admin.inviteUserByEmail(email);
 
     if (error) {
-      console.error('❌ Error creating admin:', error.message);
-    } else {
-      console.log('✅ Admin created successfully:', data.user);
+      console.error('Error inviting admin user:', error);
+      return res.status(500).json({ error: error.message });
     }
+
+    return res.status(200).json({
+      message: 'Admin invitation sent successfully',
+      data
+    });
   } catch (err) {
-    console.error('⚠️ Unexpected error:', err);
+    console.error('Unexpected error:', err);
+    return res.status(500).json({ error: err.message });
   }
 }
-
-// Run the script
-createAdmin();

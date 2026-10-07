@@ -1,0 +1,218 @@
+.container {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.toggleButton {
+  background: #f3f4f6;
+  color: #374151;
+  padding: 12px 24px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.toggleButton:hover {
+  background: #e5e7eb;
+}
+
+.listWrapper {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  margin: 20px auto;
+  max-width: 900px;
+  overflow: hidden;
+  border: 1px solid #eee;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  background: #fff;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #111827;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin: 4px 0 0;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.closeButton {
+  background: #374151;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Table Styles */
+.tableContainer {
+  padding: 0;
+}
+
+.adminTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.adminTable th {
+  text-align: left;
+  padding: 16px 24px;
+  background: #f9fafb;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+}
+
+.adminTable td {
+  padding: 20px 24px;
+  border-bottom: 1px solid #f3f4f6;
+  vertical-align: middle;
+}
+
+.adminInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  background: #e0e7ff;
+  color: #4338ca;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+.email {
+  font-weight: 500;
+  color: #111827;
+}
+
+/* Permissions Chips */
+.permissionsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.permissionTag {
+  background: #eff6ff;
+  color: #1d4ed8;
+  padding: 4px 10px;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid #dbeafe;
+}
+
+/* Buttons */
+.revokeBtn {
+  background: transparent;
+  color: #dc2626;
+  border: 1px solid #fee2e2;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.revokeBtn:hover {
+  background: #dc2626;
+  color: white;
+  border-color: #dc2626;
+}
+
+.textRight {
+  text-align: right;
+}
+
+.emptyState {
+  padding: 40px;
+  text-align: center;
+  color: #9ca3af;
+}
+
+/* --- MOBILE RESPONSIVENESS --- */
+@media screen and (max-width: 768px) {
+  .adminTable thead {
+    display: none; /* Hide headers on mobile */
+  }
+
+  .adminTable tr {
+    display: block;
+    margin-bottom: 15px;
+    border: 1px solid #f3f4f6;
+    border-radius: 12px;
+    margin: 16px;
+    padding: 10px;
+    background: #fff;
+  }
+
+  .adminTable td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: right;
+    padding: 12px 8px;
+    border-bottom: 1px solid #f9fafb;
+  }
+
+  .adminTable td:last-child {
+    border-bottom: none;
+  }
+
+  /* Label creation via data-label attribute */
+  .adminTable td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    color: #9ca3af;
+    text-align: left;
+  }
+
+  .permissionsGrid {
+    justify-content: flex-end;
+    max-width: 60%;
+  }
+
+  .textRight {
+    text-align: right;
+    width: 100%;
+  }
+
+  .revokeBtn {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+  }
+}

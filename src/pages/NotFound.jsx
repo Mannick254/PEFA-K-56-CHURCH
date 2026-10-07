@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Home, Search, LifeBuoy } from 'lucide-react';
+import { ArrowLeft, Home, Search } from 'lucide-react';
 import styles from '../styles/NotFound.module.css';
 import Seo from '../components/Seo';
 
@@ -49,13 +49,9 @@ function Page({ is404 }) {
           </div>
 
           <div className={styles.suggestions}>
-            <p>Try these instead:</p>
+            <p>Try this instead:</p>
             <nav className={styles.navLinks}>
               <Link to="/blog">Blog</Link>
-              <Link to="/pricing">Pricing</Link>
-              <Link to="/support" className={styles.supportLink}>
-                <LifeBuoy size={14} /> Help Center
-              </Link>
             </nav>
           </div>
         </div>

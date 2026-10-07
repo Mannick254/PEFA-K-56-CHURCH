@@ -17,15 +17,26 @@ const AdminLogin = () => {
     setStatus({ type: '', msg: '' });
 
     try {
-      // Map username to email
-      let email;
-      if (username.trim() === 'PEFAK56') {
-        email = 'nicksonochieng64@gmail.com';
-      } else {
+      // Note: For this to work, you need to create a table in Supabase named 'admin_credentials'
+      // with two columns: 'username' (text) and 'email' (text).
+      // Add a row for each admin with their desired username and their registered email.
+      // You must also enable Row Level Security (RLS) on this table and create a policy
+      // that allows read access for all users.
+
+      // Fetch the email associated with the admin username
+      const { data: adminData, error: adminError } = await supabase
+        .from('admin_credentials')
+        .select('email')
+        .eq('username', username.trim())
+        .single();
+
+      if (adminError || !adminData) {
         setStatus({ type: 'error', msg: 'Invalid Admin Credentials' });
         setLoading(false);
         return;
       }
+
+      const email = adminData.email;
 
       // Authenticate
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({

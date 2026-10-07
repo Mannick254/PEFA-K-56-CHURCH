@@ -60,6 +60,9 @@ const AdminBlog = () => {
             <header className={styles.topBar}>
                 <div className={styles.titleArea}>
                     <h1>Content Studio</h1>
+                    <p className={styles.description}>
+                        Welcome to the Content Studio. This is where you can write, edit, and manage all of the blog posts for the website. Use the 'New Post' button to start writing. You can search for existing posts using the search bar, and click on any post to see a preview, edit it, or delete it.
+                    </p>
                     <p>{filteredPosts.length} total posts</p>
                 </div>
                 <button

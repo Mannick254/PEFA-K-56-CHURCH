@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Users, UserCheck, ArrowRight, AlertCircle, Sparkles } from 'lucide-react';
+import { Users, UserCheck, ChevronRight, AlertCircle, Sparkles, Shield, Layers } from 'lucide-react';
 import styles from '../styles/ChurchDepartmentsSection.module.css';
 import { Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
@@ -54,115 +54,133 @@ const ChurchDepartmentsSection = ({ limit }) => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.2, delayChildren: 0.1 }
+      transition: { staggerChildren: 0.15, delayChildren: 0.05 }
     }
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 40, scale: 0.95 },
+    hidden: { opacity: 0, y: 20 },
     visible: { 
       opacity: 1, 
       y: 0, 
-      scale: 1,
-      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } 
+      transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } 
     }
   };
 
   return (
-    <section className={styles.wrapper}>
-      <div className={styles.bgGlow} />
-      
+    <section className={styles.cnnDeptSection}>
       <div className={styles.container}>
-        <header className={styles.header}>
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            className={styles.badge}
-          >
-            <Sparkles size={14} /> <span>Join a Ministry</span>
-          </motion.div>
-          <h2 className={styles.title}>Impactful <span>Ministries</span></h2>
-          <p className={styles.subtitle}>
-            Every member has a unique gift. Discover where you can serve, grow, and connect within our specialized departments.
+        
+        {/* CNN Top Header */}
+        <header className={styles.cnnHeader}>
+          <div className={styles.cnnCategoryBadge}>
+            <Layers size={13} className={styles.cnnBadgeIcon} />
+            <span>MINISTRY NETWORK | SPECIAL DIRECTORY</span>
+          </div>
+          <h2 className={styles.cnnTitle}>
+            Impactful <span className={styles.cnnHighlight}>Ministries & Departments</span>
+          </h2>
+          <p className={styles.cnnSubtitle}>
+            Every member has a unique gift. Explore our active operational wings serving our sanctuary and the Kawangware 56 community.
           </p>
         </header>
 
         {error && !loading && (
-          <div className={styles.errorState}>
-            <AlertCircle size={32} />
+          <div className={styles.cnnErrorBox}>
+            <AlertCircle size={20} />
             <p>{error}</p>
           </div>
         )}
 
+        {/* CNN Loading State */}
         {loading ? (
-          <div className={styles.grid}>
+          <div className={styles.cnnSkeletonGrid}>
             {[...Array(limit || 4)].map((_, i) => (
-              <div key={i} className={styles.skeletonCard}>
-                <div className={styles.skeletonImage} />
-                <div className={styles.skeletonLine} style={{ width: '70%' }} />
-                <div className={styles.skeletonLine} style={{ width: '40%' }} />
+              <div key={i} className={styles.cnnSkeletonCard}>
+                <div className={styles.cnnSkeletonImage} />
+                <div className={styles.cnnSkeletonLine} style={{ width: '80%' }} />
+                <div className={styles.cnnSkeletonLine} style={{ width: '50%' }} />
               </div>
             ))}
           </div>
         ) : (
           <motion.div 
-            className={styles.grid}
+            className={styles.cnnGrid}
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
+            viewport={{ once: true, margin: "-40px" }}
           >
-            {departments.map((dept) => (
-              <motion.article 
-                key={dept.id} 
-                className={styles.card}
-                variants={cardVariants}
-                whileHover="hover"
-              >
-                <Link to={`/church-department-reader/${dept.id}`} className={styles.link}>
-                  <div className={styles.imageWrapper}>
-                    <motion.div 
-                      className={styles.imageZoomer}
-                      variants={{ hover: { scale: 1.1 } }}
-                      transition={{ duration: 0.6 }}
-                    >
+            {departments.map((dept, idx) => {
+              const isLeadStory = idx === 0; // First item styled as CNN Lead Feature Card
+              
+              return (
+                <motion.article 
+                  key={dept.id} 
+                  className={`${styles.cnnCard} ${isLeadStory ? styles.cnnCardFeatured : ''}`}
+                  variants={cardVariants}
+                >
+                  <Link to={`/church-department-reader/${dept.id}`} className={styles.cnnLink}>
+                    
+                    <div className={styles.cnnImageWrapper}>
                       {dept.image ? (
-                        <img src={dept.image} alt={dept.name} className={styles.image} />
+                        <img src={dept.image} alt={dept.name} className={styles.cnnImage} />
                       ) : (
-                        <div className={styles.placeholder}>
-                          <Users size={40} />
+                        <div className={styles.cnnPlaceholder}>
+                          <Users size={36} />
                         </div>
                       )}
-                    </motion.div>
-                    
-                    <div className={styles.glassOverlay}>
-                      <div className={styles.leaderPill}>
-                        <UserCheck size={14} />
-                        <span>{dept.head}</span>
+
+                      {/* CNN Category Overlay Tag */}
+                      <div className={styles.cnnTagOverlay}>
+                        <span>DEPT</span>
+                      </div>
+
+                      {/* Leader Overlay Pill */}
+                      {dept.head && (
+                        <div className={styles.cnnLeaderTag}>
+                          <UserCheck size={13} />
+                          <span>{dept.head}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className={styles.cnnContent}>
+                      <div className={styles.cnnMeta}>
+                        <span className={styles.cnnMinistryLabel}>PEFA K-56 MINISTRY</span>
+                      </div>
+                      
+                      <h3 className={styles.cnnDeptName}>{dept.name}</h3>
+
+                      {isLeadStory && dept.description && (
+                        <p className={styles.cnnExcerpt}>
+                          {dept.description.length > 130 
+                            ? `${dept.description.substring(0, 130)}...` 
+                            : dept.description}
+                        </p>
+                      )}
+
+                      <div className={styles.cnnCtaText}>
+                        <span>Explore Department</span>
+                        <ChevronRight size={15} />
                       </div>
                     </div>
-                  </div>
 
-                  <div className={styles.content}>
-                    <h3 className={styles.deptName}>{dept.name}</h3>
-                    <div className={styles.ctaText}>
-                      Learn More <ArrowRight size={16} />
-                    </div>
-                  </div>
-                </Link>
-              </motion.article>
-            ))}
+                  </Link>
+                </motion.article>
+              );
+            })}
           </motion.div>
         )}
 
-        <footer className={styles.footer}>
-          <Link to="/church-department" className={styles.mainCta}>
-            <span>View All Departments</span>
-            <div className={styles.ctaIcon}>
-              <ArrowRight size={20} />
-            </div>
+        {/* CNN Newsroom Directory Action Footer */}
+        <footer className={styles.cnnFooter}>
+          <Link to="/church-department" className={styles.cnnFooterBtn}>
+            <span>View All Church Departments</span>
+            <ChevronRight size={18} />
           </Link>
         </footer>
+
       </div>
     </section>
   );

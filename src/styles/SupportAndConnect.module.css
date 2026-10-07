@@ -1,100 +1,284 @@
-.wrapper {
-    padding: 80px 5%;
-    background-color: #ffffff;
-}
+/* ==========================================================================
+   SUPPORT & CONNECT - COMPACT & LIGHT THEME STYLESHEET
+   ========================================================================== */
 
-.container {
-    max-width: 900px;
+   .wrapper {
+    padding: 2rem 1rem;
+    background: #f8fafc;
+    color: #0f172a;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  
+  .container {
+    max-width: 960px;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 30px;
-
-    @media (min-width: 768px) {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-.ctaCard {
-    border-radius: 20px;
-    padding: 40px;
-    text-align: center;
-    transition: all 0.4s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.ctaCard:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-}
-
-.iconWrapper {
-    margin-bottom: 20px;
-    display: inline-block;
-    padding: 18px;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-}
-
-.cardTitle {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
-    margin-bottom: 12px;
-}
-
-.cardDescription {
-    font-size: 1rem;
-    line-height: 1.7;
-    margin-bottom: 24px;
-    max-width: 300px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.ctaButton {
-    display: inline-block;
-    padding: 12px 28px;
-    border-radius: 30px;
-    text-decoration: none;
+  }
+  
+  /* --------------------------------------------------------------------------
+     AI Meta Control Bar
+     -------------------------------------------------------------------------- */
+  .aiMetaBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.85rem;
+    padding: 0 0.25rem;
+  }
+  
+  .aiTag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.725rem;
     font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-/* Give Card Specifics */
-.giveCard {
-    background-color: #fff4e6;
-    color: #8a5a2b;
-}
-
-.giveCard .iconWrapper {
-    background-color: rgba(138, 90, 43, 0.1);
-}
-
-.giveCard .ctaButton {
-    background-color: #8a5a2b;
-    color: #fff;
-}
-
-.giveCard .ctaButton:hover {
-    background-color: #6b4620;
-}
-
-/* Connect Card Specifics */
-.connectCard {
-    background-color: #e6f7ff;
-    color: #1d6a96;
-}
-
-.connectCard .iconWrapper {
-    background-color: rgba(29, 106, 150, 0.1);
-}
-
-.connectCard .ctaButton {
-    background-color: #1d6a96;
-    color: #fff;
-}
-
-.connectCard .ctaButton:hover {
-    background-color: #144a69;
-}
+    color: #4f46e5;
+    background: #eef2ff;
+    border: 1px solid #c7d2fe;
+    padding: 3px 10px;
+    border-radius: 16px;
+  }
+  
+  .pulseIcon {
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.9); }
+  }
+  
+  .heatmapToggle {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    color: #64748b;
+    font-size: 0.725rem;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s ease;
+  }
+  
+  .heatmapToggle:hover,
+  .heatmapToggle.active {
+    background: #eef2ff;
+    color: #4f46e5;
+    border-color: #818cf8;
+  }
+  
+  /* --------------------------------------------------------------------------
+     Grid & Card Construction
+     -------------------------------------------------------------------------- */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.25rem;
+  }
+  
+  .ctaCard {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  
+  .ctaCard:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  }
+  
+  .cardBgWrapper {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+  
+  .cardBg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.08;
+    transition: transform 0.6s ease, opacity 0.4s ease;
+  }
+  
+  .ctaCard:hover .cardBg {
+    transform: scale(1.05);
+    opacity: 0.14;
+  }
+  
+  .heatmapActive {
+    filter: contrast(160%) hue-rotate(90deg) invert(10%) !important;
+    opacity: 0.35 !important;
+  }
+  
+  .bgOverlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.98) 100%);
+  }
+  
+  /* --------------------------------------------------------------------------
+     Badges & Header Items
+     -------------------------------------------------------------------------- */
+  .badgeRow {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.85rem;
+  }
+  
+  .aiBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: #059669;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 12px;
+  }
+  
+  .categoryPill {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: #64748b;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  
+  /* --------------------------------------------------------------------------
+     Card Content Structure
+     -------------------------------------------------------------------------- */
+  .cardBody {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .headerGroup {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 0.75rem;
+  }
+  
+  .iconWrapper {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  
+  .giveIcon {
+    background: #ffe4e6;
+    color: #e11d48;
+    border: 1px solid #fecdd3;
+  }
+  
+  .connectIcon {
+    background: #e0e7ff;
+    color: #4f46e5;
+    border: 1px solid #c7d2fe;
+  }
+  
+  .cardTitle {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 0.15rem 0;
+    line-height: 1.25;
+  }
+  
+  .cardDescription {
+    font-size: 0.825rem;
+    color: #475569;
+    line-height: 1.4;
+    margin: 0;
+  }
+  
+  /* Visual Feature Tag Pills */
+  .featurePills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 1rem;
+  }
+  
+  .featurePill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.68rem;
+    color: #475569;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    padding: 2px 7px;
+    border-radius: 5px;
+  }
+  
+  /* --------------------------------------------------------------------------
+     Action Buttons
+     -------------------------------------------------------------------------- */
+  .ctaButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 0.55rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  
+  .giveButton {
+    background: #e11d48;
+    color: #ffffff;
+    border: 1px solid #be123c;
+  }
+  
+  .giveButton:hover {
+    background: #be123c;
+  }
+  
+  .connectButton {
+    background: #4f46e5;
+    color: #ffffff;
+    border: 1px solid #4338ca;
+  }
+  
+  .connectButton:hover {
+    background: #4338ca;
+  }
+  
+  /* --------------------------------------------------------------------------
+     Responsive Rules
+     -------------------------------------------------------------------------- */
+  @media (max-width: 640px) {
+    .wrapper {
+      padding: 1.5rem 0.75rem;
+    }
+  
+    .ctaCard {
+      padding: 1rem;
+    }
+  }

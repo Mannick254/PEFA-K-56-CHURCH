@@ -1,16 +1,21 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import Seo from '../components/Seo';
 import Breadcrumb from '../components/Breadcrumb';
-import { Calendar, MapPin, Clock, ArrowLeft, Share2 } from 'lucide-react';
+import { Calendar, MapPin, Clock, ArrowLeft, Share2, Type } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import styles from '../styles/EventReader.module.css';
+import readerStyles from '../styles/SermonReader.module.css';
 
 const EventReader = () => {
   const { id } = useParams();
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [fontSize, setFontSize] = useState(22);
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -59,7 +64,6 @@ const EventReader = () => {
 
   let timeToDisplay = 'Time not available';
   if(event.time) {
-      // Assumes time is in 'HH:mm:ss' format
       const d = new Date(`1970-01-01T${event.time}`);
       timeToDisplay = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
   } else if (event.date.includes('T')) {
@@ -79,11 +83,33 @@ const EventReader = () => {
       />
       
       <div className={styles.topNav}>
-        <Breadcrumb paths={[{ name: 'Events', path: '/events' }, { name: event.title }]} />
+        <div className={readerStyles.navInner}>
+            <Breadcrumb paths={[{ name: 'Events', path: '/events' }, { name: event.title }]} />
+            <div className={readerStyles.toolbar}>
+                <div className={readerStyles.fontControls}>
+                    <button 
+                        onClick={() => setFontSize(prev => Math.min(prev + 2, 32))} 
+                        title="Increase text size"
+                        disabled={fontSize >= 32}
+                        className={readerStyles.fontBtn}
+                    >
+                        <Type size={15} /><span className={readerStyles.controlSign}>+</span>
+                    </button>
+                    <span className={readerStyles.fontSizeIndicator}>{fontSize}px</span>
+                    <button 
+                        onClick={() => setFontSize(prev => Math.max(prev - 2, 16))} 
+                        title="Decrease text size"
+                        disabled={fontSize <= 16}
+                        className={readerStyles.fontBtn}
+                    >
+                        <Type size={12} /><span className={readerStyles.controlSign}>-</span>
+                    </button>
+                </div>
+            </div>
+        </div>
       </div>
 
       <main className={styles.container}>
-        {/* Hero Section */}
         <header className={styles.hero}>
           {event.image_url && (
             <div className={styles.imageWrapper}>
@@ -106,15 +132,18 @@ const EventReader = () => {
         </header>
 
         <div className={styles.contentGrid}>
-          {/* Main Content */}
           <article className={styles.mainContent}>
-            <section className={styles.descriptionSection}>
-              <h3>About this event</h3>
-              <p className={styles.description}>{event.description}</p>
-            </section>
+            <div 
+                className={readerStyles.sermonBody}
+                style={{ fontSize: `${fontSize}px` }}
+            >
+                <h3>About this event</h3>
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {event.description}
+                </ReactMarkdown>
+            </div>
           </article>
 
-          {/* Sidebar Actions */}
           <aside className={styles.sidebar}>
             <div className={styles.stickyCard}>
               <div className={styles.detailsBox}>

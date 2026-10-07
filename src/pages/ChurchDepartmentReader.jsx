@@ -1,11 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { supabase } from '../supabaseClient';
 import * as Icons from 'lucide-react';
 import { STATIC_MINISTRIES } from '../data/ministries';
 import styles from '../styles/ChurchDepartmentReader.module.css';
+import readerStyles from '../styles/SermonReader.module.css';
 import Seo from '../components/Seo';
 
 const ChurchDepartmentReader = () => {
@@ -13,36 +14,42 @@ const ChurchDepartmentReader = () => {
   const navigate = useNavigate();
   const [dept, setDept] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [fontSize, setFontSize] = useState(22);
+  const [relatedDepts, setRelatedDepts] = useState([]);
 
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
       try {
-        // 1. Find local static data
         const staticDept = STATIC_MINISTRIES.find(d => d.id === id);
         
         if (!staticDept) {
-            setLoading(false);
-            return;
+          setLoading(false);
+          return;
         }
 
-        // 2. Fetch remote data
         const { data: remoteData } = await supabase
           .from('church_departments')
           .select('*')
           .eq('name', staticDept.name)
           .single();
 
-        // 3. Merge (Remote overrides static where applicable)
-        if (remoteData || staticDept) {
-          setDept({
-            ...staticDept,
-            ...remoteData,
-            image: remoteData?.image_url || staticDept?.image,
-            iconName: remoteData?.icon_name || staticDept?.iconName || 'Sparkles',
-            description: remoteData?.description || staticDept?.description || ''
-          });
-        }
+        const activeDept = {
+          ...staticDept,
+          ...remoteData,
+          image: remoteData?.image_url || staticDept?.image,
+          iconName: remoteData?.icon_name || staticDept?.iconName || 'Sparkles',
+          description: remoteData?.description || staticDept?.description || '',
+          meetingTime: remoteData?.meeting_time || staticDept?.meetingTime || 'Sundays post-service',
+          location: remoteData?.location || staticDept?.location || 'Main Sanctuary, Room B',
+          category: remoteData?.category || staticDept?.category || 'Ministry Dispatch'
+        };
+
+        setDept(activeDept);
+
+        const related = STATIC_MINISTRIES.filter(d => d.id !== id).slice(0, 3);
+        setRelatedDepts(related);
+
       } catch (err) {
         console.error("Error loading department:", err);
       } finally {
@@ -54,99 +61,165 @@ const ChurchDepartmentReader = () => {
     window.scrollTo(0, 0);
   }, [id]);
 
-  if (loading) return <div className={styles.loader}><div className={styles.spinner} /></div>;
-  if (!dept) return <div className={styles.errorArea}>Department not found. <Link to="/church-department">Go Back</Link></div>;
+  if (loading) {
+    return (
+      <div className={styles.loaderArea}>
+        <div className={styles.spinner} />
+        <p>Loading Department Dispatch...</p>
+      </div>
+    );
+  }
+
+  if (!dept) {
+    return (
+      <div className={styles.errorArea}>
+        <h2>Department Not Found</h2>
+        <p>The ministry dispatch you are looking for does not exist or has been archived.</p>
+        <Link to="/church-department" className={styles.backBtn}>Return to Directory</Link>
+      </div>
+    );
+  }
 
   const IconComponent = Icons[dept.iconName] || Icons.Sparkles;
-
-  // Split description by double newlines for the 3-paragraph layout
   const paragraphs = dept.description.split('\n\n');
 
   return (
     <main className={styles.wrapper}>
-        <Seo title={dept.name} description={dept.description.substring(0, 160)} />
-      <motion.div 
-        initial={{ opacity: 0 }} 
-        animate={{ opacity: 1 }}
-        className={styles.hero}
-        style={{ '--bg-image': `url(${dept.image})` }}
-      >
-        <div className={styles.heroOverlay} />
-        <div className={styles.heroContent}>
-          <Link to="/church-department" className={styles.backButton}>
-            <Icons.ArrowLeft size={18} />
-            <span>All Departments</span>
+      <Seo title={`${dept.name} | PEFA Kawangware 56`} description={dept.description.substring(0, 160)} />
+
+      <div className={styles.editorialBar}>
+        <div className={styles.editorialBarInner}>
+          <Link to="/church-department" className={styles.backLink}>
+            <Icons.ArrowLeft size={14} /> Back to Directory
           </Link>
-          
-          <motion.div 
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
-          >
-            <div className={styles.iconCircle}>
-              <IconComponent size={32} />
-            </div>
-            <h1 className={styles.title}>{dept.name}</h1>
-            
-            {dept.head && (
-              <div className={styles.leaderBadge}>
-                <Icons.UserCheck size={18} />
-                <span>Led by <strong>{dept.head}</strong></span>
-              </div>
-            )}
-          </motion.div>
+          <span className={styles.categoryBadge}>{dept.category}</span>
         </div>
-      </motion.div>
+      </div>
 
-      <section className={styles.contentSection}>
-        <div className={styles.container}>
-          <div className={styles.grid}>
-            <div className={styles.textContent}>
-              {paragraphs.map((para, idx) => {
-                // Check if this paragraph contains a Bible verse (last paragraph)
-                const isVerse = idx === paragraphs.length - 1;
-                
-                return (
-                  <motion.p 
-                    key={idx}
-                    initial={{ y: 20, opacity: 0 }}
-                    whileInView={{ y: 0, opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: idx * 0.1 }}
-                    className={isVerse ? styles.scripturePara : styles.bodyPara}
-                  >
-                    {para}
-                  </motion.p>
-                );
-              })}
-              
-              <div className={styles.ctaBox}>
-                <h3>Ready to make an impact?</h3>
-                <p>Join the {dept.name} and use your gifts for the Kingdom.</p>
-                <button className={styles.joinButton}>Inquire About Joining</button>
+      <article className={styles.articleContainer}>
+        <header className={styles.articleHeader}>
+          <h1 className={styles.articleTitle}>{dept.name}</h1>
+          <p className={styles.articleSubheading}>
+            An overview of mission goals, leadership, and operational activities within PEFA Kawangware 56.
+          </p>
+
+          <div className={styles.bylineBar}>
+            <div className={styles.authorMeta}>
+              <div className={styles.iconCircle}>
+                <IconComponent size={20} />
+              </div>
+              <div>
+                <span className={styles.bylineLabel}>DEPARTMENT HEAD</span>
+                <span className={styles.bylineValue}>{dept.head || 'Ministry Leadership Team'}</span>
               </div>
             </div>
 
-            <aside className={styles.sidebar}>
-              <div className={styles.stickyCard}>
-                <h4>Meeting Times</h4>
-                <div className={styles.infoRow}>
-                  <Icons.Calendar size={18} />
-                  <span></span>
-                </div>
-                <div className={styles.infoRow}>
-                  <Icons.MapPin size={18} />
-                  <span></span>
-                </div>
-                <hr className={styles.divider} />
-                <p className={styles.sidebarNote}>
-                  * Times may vary during special events. Contact the department head for details.
-                </p>
-              </div>
-            </aside>
+            <div className={readerStyles.fontControls}>
+                <button 
+                    onClick={() => setFontSize(prev => Math.min(prev + 2, 32))} 
+                    title="Increase text size"
+                    disabled={fontSize >= 32}
+                    className={readerStyles.fontBtn}
+                >
+                    <Icons.Type size={15} /><span className={readerStyles.controlSign}>+</span>
+                </button>
+                <span className={readerStyles.fontSizeIndicator}>{fontSize}px</span>
+                <button 
+                    onClick={() => setFontSize(prev => Math.max(prev - 2, 16))} 
+                    title="Decrease text size"
+                    disabled={fontSize <= 16}
+                    className={readerStyles.fontBtn}
+                >
+                    <Icons.Type size={12} /><span className={readerStyles.controlSign}>-</span>
+                </button>
+            </div>
           </div>
+        </header>
+
+        <div className={styles.heroImageWrapper}>
+          <img src={dept.image} alt={dept.name} className={styles.heroImage} />
+          <span className={styles.imageCaption}>PEFA Kawangware 56 Ministry Operations & Community Outreach</span>
         </div>
-      </section>
+
+        <div className={styles.articleBodyGrid}>
+          <div 
+            className={`${styles.mainContent} ${readerStyles.sermonBody}`}
+            style={{ fontSize: `${fontSize}px`}}
+          >
+            {paragraphs.map((para, idx) => {
+              const isVerse = idx === paragraphs.length - 1 && (para.includes(':') || para.toLowerCase().includes('verse'));
+              
+              if (isVerse) {
+                return (
+                  <blockquote key={idx} className={styles.scriptureCallout}>
+                    <Icons.Quote size={24} className={styles.quoteIcon} />
+                    <p className={styles.scriptureText}>{para}</p>
+                  </blockquote>
+                );
+              }
+
+              return (
+                <p key={idx} className={`${idx === 0 ? styles.firstPara : ''}`}>
+                  {para}
+                </p>
+              );
+            })}
+
+            <div className={styles.ctaBox}>
+              <div className={styles.ctaHeader}>
+                <Icons.UserPlus size={22} className={styles.ctaIcon} />
+                <h3>Get Involved with {dept.name}</h3>
+              </div>
+              <p>Ready to deploy your gifts? Connect with our team to start serving in this department.</p>
+              <button className={styles.joinButton}>Inquire About Joining</button>
+            </div>
+          </div>
+
+          <aside className={styles.sidebar}>
+            <div className={styles.stickyCard}>
+              <h4 className={styles.sidebarHeading}>DEPARTMENT BRIEF</h4>
+              
+              <div className={styles.infoGroup}>
+                <span className={styles.infoLabel}><Icons.Calendar size={14} /> MEETING TIME</span>
+                <span className={styles.infoValue}>{dept.meetingTime}</span>
+              </div>
+
+              <div className={styles.infoGroup}>
+                <span className={styles.infoLabel}><Icons.MapPin size={14} /> LOCATION</span>
+                <span className={styles.infoValue}>{dept.location}</span>
+              </div>
+
+              <div className={styles.infoGroup}>
+                <span className={styles.infoLabel}><Icons.UserCheck size={14} /> LEADERSHIP</span>
+                <span className={styles.infoValue}>{dept.head || 'Church Leadership Council'}</span>
+              </div>
+
+              <hr className={styles.divider} />
+              
+              <p className={styles.sidebarNote}>
+                * Meeting schedules may adjust during special church services or calendar holidays.
+              </p>
+            </div>
+          </aside>
+        </div>
+
+        {relatedDepts.length > 0 && (
+          <section className={styles.relatedSection}>
+            <h3 className={styles.relatedHeading}>MORE MINISTRIES</h3>
+            <div className={styles.relatedGrid}>
+              {relatedDepts.map(item => (
+                <Link key={item.id} to={`/church-department-reader/${item.id}`} className={styles.relatedCard}>
+                  <img src={item.image} alt={item.name} className={styles.relatedImage} />
+                  <div className={styles.relatedContent}>
+                    <span className={styles.relatedTag}>MINISTRY</span>
+                    <h4 className={styles.relatedTitle}>{item.name}</h4>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+      </article>
     </main>
   );
 };

@@ -1,25 +1,9 @@
-import { supabase } from './supabaseClient';
-
-export const getOptimizedImageUrl = (imageUrl, options = {}) => {
-  if (!imageUrl) {
-    return null;
+export const getOptimizedImageUrl = (url, options) => {
+  if (!url) {
+    return '';
   }
-
-  const { width, height, quality } = options;
-  const url = new URL(imageUrl);
-  const params = url.searchParams;
-
-  if (width) {
-    params.set('w', width);
-  }
-
-  if (height) {
-    params.set('h', height);
-  }
-
-  if (quality) {
-    params.set('q', quality);
-  }
-
-  return url.toString();
+  // This is a placeholder. In a real application, you would construct
+  // a URL for your image optimization service (e.g., Cloudinary, Imgix).
+  // For now, we just return the original URL.
+  return url;
 };

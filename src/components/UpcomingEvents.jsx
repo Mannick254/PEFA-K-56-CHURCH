@@ -2,8 +2,70 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Calendar, MapPin, ArrowRight, Clock } from 'lucide-react';
+import { Calendar, MapPin, ArrowRight, Clock, Radio, ChevronRight, Sparkles } from 'lucide-react';
 import styles from '../styles/UpcomingEvents.module.css';
+
+// Reusable CNN-Style Event Card Sub-Component
+const EventCard = ({ event, formatDate, formatTime }) => {
+  const { day, month, fullDate, isoString } = formatDate(event.date);
+  const time = formatTime(event.date);
+
+  return (
+    <Link to={`/event/${event.id}`} className={styles.cnnEventCard}>
+      {/* Image Container with Live Overlay */}
+      <div className={styles.cnnImageWrapper}>
+        <img 
+          src={event.image_url || 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80'} 
+          alt={event.title} 
+          className={styles.cnnImage}
+        />
+        <div className={styles.cnnDateBadge}>
+          <span className={styles.cnnDateDay}>{day}</span>
+          <span className={styles.cnnDateMonth}>{month}</span>
+        </div>
+        <div className={styles.cnnCategoryTag}>
+          <span>SPECIAL COVERAGE</span>
+        </div>
+      </div>
+      
+      {/* Editorial Content */}
+      <div className={styles.cnnContent}>
+        <div className={styles.cnnEventHeader}>
+          <h3 className={styles.cnnEventTitle}>{event.title}</h3>
+        </div>
+
+        <div className={styles.cnnMetaGroup}>
+          <div className={styles.cnnMetaItem}>
+            <Calendar size={13} className={styles.cnnIconRed} />
+            <time dateTime={isoString}>{fullDate}</time>
+          </div>
+
+          {time && (
+            <div className={styles.cnnMetaItem}>
+              <Clock size={13} className={styles.cnnIconRed} />
+              <span>{time}</span>
+            </div>
+          )}
+
+          {event.location && (
+            <div className={styles.cnnMetaItem}>
+              <MapPin size={13} className={styles.cnnIconRed} />
+              <span className={styles.truncate}>{event.location}</span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Card Footer / Call to Action */}
+      <div className={styles.cnnCardFooter}>
+        <span className={styles.cnnReadMore}>Full Dispatch</span>
+        <div className={styles.cnnArrowCircle}>
+          <ArrowRight size={14} />
+        </div>
+      </div>
+    </Link>
+  );
+};
 
 const UpcomingEvents = () => {
   const [events, setEvents] = useState([]);
@@ -18,12 +80,12 @@ const UpcomingEvents = () => {
         const { data, error } = await supabase
           .from('events')
           .select('*')
-          .gte('date', now) // Only fetch future events
+          .gte('date', now)
           .order('date', { ascending: true })
           .limit(3);
 
         if (error) throw error;
-        setEvents(data);
+        setEvents(data || []);
       } catch (error) {
         console.error('Error fetching upcoming events:', error);
       } finally {
@@ -33,8 +95,9 @@ const UpcomingEvents = () => {
 
     fetchUpcomingEvents();
   }, []);
-  
-    useEffect(() => {
+
+  // Carousel timer for mobile bulletin
+  useEffect(() => {
     if (events.length > 0) {
       const timer = setTimeout(() => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % events.length);
@@ -43,19 +106,19 @@ const UpcomingEvents = () => {
     }
   }, [currentIndex, events]);
 
-
   const formatDate = (dateString) => {
     if (!dateString) {
-        return { day: 'N/A', month: 'N/A', fullDate: 'Date not specified' };
+      return { day: '--', month: '---', fullDate: 'Date Pending', isoString: '' };
     }
     const date = new Date(dateString);
     if (isNaN(date.getTime())) {
-        return { day: 'N/A', month: 'N/A', fullDate: 'Invalid date' };
+      return { day: '--', month: '---', fullDate: 'Invalid Date', isoString: '' };
     }
     return {
-        day: date.getDate(),
-        month: date.toLocaleString('default', { month: 'short' }).toUpperCase(),
-        fullDate: date.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
+      day: date.getDate(),
+      month: date.toLocaleString('default', { month: 'short' }).toUpperCase(),
+      fullDate: date.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }),
+      isoString: date.toISOString()
     };
   };
 
@@ -64,38 +127,30 @@ const UpcomingEvents = () => {
     const date = new Date(dateString);
     if (isNaN(date.getTime())) return null;
     
-    // Check if the time is explicitly set (not midnight)
+    // Check if time is explicitly set
     if (date.getUTCHours() === 0 && date.getUTCMinutes() === 0 && date.getUTCSeconds() === 0) {
-        return null; // Don't show time if it's exactly midnight UTC
+      return null;
     }
     
     return date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
   };
-  
-  const mobileCardVariants = {
-    enter: {
-      x: '100%',
-      opacity: 0
-    },
-    center: {
-      x: 0,
-      opacity: 1
-    },
-    exit: {
-      x: '-100%',
-      opacity: 0
-    }
-  };
 
+  const mobileCardVariants = {
+    enter: { x: '100%', opacity: 0 },
+    center: { x: 0, opacity: 1 },
+    exit: { x: '-100%', opacity: 0 }
+  };
 
   if (loading) {
     return (
-      <section className={styles.container}>
-        <div className={styles.skeletonHeader} />
-        <div className={styles.grid}>
-          {[1, 2, 3].map((i) => (
-            <div key={i} className={styles.skeletonCard} />
-          ))}
+      <section className={styles.cnnEventsSection}>
+        <div className={styles.cnnContainer}>
+          <div className={styles.cnnSkeletonHeader} />
+          <div className={styles.cnnGrid}>
+            {[1, 2, 3].map((i) => (
+              <div key={i} className={styles.cnnSkeletonCard} />
+            ))}
+          </div>
         </div>
       </section>
     );
@@ -104,133 +159,84 @@ const UpcomingEvents = () => {
   if (events.length === 0) return null;
 
   return (
-    <section className={styles.container}>
-      <header className={styles.header}>
-        <div className={styles.headerText}>
-          <span className={styles.badge}>Don't Miss Out</span>
-          <h2 className={styles.title}>Upcoming Events</h2>
-          <p className={styles.subtitle}>Join our community for these special gatherings and services.</p>
+    <section className={styles.cnnEventsSection}>
+      <div className={styles.cnnContainer}>
+        
+        {/* CNN Eyebrow Header */}
+        <header className={styles.cnnHeader}>
+          <div className={styles.cnnHeaderLeft}>
+            <div className={styles.cnnLiveBadge}>
+              <Radio size={12} className={styles.livePulseIcon} />
+              <span> UPCOMING DISPATCHES</span>
+            </div>
+            <h2 className={styles.cnnMainTitle}>
+              Community <span className={styles.cnnHighlight}>Gatherings</span>
+            </h2>
+            <p className={styles.cnnSubtitle}>
+              Stay informed on upcoming convocations, services, and ministry initiatives across PEFA Kawangware 56.
+            </p>
+          </div>
+
+          <Link to="/events" className={styles.cnnDesktopViewAll}>
+            <span>Full Event Directory</span>
+            <ChevronRight size={16} />
+          </Link>
+        </header>
+
+        {/* Desktop Newsroom Grid */}
+        <div className={styles.cnnGrid}>
+          {events.map((event) => (
+            <EventCard 
+              key={event.id} 
+              event={event} 
+              formatDate={formatDate} 
+              formatTime={formatTime} 
+            />
+          ))}
         </div>
-        <Link to="/events" className={styles.desktopViewAll}>
-          View All Events <ArrowRight size={18} />
-        </Link>
-      </header>
 
-      <div className={styles.grid}>
-        {events.map((event) => {
-          const { day, month, fullDate } = formatDate(event.date);
-          const time = formatTime(event.date);
-          return (
-            <Link to={`/event/${event.id}`} key={event.id} className={styles.card}>
-              <div className={styles.imageWrapper}>
-                <img 
-                  src={event.image_url || 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80'} 
-                  alt={event.title} 
-                  className={styles.image}
+        {/* Mobile Breaking Bulletin Carousel */}
+        <div className={styles.cnnMobileCarousel}>
+          <AnimatePresence initial={false} mode="wait">
+            <motion.div
+              key={currentIndex}
+              variants={mobileCardVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.35, ease: 'easeInOut' }}
+            >
+              {events[currentIndex] && (
+                <EventCard 
+                  event={events[currentIndex]} 
+                  formatDate={formatDate} 
+                  formatTime={formatTime} 
                 />
-                <div className={styles.dateOverlay}>
-                  <span className={styles.dateDay}>{day}</span>
-                  <span className={styles.dateMonth}>{month}</span>
-                </div>
-              </div>
-              
-              <div className={styles.content}>
-                <h3 className={styles.eventTitle}>{event.title}</h3>
-                
-                <div className={styles.meta}>
-                  <div className={styles.metaItem}>
-                    <Calendar size={14} className={styles.icon} />
-                    <span>{fullDate}</span>
-                  </div>
-                  {time && (
-                    <div className={styles.metaItem}>
-                      <Clock size={14} className={styles.icon} />
-                      <span>{time}</span>
-                    </div>
-                  )}
-                  <div className={styles.metaItem}>
-                    <MapPin size={14} className={styles.icon} />
-                    <span className={styles.truncate}>{event.location}</span>
-                  </div>
-                </div>
-              </div>
+              )}
+            </motion.div>
+          </AnimatePresence>
 
-              <div className={styles.cardFooter}>
-                <span className={styles.learnMore}>Event Details</span>
-                <div className={styles.arrowCircle}>
-                  <ArrowRight size={16} />
-                </div>
-              </div>
-            </Link>
-          );
-        })}
-      </div>
-      
-      <div className={styles.mobileCarousel}>
-        <AnimatePresence initial={false} custom={currentIndex}>
-          <motion.div
-            key={currentIndex}
-            variants={mobileCardVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          >
-            {events[currentIndex] &&
-              (() => {
-                const event = events[currentIndex];
-                const { day, month, fullDate } = formatDate(event.date);
-                const time = formatTime(event.date);
-                return (
-                  <Link to={`/event/${event.id}`} key={event.id} className={styles.card}>
-                    <div className={styles.imageWrapper}>
-                      <img 
-                        src={event.image_url || 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80'} 
-                        alt={event.title} 
-                        className={styles.image}
-                      />
-                      <div className={styles.dateOverlay}>
-                        <span className={styles.dateDay}>{day}</span>
-                        <span className={styles.dateMonth}>{month}</span>
-                      </div>
-                    </div>
-                    <div className={styles.content}>
-                      <h3 className={styles.eventTitle}>{event.title}</h3>
-                      <div className={styles.meta}>
-                        <div className={styles.metaItem}>
-                          <Calendar size={14} className={styles.icon} />
-                          <span>{fullDate}</span>
-                        </div>
-                        {time && (
-                          <div className={styles.metaItem}>
-                            <Clock size={14} className={styles.icon} />
-                            <span>{time}</span>
-                          </div>
-                        )}
-                        <div className={styles.metaItem}>
-                          <MapPin size={14} className={styles.icon} />
-                          <span className={styles.truncate}>{event.location}</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className={styles.cardFooter}>
-                      <span className={styles.learnMore}>Event Details</span>
-                      <div className={styles.arrowCircle}>
-                        <ArrowRight size={16} />
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })()}
-          </motion.div>
-        </AnimatePresence>
-      </div>
+          {/* Carousel Pagination Indicators */}
+          <div className={styles.cnnCarouselDots}>
+            {events.map((_, idx) => (
+              <button
+                key={idx}
+                className={`${styles.cnnDot} ${idx === currentIndex ? styles.cnnDotActive : ''}`}
+                onClick={() => setCurrentIndex(idx)}
+                aria-label={`Go to event slide ${idx + 1}`}
+              />
+            ))}
+          </div>
+        </div>
 
+        {/* Mobile View All Button */}
+        <div className={styles.cnnMobileViewAll}>
+          <Link to="/events" className={styles.cnnMobileBtn}>
+            <span>Access Full Event Directory</span>
+            <ArrowRight size={16} />
+          </Link>
+        </div>
 
-      <div className={styles.mobileViewAll}>
-        <Link to="/events" className={styles.viewAllButton}>
-          View All Events
-        </Link>
       </div>
     </section>
   );

@@ -39,9 +39,8 @@ async function generateSitemap() {
       .filter((file) => file.endsWith('.jsx') && !exclude.includes(file))
       .map((file) => {
         const pageName = file.replace('.jsx', '');
-        const filePath = path.join(pagesDir, file);
         const route = toKebabCase(pageName);
-        return { route, filePath };
+        return { route };
       });
 
     // Read academy pages
@@ -50,31 +49,19 @@ async function generateSitemap() {
       .filter((file) => file.endsWith('.jsx') && !exclude.includes(file))
       .map((file) => {
         const pageName = file.replace('.jsx', '');
-        const filePath = path.join(academyPagesDir, file);
         const route = `/academy${toKebabCase(pageName)}`;
-        return { route, filePath };
+        return { route };
       });
 
     // Combine all pages
     const allPages = [...staticPages, ...academyPages];
 
-    const urls = await Promise.all(
-      allPages.map(async ({ route, filePath }) => {
-        const stats = await fs.promises.stat(filePath);
-        const lastmod = stats.mtime.toISOString().split('T')[0];
-        const isAcademy = route.startsWith('/academy');
-        const priority = route === '/' ? '1.0' : isAcademy ? '0.9' : '0.8';
-        const changefreq = route === '/' ? 'daily' : 'weekly';
-        
+    const urls = allPages.map(({ route }) => {
         return `
   <url>
     <loc>${baseUrl}${route}</loc>
-    <lastmod>${lastmod}</lastmod>
-    <changefreq>${changefreq}</changefreq>
-    <priority>${priority}</priority>
   </url>`;
-      })
-    );
+      });
 
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -82,7 +69,7 @@ ${urls.join('')}
 </urlset>`;
 
     await fs.promises.writeFile(sitemapPath, sitemap);
-    console.log('Sitemap generated successfully with correct dates!');
+    console.log('Sitemap generated successfully!');
   } catch (error) {
     console.error('Error generating sitemap:', error);
   }

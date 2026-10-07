@@ -1,121 +1,556 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
+/* ==========================================================================
+   CNN EDITORIAL NEWSROOM STYLES - LESSONS FROM JESUS
+   ========================================================================== */
 
-.pageContainer {
-    max-width: 1200px;
+   .editorialContainer {
+    --primary-red: #cc0000;
+    --dark-navy: #0f172a;
+    --text-dark: #1e293b;
+    --text-muted: #64748b;
+    --bg-light: #f8fafc;
+    --border-color: #e2e8f0;
+    --accent-blue: #2563eb;
+  
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--text-dark);
+    background-color: #ffffff;
+    padding-bottom: 4rem;
+  }
+  
+  /* 1. Ticker / Daily Scripture Banner */
+  .topAlertBar {
+    background-color: var(--dark-navy);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    border-bottom: 3px solid var(--primary-red);
+  }
+  
+  .alertBadge {
+    background-color: var(--primary-red);
+    color: #ffffff;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    flex-shrink: 0;
+  }
+  
+  .alertText {
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-style: italic;
+    color: #cbd5e1;
+  }
+  
+  /* 2. Layout Structure */
+  .innerWrapper {
+    max-width: 1240px;
     margin: 0 auto;
-    padding: 2rem 1.5rem 5rem;
-    font-family: 'Montserrat', sans-serif;
-}
-
-.pageHeader {
-    text-align: center;
-    margin-bottom: 3rem;
-}
-
-.pageHeader h1 {
-    font-size: 2.8rem;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600; /* Softer weight */
-    color: var(--text-main, #1a1a1a);
-    margin-bottom: 0.5rem;
-}
-
-.pageHeader p {
-    font-size: 1.1rem;
-    color: var(--text-muted, #64748b);
-    max-width: 600px;
-    margin: 0 auto;
-    font-weight: 300; /* Lighter weight */
-}
-
-.status {
-    text-align: center;
-    padding: 4rem 0;
+    padding: 2rem 1rem;
+  }
+  
+  .editorialHeader {
+    border-bottom: 2px solid var(--dark-navy);
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--primary-red);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  
+  .editorialHeader h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    margin: 0.3rem 0;
+    color: var(--dark-navy);
+  }
+  
+  .subtitle {
     font-size: 1.1rem;
     color: var(--text-muted);
-}
-
-.spinner {
-    border: 4px solid rgba(0, 0, 0, 0.1);
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border-left-color: var(--primary, #3b82f6);
-    animation: spin 1s ease infinite;
-    margin: 0 auto 1rem;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-.error {
-    color: #ef4444;
-}
-
-.lessonsGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 1.5rem;
-}
-
-.lessonCard {
+    margin: 0 0 1.5rem;
+  }
+  
+  /* Controls: Search and Mobile Filter Scroll */
+  .controlBar {
     display: flex;
     flex-direction: column;
-    background-color: var(--bg-card, #fff);
-    border-radius: 8px;
-    overflow: hidden;
+    gap: 1rem;
+  }
+  
+  @media (min-width: 768px) {
+    .controlBar {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+  
+  .searchBox {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .searchIcon {
+    position: absolute;
+    left: 0.85rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+  }
+  
+  .searchInput {
+    width: 100%;
+    padding: 0.65rem 1rem 0.65rem 2.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    background-color: var(--bg-light);
+    transition: all 0.2s ease;
+  }
+  
+  .searchInput:focus {
+    outline: none;
+    background-color: #ffffff;
+    border-color: var(--dark-navy);
+    box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.08);
+  }
+  
+  .tagsScrollContainer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.25rem;
+  }
+  
+  .filterIcon {
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+  
+  .tagsWrapper {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .tagPill {
+    background: var(--bg-light);
+    border: 1px solid var(--border-color);
+    color: var(--text-dark);
+    padding: 0.4rem 0.85rem;
+    border-radius: 20px;
+    font-size: 0.825rem;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .tagPill:active {
+    transform: scale(0.95);
+  }
+  
+  .activeTag {
+    background: var(--dark-navy);
+    color: #ffffff;
+    border-color: var(--dark-navy);
+  }
+  
+  /* 3. Lead Top Story Banner */
+  .leadSection {
+    margin-bottom: 3rem;
+  }
+  
+  .leadCard {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
     text-decoration: none;
     color: inherit;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    transition: box-shadow 0.2s ease;
-}
-
-.lessonCard:hover {
-    box-shadow: 0 10px 15px rgba(0,0,0,0.08);
-}
-
-.cardImage {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #ffffff;
+    transition: box-shadow 0.25s ease;
+  }
+  
+  @media (min-width: 868px) {
+    .leadCard {
+      grid-template-columns: 1.3fr 1fr;
+    }
+  }
+  
+  .leadCard:hover {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .leadImageWrapper {
+    position: relative;
     width: 100%;
-    height: 200px;
-    background-color: var(--border-color, #e2e8f0);
-}
-
-.cardImage img {
+    aspect-ratio: 16 / 9;
+    background-color: var(--bg-light);
+    overflow: hidden;
+  }
+  
+  .leadImageWrapper img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-}
-
-.cardContent {
+  }
+  
+  .leadTag {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background-color: var(--primary-red);
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 0.3rem 0.6rem;
+    border-radius: 2px;
+  }
+  
+  .leadContent {
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
-}
-
-.cardContent h3 {
-    font-size: 1.25rem;
-    margin: 0 0 0.75rem;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600; /* Softer weight */
-    color: var(--text-main);
-}
-
-.cardContent p {
-    margin: 0 0 1rem;
-    color: var(--text-muted);
-    flex-grow: 1;
-    line-height: 1.6; /* Improved readability */
-}
-
-.readMore {
+    justify-content: center;
+  }
+  
+  .metaRow {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.8rem;
     font-weight: 600;
-    color: var(--primary);
-    align-self: flex-start;
-    transition: color 0.2s ease;
-}
-
-.lessonCard:hover .readMore {
-    color: #1d4ed8;
-}
+    color: var(--primary-red);
+    margin-bottom: 0.5rem;
+  }
+  
+  .audioBadge {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--accent-blue);
+  }
+  
+  .leadContent h2 {
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    font-weight: 800;
+    line-height: 1.25;
+    margin: 0.25rem 0 0.5rem;
+    color: var(--dark-navy);
+  }
+  
+  .scriptureTag {
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    background-color: var(--bg-light);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
+    width: fit-content;
+  }
+  
+  .leadExcerpt {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-dark);
+    margin-bottom: 1.25rem;
+  }
+  
+  .leadFooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--border-color);
+    padding-top: 0.85rem;
+    margin-top: auto;
+  }
+  
+  .readLink {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--dark-navy);
+  }
+  
+  .shareBtn,
+  .miniShareBtn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0.4rem;
+    border-radius: 50%;
+    transition: background 0.2s ease;
+  }
+  
+  .shareBtn:hover,
+  .miniShareBtn:hover {
+    background-color: var(--bg-light);
+    color: var(--dark-navy);
+  }
+  
+  /* 4. Sub-Grid Layout */
+  .sectionDivider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .sectionDivider h3 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    margin: 0;
+  }
+  
+  .rule {
+    width: 100%;
+    height: 2px;
+    background-color: var(--dark-navy);
+  }
+  
+  .lessonsGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  @media (min-width: 640px) {
+    .lessonsGrid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .lessonsGrid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  .lessonCard {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    overflow: hidden;
+    background: #ffffff;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .lessonCard:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.08);
+  }
+  
+  .cardImage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background-color: var(--bg-light);
+  }
+  
+  .cardImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .cardCategory {
+    position: absolute;
+    bottom: 0.5rem;
+    left: 0.5rem;
+    background: rgba(15, 23, 42, 0.85);
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.2rem 0.5rem;
+    border-radius: 2px;
+  }
+  
+  .cardContent {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+  
+  .cardMeta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+  }
+  
+  .miniReference {
+    font-weight: 700;
+    color: var(--accent-blue);
+  }
+  
+  .cardContent h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin: 0 0 0.5rem;
+    color: var(--dark-navy);
+  }
+  
+  .cardContent p {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 0 0 1rem;
+    flex-grow: 1;
+  }
+  
+  .cardFooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--border-color);
+    padding-top: 0.5rem;
+    margin-top: auto;
+  }
+  
+  .cardReadMore {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--dark-navy);
+  }
+  
+  /* Mobile-Specific Refined Horizontal Cards */
+  @media (max-width: 480px) {
+    .lessonCard {
+      flex-direction: row;
+      align-items: center;
+      height: 120px;
+    }
+  
+    .cardImage {
+      width: 110px;
+      height: 100%;
+      aspect-ratio: auto;
+      flex-shrink: 0;
+    }
+  
+    .cardCategory {
+      display: none;
+    }
+  
+    .cardContent {
+      padding: 0.65rem;
+    }
+  
+    .cardContent p {
+      display: none;
+    }
+  
+    .cardContent h3 {
+      font-size: 0.95rem;
+      margin-bottom: 0.25rem;
+    }
+  }
+  
+  /* 5. Utility & Skeleton States */
+  .emptyState {
+    text-align: center;
+    padding: 4rem 1rem;
+    background-color: var(--bg-light);
+    border-radius: 8px;
+  }
+  
+  .emptyState h3 {
+    font-size: 1.25rem;
+    margin: 0.5rem 0;
+  }
+  
+  .emptyState p {
+    color: var(--text-muted);
+  }
+  
+  .errorBox {
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+    padding: 1rem;
+    border-radius: 6px;
+    text-align: center;
+  }
+  
+  .skeletonContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .skeletonLead,
+  .skeletonCard {
+    background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+    background-size: 200% 100%;
+    animation: skeletonPulse 1.5s infinite;
+    border-radius: 6px;
+  }
+  
+  .skeletonLead {
+    height: 320px;
+    width: 100%;
+  }
+  
+  .skeletonGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .skeletonCard {
+    height: 220px;
+  }
+  
+  @keyframes skeletonPulse {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }

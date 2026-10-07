@@ -1,73 +1,110 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
+import { PlayCircle, ChevronLeft, ChevronRight, Clock, User, Calendar } from 'lucide-react';
 import styles from '../styles/LatestSermon.module.css';
-import { PlayCircle, Calendar, User, BookOpen, ArrowRight } from 'lucide-react';
 
-const getYouTubeId = (url) => {
+// Helper to extract YouTube ID
+const getYoutubeId = (url) => {
   if (!url) return null;
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
   const match = url.match(regExp);
-  return (match && match[2].length === 11) ? match[2] : null;
+  return match && match[2].length === 11 ? match[2] : null;
 };
 
-const SermonCard = ({ sermon }) => {
-  const { id, title, preacher, series, video_url, date } = sermon;
-  const formattedDate = new Date(date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
+// Modernized Card Component
+const SermonCard = ({ sermon, variant = 'standard', onPlay, isPlaying }) => {
+  const videoId = getYoutubeId(sermon?.video_url);
+  const imageToDisplay =
+    sermon?.image_url ||
+    (videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : '/placeholder-sermon.jpg');
 
-  const videoId = getYouTubeId(video_url);
-  // Using hqdefault for guaranteed availability or maxresdefault for high quality
-  const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : null;
+  const handlePlayClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (sermon?.id) onPlay(sermon.id);
+  };
+
+  const formattedDate = sermon?.date
+    ? new Date(sermon.date).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      })
+    : null;
 
   return (
-    <Link to={`/sermons/${id}`} className={styles.sermonCard}>
-      <div className={styles.imageWrapper}>
-        {thumbnailUrl ? (
-          <img src={thumbnailUrl} alt={title} className={styles.thumbnail} />
+    <article className={`${styles.card} ${styles[variant]}`}>
+      <div className={styles.mediaContainer}>
+        {isPlaying && videoId ? (
+          <iframe
+            className={styles.videoPlayer}
+            src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            title={sermon?.title}
+          />
         ) : (
-          <div className={styles.placeholderImg}><BookOpen size={48} /></div>
+          <Link to={`/sermons/${sermon?.id}`} className={styles.mediaLink}>
+            <img src={imageToDisplay} alt={sermon?.title} className={styles.thumbnail} />
+            <div className={styles.overlayGradient} />
+            
+            {sermon?.series && (
+              <span className={styles.seriesTag}>{sermon.series}</span>
+            )}
+
+            {videoId && (
+              <button
+                type="button"
+                className={styles.playIconWrapper}
+                onClick={handlePlayClick}
+                aria-label="Play video"
+              >
+                <PlayCircle size={48} className={styles.playIcon} />
+              </button>
+            )}
+          </Link>
         )}
-        <div className={styles.playOverlay}>
-          <div className={styles.playBtnInner}>
-            <PlayCircle size={48} fill="rgba(255,255,255,0.2)" />
-          </div>
-        </div>
       </div>
 
       <div className={styles.content}>
-        <div className={styles.meta}>
-          <span className={styles.seriesBadge}>
-            {series || "General Message"}
-          </span>
-          <span className={styles.dateBadge}>
-            <Calendar size={14} /> {formattedDate}
-          </span>
+        <div className={styles.metaTop}>
+          {formattedDate && (
+            <span className={styles.metaItem}>
+              <Calendar size={13} /> {formattedDate}
+            </span>
+          )}
+          {sermon?.duration && (
+            <span className={styles.metaItem}>
+              <Clock size={13} /> {sermon.duration}
+            </span>
+          )}
         </div>
-        
-        <h3 className={styles.sermonTitle}>{title}</h3>
-        
-        <div className={styles.footer}>
-          <div className={styles.preacherInfo}>
-            <div className={styles.avatarMini}>{preacher.charAt(0)}</div>
-            <span>{preacher}</span>
+
+        <h3 className={styles.sermonTitle}>
+          <Link to={`/sermons/${sermon?.id}`}>{sermon?.title}</Link>
+        </h3>
+
+        {sermon?.preacher && (
+          <div className={styles.preacherMeta}>
+            <User size={14} />
+            <span>{sermon.preacher}</span>
           </div>
-          <div className={styles.ctaText}>
-            Watch <ArrowRight size={16} />
-          </div>
-        </div>
+        )}
+
+        {variant === 'heroCard' && sermon?.description && (
+          <p className={styles.description}>{sermon.description}</p>
+        )}
       </div>
-    </Link>
+    </article>
   );
 };
 
-const LatestSermon = () => {
+const LatestSermons = () => {
   const [sermons, setSermons] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [playingId, setPlayingId] = useState(null);
+  const [activeHeroIndex, setActiveHeroIndex] = useState(0);
 
   useEffect(() => {
     const fetchLatestSermons = async () => {
@@ -76,56 +113,141 @@ const LatestSermon = () => {
           .from('sermons')
           .select('*')
           .order('date', { ascending: false })
-          .limit(3);
+          .limit(10); // Fetched 10 to populate carousel & side lists
 
         if (error) throw error;
-        setSermons(data);
+        setSermons(data || []);
       } catch (err) {
-        setError(err.message);
+        console.error('Error fetching latest sermons:', err.message);
       } finally {
         setLoading(false);
       }
     };
-
     fetchLatestSermons();
   }, []);
 
+  // Hero slideshow auto-rotation (rotates top 3 featured sermons)
+  const heroSermons = sermons.slice(0, 3);
+  const sideSermons = sermons.slice(3, 6);
+  const bottomGridSermons = sermons.slice(6, 10);
+
+  const nextHero = useCallback(() => {
+    if (heroSermons.length === 0) return;
+    setActiveHeroIndex((prev) => (prev + 1) % heroSermons.length);
+  }, [heroSermons.length]);
+
+  const prevHero = () => {
+    if (heroSermons.length === 0) return;
+    setActiveHeroIndex((prev) => (prev - 1 + heroSermons.length) % heroSermons.length);
+  };
+
+  useEffect(() => {
+    // Only auto-slide if video isn't actively playing
+    if (playingId) return;
+    const interval = setInterval(nextHero, 6000);
+    return () => clearInterval(interval);
+  }, [nextHero, playingId]);
+
   if (loading) {
     return (
-      <section className={styles.latestSermonSection}>
-        <div className={styles.container}>
-            <div className={styles.headerSkeleton}></div>
-            <div className={styles.sermonGrid}>
-                <div className={styles.skeletonCard}></div>
-                <div className={styles.skeletonCard}></div>
-                <div className={styles.skeletonCard}></div>
-            </div>
-        </div>
-      </section>
+      <div className={styles.loaderContainer}>
+        <div className={styles.spinner} />
+        <p>Loading Latest Sermons...</p>
+      </div>
     );
   }
 
-  if (error || sermons.length === 0) return null;
+  if (sermons.length === 0) {
+    return <p className={styles.noData}>No sermons found.</p>;
+  }
+
+  const currentHero = heroSermons[activeHeroIndex] || heroSermons[0];
 
   return (
-    <section className={styles.latestSermonSection}>
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <div>
-            <span className={styles.tagline}>Spiritual Nourishment</span>
-            <h2 className={styles.title}>Latest From The Pulpit</h2>
-          </div>
-          <Link to="/sermons" className={styles.viewAll}>View All Sermons</Link>
+    <section className={styles.container}>
+      {/* CNN Style Header with Live Indicator */}
+      <div className={styles.header}>
+        <div className={styles.headerTitleGroup}>
+          <span className={styles.liveBadge}>FEATURED</span>
+          <h2 className={styles.title}>Latest Messages</h2>
         </div>
-
-        <div className={styles.sermonGrid}>
-          {sermons.map(sermon => (
-            <SermonCard key={sermon.id} sermon={sermon} />
-          ))}
-        </div>
+        <Link to="/sermons" className={styles.viewAllLink}>
+          View All Sermons &rarr;
+        </Link>
       </div>
+
+      {/* Main Section: Interactive Hero + Side Feed */}
+      <div className={styles.mainLayout}>
+        {/* Left/Main Column: Modern Hero Slideshow */}
+        {currentHero && (
+          <div className={styles.heroWrapper}>
+            <SermonCard
+              sermon={currentHero}
+              variant="heroCard"
+              onPlay={setPlayingId}
+              isPlaying={playingId === currentHero.id}
+            />
+
+            {/* Carousel Navigation Controls */}
+            {heroSermons.length > 1 && (
+              <div className={styles.carouselControls}>
+                <button onClick={prevHero} className={styles.controlBtn} aria-label="Previous">
+                  <ChevronLeft size={20} />
+                </button>
+                <div className={styles.dots}>
+                  {heroSermons.map((_, idx) => (
+                    <button
+                      key={idx}
+                      className={`${styles.dot} ${idx === activeHeroIndex ? styles.activeDot : ''}`}
+                      onClick={() => setActiveHeroIndex(idx)}
+                      aria-label={`Go to slide ${idx + 1}`}
+                    />
+                  ))}
+                </div>
+                <button onClick={nextHero} className={styles.controlBtn} aria-label="Next">
+                  <ChevronRight size={20} />
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Right Column: Trending / Next Up List (CNN Side Column) */}
+        <aside className={styles.sideFeed}>
+          <h3 className={styles.sideFeedTitle}>Up Next</h3>
+          <div className={styles.sideFeedList}>
+            {sideSermons.map((sermon) => (
+              <SermonCard
+                key={sermon.id}
+                sermon={sermon}
+                variant="compactHorizontal"
+                onPlay={setPlayingId}
+                isPlaying={playingId === sermon.id}
+              />
+            ))}
+          </div>
+        </aside>
+      </div>
+
+      {/* Bottom Row: Multi-Column Grid */}
+      {bottomGridSermons.length > 0 && (
+        <div className={styles.bottomSection}>
+          <h3 className={styles.sectionSubtitle}>Recent Series</h3>
+          <div className={styles.bottomGrid}>
+            {bottomGridSermons.map((sermon) => (
+              <SermonCard
+                key={sermon.id}
+                sermon={sermon}
+                variant="gridCard"
+                onPlay={setPlayingId}
+                isPlaying={playingId === sermon.id}
+              />
+            ))}
+          </div>
+        </div>
+      )}
     </section>
   );
 };
 
-export default LatestSermon;
+export default LatestSermons;

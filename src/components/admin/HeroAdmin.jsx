@@ -110,6 +110,9 @@ const HeroAdmin = () => {
     return (
         <div className={styles.heroAdmin}>
             <h3>Hero Section Management</h3>
+            <p className={styles.description}>
+                This page allows you to manage the main banner on the homepage. This is the first thing visitors see. Fill in the title and subtitle, upload a background image, and then click 'Publish' to make it live.
+            </p>
             <form onSubmit={handleUpdate}>
                 <div className={styles.formGroup}>
                     <label htmlFor="heroTitle">Hero Title</label>

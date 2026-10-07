@@ -11,16 +11,17 @@ import Footer from './components/Footer';
 import ErrorBoundary from './components/ErrorBoundary';
 import MoveToTop from './components/MoveToTop';
 import ScrollToTop from './components/ScrollToTop';
-import SmoothScroll from './components/SmoothScroll';
 import FireworksComponent from './components/Fireworks';
-import InstallPWA from './components/InstallPWA'; // Import the new component
+import InstallPWA from './components/InstallPWA';
 import PrivateRoute from './components/PrivateRoute';
 import Notification from './components/Notification';
-import useNotificationPermission from './hooks/useNotifications'; // Import the hook
-import Breadcrumb from './components/Breadcrumb'; // Import the Breadcrumb component
-import Skeleton from './components/Skeleton'; // Import the new component
+import useNotificationPermission from './hooks/useNotifications';
+import Breadcrumb from './components/Breadcrumb';
+import Skeleton from './components/Skeleton';
 import ChurchProject from './components/ChurchProject';
 import { useScrollToHash } from './hooks/useScrollToHash';
+import { DrawerProvider } from './context/DrawerContext';
+import CookieModal from './components/CookieModal';
 
 import './App.css';
 
@@ -59,13 +60,19 @@ const AcademyAbout = lazy(() => import('./pages/AcademyAbout'));
 const AcademyContact = lazy(() => import('./pages/academy/Contact'));
 const AcademyAcademics = lazy(() => import('./pages/academy/Academics'));
 const AcademyAdmissions = lazy(() => import('./pages/academy/Admissions'));
-const IctTeam = lazy(() => import('./pages/ict-team'));
+const IctHome = lazy(() => import('./pages/ict-team/IctHome'));
 const IctTerms = lazy(() => import('./pages/ict-team/Terms'));
 const IctPrivacy = lazy(() => import('./pages/ict-team/Privacy'));
 const IctContact = lazy(() => import('./pages/ict-team/Contact'));
 const IctAbout = lazy(() => import('./pages/ict-team/About'));
-const IctServices = lazy(() => import('./pages/ict-team/Services'));
 const IctAdmin = lazy(() => import('./pages/ict-team/Admin'));
+const ChurchData = lazy(() => import('./pages/ChurchData'));
+const DataLogin = lazy(() => import('./pages/DataLogin'));
+const LyricsStudioPage = lazy(() => import('./pages/LyricsStudioPage'));
+
+const MainPresenter = lazy(() => import('./components/HolyricsStudio/MainPresenter'));
+const StageMonitor = lazy(() => import('./components/HolyricsStudio/StageMonitor'));
+const StreamOverlay = lazy(() => import('./components/HolyricsStudio/StreamOverlay'));
 
 
 // Lazy load admin components
@@ -94,13 +101,14 @@ const K56GalleryAdmin = lazy(() => import('./components/admin/K56GalleryAdmin'))
 const LiveAdmin = lazy(() => import('./components/admin/LiveAdmin'));
 const ConnectAdmin = lazy(() => import('./components/admin/ConnectAdmin'));
 const AdminBlog = lazy(() => import('./components/admin/AdminBlog'));
+const EmailAdmin = lazy(() => import('./components/admin/EmailAdmin'));
 
 const AppContent = () => {
   const location = useLocation();
   useScrollToHash();
   const [showFireworks, setShowFireworks] = useState(false);
   const [notification, setNotification] = useState({ message: '', type: '' });
-  const notificationPermission = useNotificationPermission(); // Use the hook
+  const notificationPermission = useNotificationPermission();
 
   useEffect(() => {
     const hasSeenFireworks = sessionStorage.getItem('hasSeenFireworks');
@@ -109,10 +117,10 @@ const AppContent = () => {
       sessionStorage.setItem('hasSeenFireworks', 'true');
       const timer = setTimeout(() => {
         setShowFireworks(false);
-      }, 4000); // Hides component after 4s
+      }, 4000);
       return () => clearTimeout(timer);
     }
-  }, []); // Empty dependency array ensures this runs only once on mount
+  }, []);
 
   const handleCloseNotification = () => {
     setNotification({ message: '', type: '' });
@@ -125,29 +133,32 @@ const AppContent = () => {
     '/register',
     '/forgot-password',
     '/reset-password',
+    '/data-login',
   ].includes(location.pathname);
   const isIctPage = location.pathname.startsWith('/ict-team');
   const isAcademyPage = location.pathname.startsWith('/academy');
+  const isPresentationPage = location.pathname.startsWith('/presenter');
+  const isLyricsStudioPage = location.pathname.startsWith('/lyrics-studio');
 
-  // Determine if the breadcrumb should be shown
-  const showBreadcrumb = !isAdminPage && !isAuthPage && !isIctPage && !isAcademyPage && location.pathname !== '/' && location.pathname !== '/live';
-
+  const showLayout = !isAuthPage && !isAdminPage && !isAcademyPage && !isIctPage && !isPresentationPage && !isLyricsStudioPage;
+  const showCookieModal = !isPresentationPage && !isLyricsStudioPage;
 
   return (
     <div className={`app-container ${isAdminPage ? 'admin-layout' : ''}`}>
+       {showCookieModal && <CookieModal />}
        <Notification
         message={notification.message}
         type={notification.type}
         onClose={handleCloseNotification}
       />
       {showFireworks && <FireworksComponent options={{ fullscreen: true }} />}
-      {!isAuthPage && !isAdminPage && !isAcademyPage && !isIctPage && <Navbar />}
-      {showBreadcrumb && (
+      {showLayout && <Navbar />}
+      {showLayout && location.pathname !== '/' && (
         <div className="breadcrumb-container">
           <Breadcrumb />
         </div>
       )}
-      <main className={!isAuthPage ? 'content-with-navbar' : ''}>
+      <main className={showLayout ? 'content-with-navbar' : ''}>
         <Suspense fallback={<Skeleton />}>
           <ErrorBoundary>
             <Routes>
@@ -180,13 +191,19 @@ const AppContent = () => {
               <Route path="/academy/academics" element={<AcademyAcademics />} />
               <Route path="/academy/admissions" element={<AcademyAdmissions />} />
               <Route path="/churchproject" element={<ChurchProject />} />
-              <Route path="/ict-team" element={<IctTeam />} />
+              <Route path="/lyrics-studio" element={<LyricsStudioPage />} />
+              <Route path="/presenter/main" element={<MainPresenter />} />
+              <Route path="/presenter/stage" element={<StageMonitor />} />
+              <Route path="/presenter/stream" element={<StreamOverlay />} />
+
+              {/* ICT Team Routes */}
+              <Route path="/ict-team" element={<IctHome />} />
               <Route path="/ict-team/terms" element={<IctTerms />} />
               <Route path="/ict-team/privacy" element={<IctPrivacy />} />
               <Route path="/ict-team/contact" element={<IctContact />} />
               <Route path="/ict-team/about" element={<IctAbout />} />
-							<Route path="/ict-team/services" element={<IctServices />} />
-							<Route path="/ict-team/admin" element={<IctAdmin />} />
+			  <Route path="/ict-team/admin" element={<IctAdmin />} />
+              
 
               {/* Auth routes */}
               <Route path="/login" element={<Login />} />
@@ -195,6 +212,10 @@ const AppContent = () => {
               <Route path="/profile" element={<Profile />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path="/data-login" element={<DataLogin />} />
+
+              {/* Private routes */}
+              <Route path="/church-data" element={<PrivateRoute><ChurchData /></PrivateRoute>} />
 
               {/* Admin routes */}
               <Route
@@ -224,11 +245,12 @@ const AppContent = () => {
                 <Route path="jesus-lessons" element={<JesusLessonsAdmin />} />
                 <Route path="kindness-acts" element={<KindnessActs />} />
                 <Route path="view-data" element={<DataView />} />
-                <Route path="church-.jsxdepartment" element={<AdminChurchDepartment />} />
+                <Route path="church-department" element={<AdminChurchDepartment />} />
                 <Route path="k56-gallery" element={<K56GalleryAdmin />} />
                 <Route path="live" element={<LiveAdmin />} />
-								<Route path="connect" element={<ConnectAdmin />} />
+				<Route path="connect" element={<ConnectAdmin />} />
                 <Route path="blog" element={<AdminBlog />} />
+                <Route path="email" element={<EmailAdmin />} />
               </Route>
 
               {/* Catch-all */}
@@ -237,9 +259,9 @@ const AppContent = () => {
           </ErrorBoundary>
         </Suspense>
       </main>
-      {!isAuthPage && !isAdminPage && !isAcademyPage && !isIctPage && <Footer />}
+      {showLayout && <Footer />}
       <MoveToTop />
-      <InstallPWA /> {/* Add the new component here */}
+      <InstallPWA />
     </div>
   );
 };
@@ -249,9 +271,9 @@ function App() {
     <HelmetProvider>
       <Router future={{ v7_relativeSplatPath: true }}>
         <ScrollToTop />
-        <SmoothScroll>
+        <DrawerProvider>
           <AppContent />
-        </SmoothScroll>
+        </DrawerProvider>
       </Router>
     </HelmetProvider>
   );

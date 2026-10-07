@@ -1,305 +1,612 @@
+/* ==========================================================================
+   BASE & CONTAINER
+   ========================================================================== */
+   .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 24px 16px 64px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #111111;
+    background-color: #f7f7f7;
+    min-height: 100vh;
+  }
+  
+  /* ==========================================================================
+     HEADER
+     ========================================================================== */
+  .header {
+    border-bottom: 3px solid #cc0000;
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+  }
+  
+  .brandBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #cc0000;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    padding: 4px 8px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  
+  .liveDot {
+    width: 7px;
+    height: 7px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    animation: pulse 1.2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.3; }
+    100% { opacity: 1; }
+  }
+  
+  .pageTitle {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: #0c0c0c;
+    margin: 0 0 6px 0;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+  }
+  
+  .pageTitle span {
+    color: #cc0000;
+  }
+  
+  .subtitle {
+    font-size: 1rem;
+    color: #555555;
+    margin: 0 0 16px 0;
+  }
+  
+  .searchWrapper {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+  }
+  
+  .searchIcon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #777777;
+  }
+  
+  .searchInput {
+    width: 100%;
+    padding: 10px 16px 10px 42px;
+    font-size: 0.95rem;
+    border: 1px solid #cccccc;
+    background-color: #ffffff;
+    color: #111111;
+    outline: none;
+  }
+  
+  .searchInput:focus {
+    border-color: #cc0000;
+  }
+  
+  /* ==========================================================================
+     1. BIG FEATURE CARD (Lead Headline)
+     ========================================================================== */
+  .leadSection {
+    margin-bottom: 32px;
+  }
+  
+  .bigCard {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-bottom: 5px solid #cc0000;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+  }
+  
+  .bigMediaContainer {
+    position: relative;
+    width: 100%;
+    min-height: 320px;
+    background: #000;
+  }
+  
+  .bigThumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .bigPlayButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #ffffff;
+    gap: 8px;
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+  }
+  
+  .bigCardBody {
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .bigHeadline {
+    font-size: 1.85rem;
+    font-weight: 900;
+    line-height: 1.25;
+    margin: 0 0 14px 0;
+    color: #0c0c0c;
+    transition: color 0.2s ease;
+  }
+  
+  .headlineLink:hover .bigHeadline {
+    color: #cc0000;
+  }
+  
+  .bigExcerpt {
+    font-size: 1.02rem;
+    color: #4a4a4a;
+    line-height: 1.55;
+    margin-bottom: 20px;
+  }
+  
+  .bigCardFooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #eeeeee;
+    padding-top: 16px;
+  }
+  
+  /* ==========================================================================
+     MAIN LAYOUT & SIDEBAR GRID
+     ========================================================================== */
+  .mainLayout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 28px;
+    align-items: start;
+  }
+  
+  .sectionHeader, .sidebarHeader {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 2px solid #111111;
+    padding-bottom: 6px;
+    margin-bottom: 16px;
+  }
+  
+  .sectionHeader h2, .sidebarHeader h3 {
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    margin: 0;
+    color: #111111;
+  }
+  
+  .sectionIcon, .sidebarIcon {
+    color: #cc0000;
+  }
+  
+  /* Standard Grid Cards */
+  .sermonsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+  }
+  
+  .cnnCard {
+    background: #ffffff;
+    border: 1px solid #e2e2e2;
+    border-bottom: 3px solid #cc0000;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .cnnCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+  }
+  
+  .mediaContainer {
+    position: relative;
+    width: 100%;
+    background-color: #000;
+  }
+  
+  .cnnTag {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background-color: #cc0000;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 3px 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    z-index: 2;
+    text-transform: uppercase;
+  }
+  
+  .leadTag {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+  
+  .thumbnailWrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+  
+  .thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  
+  .mediaOverlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    transition: background 0.2s ease;
+  }
+  
+  .thumbnailWrapper:hover .mediaOverlay {
+    background: rgba(0, 0, 0, 0.45);
+    color: #cc0000;
+  }
+  
+  .videoPlayer {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 0;
+  }
+  
+  .cardBody {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+  
+  .metaHeader {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: #666666;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  
+  .metaDivider {
+    color: #ccc;
+  }
+  
+  .preacher, .date {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .headlineLink {
+    text-decoration: none;
+    color: #0c0c0c;
+  }
+  
+  .headline {
+    font-size: 1.1rem;
+    font-weight: 800;
+    line-height: 1.3;
+    margin: 0 0 8px 0;
+    transition: color 0.15s ease;
+  }
+  
+  .headlineLink:hover .headline {
+    color: #cc0000;
+  }
+  
+  .excerpt {
+    font-size: 0.88rem;
+    color: #4a4a4a;
+    line-height: 1.45;
+    margin-bottom: 14px;
+    flex-grow: 1;
+  }
+  
+  .excerpt p {
+    margin: 0;
+  }
+  
+  .cardFooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 10px;
+    margin-top: auto;
+  }
+  
+  .readStoryLink {
+    color: #cc0000;
+    font-size: 11px;
+    font-weight: 800;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+  
+  .readStoryLink:hover {
+    text-decoration: underline;
+  }
+  
+  .cnnWatchBtn {
+    background: transparent;
+    border: 1px solid #cc0000;
+    color: #cc0000;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .cnnWatchBtn:hover {
+    background: #cc0000;
+    color: #ffffff;
+  }
+  
+  /* ==========================================================================
+     3. SIDEBAR COMPACT CARDS
+     ========================================================================== */
+  .sidebar {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 16px;
+  }
+  
+  .sideCardsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .sideCard {
+    display: flex;
+    gap: 12px;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 12px;
+  }
+  
+  .sideCard:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  
+  .sideMediaWrapper {
+    position: relative;
+    width: 90px;
+    height: 60px;
+    flex-shrink: 0;
+    cursor: pointer;
+    background-color: #000;
+  }
+  
+  .sideThumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .sidePlayOverlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+  }
+  
+  .sideContent {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sidePreacher {
+    font-size: 10px;
+    font-weight: 800;
+    color: #cc0000;
+    text-transform: uppercase;
+  }
+  
+  .sideHeadlineLink {
+    text-decoration: none;
+    color: #111111;
+  }
+  
+  .sideHeadline {
+    font-size: 0.88rem;
+    font-weight: 700;
+    line-height: 1.25;
+    margin: 2px 0 4px 0;
+  }
+  
+  .sideHeadlineLink:hover .sideHeadline {
+    color: #cc0000;
+  }
+  
+  .sideDate {
+    font-size: 10px;
+    color: #888888;
+  }
+  
+  /* ==========================================================================
+     LOADING & EMPTY STATES
+     ========================================================================== */
+  .loaderContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+    color: #555555;
+    font-weight: 600;
+  }
+  
+  .spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid #e0e0e0;
+    border-top-color: #cc0000;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 12px;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  .emptyState {
+    text-align: center;
+    padding: 48px 16px;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    color: #666666;
+    margin-top: 20px;
+  }
+  
+  .resetBtn {
+    background-color: #cc0000;
+    color: #ffffff;
+    border: none;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+  
+  /* ==========================================================================
+     MOBILE & TABLET RESPONSIVE STYLES
+     ========================================================================== */
+  @media (max-width: 992px) {
+    .mainLayout {
+      grid-template-columns: 1fr;
+    }
+  
+    .bigCard {
+      grid-template-columns: 1fr;
+    }
+  
+    .bigMediaContainer {
+      min-height: 240px;
+    }
+  
+    .bigHeadline {
+      font-size: 1.5rem;
+    }
+  
+    /* Transform Sidebar into horizontal scroll list on mobile */
+    .sidebar {
+      order: 2;
+      background: transparent;
+      border: none;
+      padding: 0;
+	  overflow-x: hidden;
+    }
+  
+    .sideCardsContainer {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 80%; /* Each card takes 80% of the container width */
+      gap: 12px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: 4px 16px 12px;
+      margin: 0 -16px;
 
-:root {
-  --primary: #2563eb;
-  --primary-dark: #1e40af;
-  --accent: #fbbf24;
-  --text-main: #1e293b;
-  --text-muted: #64748b;
-  --bg-subtle: #f8fafc;
-  --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --radius: 16px;
-}
+      /* Hide scrollbar */
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px 20px;
-  min-height: 100vh;
-  background-color: var(--bg-subtle);
-}
+    .sideCardsContainer::-webkit-scrollbar {
+      display: none; /* Chrome, Safari and Opera */
+    }
+  
+    .sideCard {
+      scroll-snap-align: start;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      padding: 12px;
+      background-color: #fff;
+      border-bottom: none; /* remove original border */
+      padding-bottom: 12px; /* reset padding */
+    }
 
-/* Header & Search */
-.header {
-  text-align: center;
-  margin-bottom: 60px;
-}
+    .sideMediaWrapper {
+        width: 100px; /* Slightly larger image on mobile */
+        height: auto;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .container {
+      padding: 16px 12px 48px;
+    }
+  
+    .pageTitle {
+      font-size: 1.75rem;
+    }
+  
+    .bigCardBody {
+      padding: 16px;
+    }
+  
+    .bigExcerpt {
+      display: none; /* Hide long excerpt on narrow mobile screens for compactness */
+    }
+  
+    .sermonsGrid {
+      grid-template-columns: 1fr;
+    }
 
-.pageTitle {
-  font-size: 3rem;
-  font-weight: 800;
-  color: var(--text-main);
-  margin-bottom: 10px;
-  letter-spacing: -0.02em;
-}
-
-.pageTitle span {
-  color: var(--primary);
-}
-
-.subtitle {
-  color: var(--text-muted);
-  font-size: 1.1rem;
-  margin-bottom: 30px;
-}
-
-.searchWrapper {
-  position: relative;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.searchIcon {
-  position: absolute;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--text-muted);
-}
-
-.searchInput {
-  width: 100%;
-  padding: 16px 20px 16px 55px;
-  border-radius: 50px;
-  border: 1px solid #e2e8f0;
-  background: white;
-  font-size: 1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-  transition: all 0.3s ease;
-}
-
-.searchInput:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-}
-
-/* Grid Layout */
-.sermonsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 30px;
-  margin-bottom: 80px;
-}
-
-/* Card Styling */
-.sermonCard {
-  background: white;
-  border-radius: var(--radius);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: var(--card-shadow);
-  border: 1px solid rgba(0,0,0,0.05);
-}
-
-.sermonCard:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-}
-
-/* Special styling for text-only cards */
-.noMediaCard {
-  border-top: 4px solid var(--primary);
-}
-
-/* Media Container & Aspect Ratio */
-.mediaContainer {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background: #000;
-  overflow: hidden;
-}
-
-.videoPlayer {
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-
-.thumbnailWrapper {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-}
-
-.thumbnail {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.thumbnailWrapper:hover .thumbnail {
-  transform: scale(1.05);
-}
-
-.mediaOverlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  color: white;
-}
-
-.thumbnailWrapper:hover .mediaOverlay {
-  opacity: 1;
-  background: rgba(0, 0, 0, 0.5);
-}
-
-.playAction {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-  color: white;
-}
-
-.playAction span {
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 0.8rem;
-}
-
-/* Card Body */
-.cardBody {
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-
-.meta {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 12px;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-}
-
-.meta span {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.titleLink {
-  text-decoration: none;
-  color: inherit;
-}
-
-.sermonTitle {
-  font-size: 1.4rem;
-  font-weight: 700;
-  line-height: 1.3;
-  margin-bottom: 12px;
-  color: var(--text-main);
-  transition: color 0.2s;
-}
-
-.titleLink:hover .sermonTitle {
-  color: var(--primary);
-}
-
-.excerpt {
-  font-size: 0.95rem;
-  color: var(--text-muted);
-  line-height: 1.6;
-  margin-bottom: 20px;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* Footer Actions */
-.cardFooter {
-  margin-top: auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 20px;
-  border-top: 1px solid #f1f5f9;
-}
-
-.readMoreLink {
-  color: var(--primary);
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.quickWatchBtn {
-  background: var(--bg-subtle);
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text-main);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.2s;
-}
-
-.quickWatchBtn:hover {
-  background: #e2e8f0;
-}
-
-/* Empty State */
-.emptyState {
-  text-align: center;
-  padding: 100px 20px;
-  color: var(--text-muted);
-}
-
-.resetBtn {
-  margin-top: 20px;
-  padding: 10px 24px;
-  background: var(--primary);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-/* Loading Spinner */
-.loaderContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 60vh;
-}
-
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid #e2e8f0;
-  border-top-color: var(--primary);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 15px;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-@media (max-width: 768px) {
-  .pageTitle { font-size: 2.2rem; }
-  .sermonsGrid { grid-template-columns: 1fr; }
-}
+    .sideCardsContainer {
+       grid-auto-columns: 90%; /* On very small screens, cards take up more space */
+       padding: 4px 12px 12px;
+       margin: 0 -12px;
+    }
+  }

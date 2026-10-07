@@ -133,7 +133,7 @@ const Children = () => {
   };
 
   const genderData = {
-    labels: ['Male', 'Female'],
+    labels: ['Boy', 'Girl'],
     datasets: [{
       data: [
         children.filter(c => c.gender === 'Male').length,
@@ -144,13 +144,18 @@ const Children = () => {
     }]
   };
 
+  const genderDisplayMap = {
+    Male: 'Boy',
+    Female: 'Girl',
+  };
+
   return (
     <div className={s.dashboard}>
       {/* Header */}
       <header className={s.header}>
         <div className={s.titleArea}>
           <h1>Children Ministry</h1>
-          <p>Nurturing the next generation</p>
+          <p className={s.description}>This page is for managing the Children's Ministry records. You can add a new child to the registry, view and edit existing records, and search for specific children. The dashboard also shows you some quick stats about the ministry, like the total number of children and the growth over time. To get started, use the 'Register Child' button or search for a child's name or talent.</p>
         </div>
         <div className={s.desktopActions}>
           <button className={s.secondaryBtn} onClick={exportCSV}>
@@ -230,7 +235,7 @@ const Children = () => {
                   <div>{child.parent_name}</div>
                   <small style={{ color: '#64748b' }}>{child.parent_contact}</small>
                 </td>
-                <td><span className={s.badge}>{child.gender}</span></td>
+                <td><span className={s.badge}>{genderDisplayMap[child.gender] || child.gender}</span></td>
                 <td>{child.talent || <em style={{ color: '#cbd5e1' }}>Not specified</em>}</td>
                 <td>
                   <div style={{ display: 'flex', gap: '10px' }}>
@@ -242,6 +247,41 @@ const Children = () => {
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile Cards */}
+      <div className={s.mobileCardList}>
+        {filteredChildren.map(child => (
+          <div className={s.mobileCard} key={child.id}>
+            <div className={s.cardHeader}>
+              <div className={s.cardTitle}>
+                <div className={s.avatar}><Baby size={16} /></div>
+                {child.name}
+              </div>
+              <div className={s.cardActions}>
+                <button className={s.iconBtn} onClick={() => openDrawer(child)}><Edit3 size={18} /></button>
+                <button className={s.iconBtn} onClick={() => handleDelete(child.id)}><Trash2 size={18} /></button>
+              </div>
+            </div>
+            <div className={s.cardBody}>
+              <div className={s.infoRow}>
+                <User size={14} />
+                <span>{child.parent_name}</span>
+              </div>
+              <div className={s.infoRow}>
+                <Phone size={14} />
+                <span>{child.parent_contact}</span>
+              </div>
+              <div className={s.infoRow}>
+                <Star size={14} />
+                <span>{child.talent || 'N/A'}</span>
+              </div>
+              <div className={s.infoRow}>
+                <span className={s.badge}>{genderDisplayMap[child.gender] || child.gender}</span>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* Mobile FAB */}
@@ -258,51 +298,52 @@ const Children = () => {
               <h2>{editingId ? 'Edit Child' : 'New Registration'}</h2>
               <button className={s.iconBtn} onClick={() => setIsDrawerOpen(false)}><X size={24} /></button>
             </div>
-            
-            <form onSubmit={handleSubmit}>
-              <div className={s.inputGroup}>
-                <label><User size={12} /> Child's Full Name</label>
-                <input name="name" value={formData.name} onChange={handleInputChange} required placeholder="Enter name" />
-              </div>
+            <div className={s.drawerContent}>
+              <form onSubmit={handleSubmit}>
+                <div className={s.inputGroup}>
+                  <label><User size={12} /> Child's Full Name</label>
+                  <input name="name" value={formData.name} onChange={handleInputChange} required placeholder="Enter name" />
+                </div>
 
-              <div className={s.inputGroup}>
-                <label>Gender</label>
-                <select 
-                  name="gender" 
-                  value={formData.gender} 
-                  onChange={handleInputChange}
-                  style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #E2E8F0' }}
-                >
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
+                <div className={s.inputGroup}>
+                  <label>Gender</label>
+                  <select 
+                    name="gender" 
+                    value={formData.gender} 
+                    onChange={handleInputChange}
+                    style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #E2E8F0' }}
+                  >
+                    <option value="Male">Boy</option>
+                    <option value="Female">Girl</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
 
-              <div className={s.inputGroup}>
-                <label><Info size={12} /> Guardian Name</label>
-                <input name="parent_name" value={formData.parent_name} onChange={handleInputChange} placeholder="Parent/Guardian" />
-              </div>
+                <div className={s.inputGroup}>
+                  <label><Info size={12} /> Guardian Name</label>
+                  <input name="parent_name" value={formData.parent_name} onChange={handleInputChange} placeholder="Parent/Guardian" />
+                </div>
 
-              <div className={s.inputGroup}>
-                <label><Phone size={12} /> Emergency Contact</label>
-                <input name="parent_contact" value={formData.parent_contact} onChange={handleInputChange} placeholder="Phone number" />
-              </div>
+                <div className={s.inputGroup}>
+                  <label><Phone size={12} /> Emergency Contact</label>
+                  <input name="parent_contact" value={formData.parent_contact} onChange={handleInputChange} placeholder="Phone number" />
+                </div>
 
-              <div className={s.inputGroup}>
-                <label><Star size={12} /> Talents / Interests</label>
-                <input name="talent" value={formData.talent} onChange={handleInputChange} placeholder="Singing, Drawing, etc." />
-              </div>
+                <div className={s.inputGroup}>
+                  <label><Star size={12} /> Talents / Interests</label>
+                  <input name="talent" value={formData.talent} onChange={handleInputChange} placeholder="Singing, Drawing, etc." />
+                </div>
 
-              <div className={s.inputGroup}>
-                <label><Calendar size={12} /> Join Date</label>
-                <input type="date" name="join_date" value={formData.join_date} onChange={handleInputChange} required />
-              </div>
+                <div className={s.inputGroup}>
+                  <label><Calendar size={12} /> Join Date</label>
+                  <input type="date" name="join_date" value={formData.join_date} onChange={handleInputChange} required />
+                </div>
 
-              <button type="submit" className={s.submitBtn} disabled={loading}>
-                {loading ? 'Saving...' : (editingId ? 'Update Record' : 'Register Child')}
-              </button>
-            </form>
+                <button type="submit" className={s.submitBtn} disabled={loading}>
+                  {loading ? 'Saving...' : (editingId ? 'Update Record' : 'Register Child')}
+                </button>
+              </form>
+            </div>
           </div>
         </>
       )}

@@ -137,8 +137,12 @@ const ChurchDepartmentAdmin = () => {
     <div className={styles.adminWrapper}>
       <header className={styles.header}>
         <div className={styles.titleArea}>
-          <h2 className={styles.title}>Ministry Management</h2>
-          <p className={styles.subtitle}>Configure church departments and leadership</p>
+            <h2 className={styles.title}>Ministry Management</h2>
+            <p className={styles.description}>
+                This is where you manage all the different ministry teams and departments in the church. 
+                Use the form on the left to add a new team or update an existing one. You can fill in details like the department's name, its leader, a description of what it does, and even upload a team photo. 
+                All the current departments are listed on the right. You can edit or delete them using the small buttons on each card.
+            </p>
         </div>
         <div className={styles.stats}>
           <div className={styles.stat}><Users size={16}/> {departments.length} Teams</div>
@@ -191,13 +195,27 @@ const ChurchDepartmentAdmin = () => {
         <main className={styles.listSection}>
           <div className={styles.searchRow}><Search size={18} /><input type="text" placeholder="Find a team..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} /></div>
           <div className={styles.grid}>
-            {loading ? <Loader2 className={styles.spin} /> : filteredDepartments.map(dept => (
-              <motion.div layout key={dept.id} className={styles.deptCard}>
-                <div className={styles.cardImg}>{dept.image_url ? <img src={dept.image_url} alt={dept.name} /> : <div className={styles.noImg}><ImageIcon/></div>}<div className={styles.badge}>{dept.category}</div></div>
-                <div className={styles.cardContent}><h4>{dept.name}</h4><p className={styles.lead}><UserCheck size={14}/> {dept.head}</p><div className={styles.meta}>{dept.location && <span><MapPin size={12}/> {dept.location}</span>}{dept.meeting_info && <span><Clock size={12}/> {dept.meeting_info}</span>}</div></div>
-                <div className={styles.cardActions}><button onClick={() => handleEdit(dept)} className={styles.edit}><Edit2 size={16}/></button><button onClick={() => handleDelete(dept.id)} className={styles.del}><Trash2 size={16}/></button></div>
-              </motion.div>
-            ))}
+            {loading ? (
+              <div className={styles.centeredMessage}><Loader2 className={styles.spin} /></div>
+            ) : error ? (
+              <div className={`${styles.centeredMessage} ${styles.errorState}`}>
+                <p>Error: {error}</p>
+                <button onClick={fetchDepartments} className={styles.retryBtn}>Try Again</button>
+              </div>
+            ) : filteredDepartments.length > 0 ? (
+              filteredDepartments.map(dept => (
+                <motion.div layout key={dept.id} className={styles.deptCard}>
+                  <div className={styles.cardImg}>{dept.image_url ? <img src={dept.image_url} alt={dept.name} /> : <div className={styles.noImg}><ImageIcon/></div>}<div className={styles.badge}>{dept.category}</div></div>
+                  <div className={styles.cardContent}><h4>{dept.name}</h4><p className={styles.lead}><UserCheck size={14}/> {dept.head}</p><div className={styles.meta}>{dept.location && <span><MapPin size={12}/> {dept.location}</span>}{dept.meeting_info && <span><Clock size={12}/> {dept.meeting_info}</span>}</div></div>
+                  <div className={styles.cardActions}><button onClick={() => handleEdit(dept)} className={styles.edit}><Edit2 size={16}/></button><button onClick={() => handleDelete(dept.id)} className={styles.del}><Trash2 size={16}/></button></div>
+                </motion.div>
+              ))
+            ) : (
+              <div className={styles.centeredMessage}>
+                <h4>No Departments Found</h4>
+                <p>Use the form to create the first department.</p>
+              </div>
+            )}
           </div>
         </main>
       </div>

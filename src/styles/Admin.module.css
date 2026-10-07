@@ -147,10 +147,8 @@
     padding-top: 70px; /* Account for the 70px fixed AdminNavbar */
 }
 
-.contentWrapper { 
+.contentWrapper {
   padding: 0 2rem 2rem;
-  max-width: 1400px; 
-  margin: 0 auto; 
 }
 
 .outletContainer {

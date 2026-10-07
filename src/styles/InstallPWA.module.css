@@ -1,96 +1,175 @@
-.installToast {
-  position: fixed;
-  bottom: 25px;
-  left: 25px;
-  right: 25px;
-  max-width: 450px;
-  background: #1A1A1A; /* Ink */
-  color: white;
-  padding: 20px;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-  z-index: 9999;
-  animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  border: 1px solid rgba(212, 175, 55, 0.3); /* Soft Gold border */
-}
+/* ==========================================================================
+   Modern Floating Toast Component Stylesheet
+   ========================================================================== */
 
-@media (min-width: 768px) {
-  .installToast {
-    left: auto;
-    right: 30px;
+   :root {
+    --pwa-bg: rgba(26, 54, 93, 0.95);
+    --pwa-border: rgba(255, 255, 255, 0.12);
+    --pwa-text-primary: #ffffff;
+    --pwa-text-secondary: #cbd5e1;
+    --pwa-accent: #d4af37;
+    --pwa-accent-hover: #e5be3b;
+    --pwa-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+    --pwa-radius: 16px;
   }
-}
-
-.iconWrapper {
-  flex-shrink: 0;
-}
-
-.appLogo {
-  width: 50px;
-  height: 50px;
-  background: #FDFCF9; /* Paper */
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.content {
-  flex: 1;
-}
-
-.content h4 {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 700;
-  color: #D4AF37; /* Gold */
-}
-
-.content p {
-  margin: 4px 0 0 0;
-  font-size: 0.85rem;
-  line-height: 1.4;
-  color: #E2E8F0;
-}
-
-.installButton {
-  background: #D4AF37;
-  color: #1A1A1A;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 10px;
-  font-weight: 700;
-  font-size: 0.85rem;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: transform 0.2s;
-}
-
-.installButton:hover {
-  transform: scale(1.05);
-}
-
-.closeIcon {
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  background: #FDFCF9;
-  color: #1A1A1A;
-  border: 1px solid #E2E8F0;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-@keyframes slideUp {
-  from { transform: translateY(100px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
+  
+  /* Toast Container with Glassmorphism */
+  .installToast {
+    position: fixed;
+    bottom: 1.25rem;
+    left: 1rem;
+    right: 1rem;
+    max-width: 440px;
+    margin: 0 auto;
+    padding: 1rem 1.25rem;
+    background: var(--pwa-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--pwa-border);
+    border-radius: var(--pwa-radius);
+    box-shadow: var(--pwa-shadow);
+    color: var(--pwa-text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    z-index: 9999;
+    
+    /* Smooth Entry Animation */
+    animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  
+  /* Close Button */
+  .closeIcon {
+    position: absolute;
+    top: 0.625rem;
+    right: 0.625rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    color: #94a3b8;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  
+  .closeIcon:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--pwa-text-primary);
+  }
+  
+  .closeIcon:focus-visible {
+    outline: 2px solid var(--pwa-accent);
+    outline-offset: 2px;
+  }
+  
+  /* App Logo Wrapper */
+  .iconWrapper {
+    flex-shrink: 0;
+  }
+  
+  .appLogo {
+    width: 2.75rem;
+    height: 2.75rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Content Area */
+  .content {
+    flex: 1;
+    min-width: 0; /* Prevents flex items from overflowing */
+    padding-right: 0.5rem;
+  }
+  
+  .content h4 {
+    margin: 0 0 0.2rem 0;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--pwa-text-primary);
+    letter-spacing: -0.01em;
+  }
+  
+  .content p {
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: var(--pwa-text-secondary);
+  }
+  
+  .content strong {
+    color: var(--pwa-text-primary);
+    font-weight: 600;
+  }
+  
+  /* Install Action Button */
+  .installButton {
+    flex-shrink: 0;
+    background-color: var(--pwa-accent);
+    color: #1a365d;
+    border: none;
+    padding: 0.5rem 0.875rem;
+    border-radius: 10px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    transition: transform 0.15s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .installButton:hover {
+    background-color: var(--pwa-accent-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .installButton:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  .installButton:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+  }
+  
+  /* Entry Animation Keyframes */
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(1.25rem) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  
+  /* Mobile Small Screen Enhancements */
+  @media (max-width: 380px) {
+    .installToast {
+      bottom: 0.75rem;
+      left: 0.75rem;
+      right: 0.75rem;
+      padding: 0.875rem 1rem;
+    }
+  
+    .appLogo {
+      width: 2.25rem;
+      height: 2.25rem;
+    }
+  
+    .installButton {
+      padding: 0.4rem 0.65rem;
+      font-size: 0.75rem;
+    }
+  }

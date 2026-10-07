@@ -1,0 +1,24 @@
+[functions.send-daily-verse]
+enabled = true
+verify_jwt = false
+import_map = "./functions/send-daily-verse/deno.json"
+entrypoint = "./functions/send-daily-verse/index.ts"
+schedule = "0 7 * * *"
+
+[functions.send-updates]
+enabled = true
+verify_jwt = false
+import_map = "./functions/send-updates/deno.json"
+entrypoint = "./functions/send-updates/index.ts"
+
+[functions.send-sermon-notification]
+enabled = true
+verify_jwt = false
+import_map = "./functions/send-sermon-notification/deno.json"
+entrypoint = "./functions/send-sermon-notification/index.ts"
+
+[functions.send-event-notification]
+enabled = true
+verify_jwt = false
+import_map = "./functions/send-event-notification/deno.json"
+entrypoint = "./functions/send-event-notification/index.ts"

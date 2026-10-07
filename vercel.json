@@ -1,8 +1,8 @@
 {
   "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/lyrics-studio", "destination": "/lyrics-studio.html" },
+    { "source": "/lyrics-studio/(.*)", "destination": "/lyrics-studio.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

@@ -5,11 +5,19 @@ import { resolve } from 'path';
 import svgr from 'vite-plugin-svgr';
 import javascriptObfuscator from 'rollup-plugin-javascript-obfuscator';
 import { visualizer } from 'rollup-plugin-visualizer';
+import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
+
+// Helper to inject Cloudinary auto-resizing flags to match PWA Manifest expectations
+const getCloudinaryIcon = (width, height) => 
+  `https://res.cloudinary.com/dtcb3ffnv/image/upload/c_fill,w_${width},h_${height},f_png/v1780723691/Untitled-design-24-_lfef05.png`;
 
 export default defineConfig({
   plugins: [
     react(),
     svgr({ exportAs: 'ReactComponent' }),
+    ViteImageOptimizer({
+      /* config */
+    }),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: [
@@ -17,65 +25,6 @@ export default defineConfig({
         'robots.txt',
         'apple-touch-icon.png'
       ],
-      manifest: {
-        name: 'PEFA Kawangware 56 Church',
-        short_name: 'PEFA 56',
-        description: 'PEFA Kawangware 56 Church website. Join our community for transformative sermons, worship, and fellowship.',
-        theme_color: '#ffffff',
-        background_color: '#004a99',
-        display: 'standalone',
-        orientation: 'portrait',
-        start_url: '/',
-        scope: '/',
-        icons: [
-          {
-            src: 'https://res.cloudinary.com/dtcb3ffnv/image/upload/v1780723691/Untitled-design-24-_lfef05.png',
-            sizes: '192x192',
-            type: 'image/png',
-          },
-          {
-            src: 'https://res.cloudinary.com/dtcb3ffnv/image/upload/v1780723691/Untitled-design-24-_lfef05.png',
-            sizes: '512x512',
-            type: 'image/png',
-          },
-          {
-            src: 'https://res.cloudinary.com/dtcb3ffnv/image/upload/v1780723691/Untitled-design-24-_lfef05.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'any maskable'
-          }
-        ],
-        shortcuts: [
-          {
-            name: 'Sermons',
-            short_name: 'Sermons',
-            description: 'Listen to the latest sermons',
-            url: '/sermons',
-            icons: [{ src: 'https://res.cloudinary.com/dtcb3ffnv/image/upload/v1780723691/Untitled-design-24-_lfef05.png', sizes: '192x192' }]
-          },
-          {
-            name: 'Events',
-            short_name: 'Events',
-            description: 'View upcoming church events',
-            url: '/events',
-            icons: [{ src: 'https://res.cloudinary.com/dtcb3ffnv/image/upload/v1780723691/Untitled-design-24-_lfef05.png', sizes: '192x192' }]
-          },
-          {
-            name: 'Prayers',
-            short_name: 'Prayers',
-            description: 'Post and view prayer requests',
-            url: '/prayers',
-            icons: [{ src: 'https://res.cloudinary.com/dtcb3ffnv/image/upload/v1780723691/Untitled-design-24-_lfef05.png', sizes: '192x192' }]
-          },
-          {
-            name: 'Contact Us',
-            short_name: 'Contact',
-            description: 'Get in touch with the church',
-            url: '/contact',
-            icons: [{ src: 'https://res.cloudinary.com/dtcb3ffnv/image/upload/v1780723691/Untitled-design-24-_lfef05.png', sizes: '192x192' }]
-          }
-        ]
-      },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,json}'],
         runtimeCaching: [
@@ -108,10 +57,9 @@ export default defineConfig({
     }),
     process.env.NODE_ENV === 'production' && javascriptObfuscator({
       options: {
-        // Obfuscator options here
+        // Obfuscator options
       }
     }),
-    // Optional: bundle analyzer
     visualizer({ filename: 'stats.html', template: 'treemap' }),
   ],
   resolve: {
@@ -122,13 +70,27 @@ export default defineConfig({
   server: {
     port: 5173,
     open: true,
-    cors: true, 
+    cors: {
+      origin: '*',
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+      credentials: true,
+    },
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With',
+    },
   },
   build: {
     outDir: 'dist',
     sourcemap: false,
     chunkSizeWarningLimit: 2000,
     rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        lyrics_studio: resolve(__dirname, 'public/lyrics-studio.html'),
+      },
       output: {
         manualChunks: {
           react: ['react', 'react-dom'],
@@ -137,9 +99,19 @@ export default defineConfig({
           icons: ['lucide-react'],
           charting: ['chart.js', 'react-chartjs-2'],
           pdf: ['jspdf', 'jspdf-autotable'],
-          vendor: [] // small utilities grouped
+          vendor: []
         }
       },
     },
   },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/setupTests.js',
+    css: {
+      modules: {
+        classNameStrategy: 'non-scoped'
+      }
+    }
+  }
 });

@@ -5,11 +5,12 @@ import { supabase } from '../supabaseClient';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import styles from '../styles/BlogReader.module.css';
+import readerStyles from '../styles/SermonReader.module.css';
 import Seo from '../components/Seo';
-import { ArrowLeft, Calendar, User } from 'lucide-react';
+import { ArrowLeft, Calendar, User, Type } from 'lucide-react';
 import Breadcrumb from '../components/Breadcrumb';
 
-// New Skeleton Loader Component
+// Skeleton Loader Component
 const SkeletonLoader = () => (
     <div className={styles.readerPage}>
         <div className={`${styles.skeleton} ${styles.skeletonHeader}`}></div>
@@ -18,14 +19,10 @@ const SkeletonLoader = () => (
                 <div className={`${styles.skeleton} ${styles.skeletonTitle}`} style={{ height: '48px', width: '80%', margin: '0 auto 20px' }}></div>
                 <div className={`${styles.skeleton} ${styles.skeletonMeta}`} style={{ height: '24px', width: '50%', margin: '0 auto' }}></div>
             </div>
-            <div className={styles.content}>
+            <div className={readerStyles.sermonBody}>
                 <div className={`${styles.skeleton} ${styles.skeletonText}`} style={{ width: '95%' }}></div>
                 <div className={`${styles.skeleton} ${styles.skeletonText}`} style={{ width: '100%' }}></div>
                 <div className={`${styles.skeleton} ${styles.skeletonText}`} style={{ width: '90%' }}></div>
-                <br />
-                <div className={`${styles.skeleton} ${styles.skeletonText}`} style={{ width: '98%' }}></div>
-                <div className={`${styles.skeleton} ${styles.skeletonText}`} style={{ width: '92%' }}></div>
-                <div className={`${styles.skeleton} ${styles.skeletonText}`} style={{ width: '100%' }}></div>
             </div>
         </div>
     </div>
@@ -34,6 +31,7 @@ const SkeletonLoader = () => (
 const BlogReader = () => {
     const [post, setPost] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [fontSize, setFontSize] = useState(22); // Initial font size
     const { id } = useParams();
 
     useEffect(() => {
@@ -98,7 +96,29 @@ const BlogReader = () => {
                 ></div>
 
                 <div className={styles.container}>
-                    <Breadcrumb crumbs={breadcrumbs} />
+                    <div className={readerStyles.toolbar} style={{ justifyContent: 'space-between', marginBottom: '1rem' }}>
+                        <Breadcrumb crumbs={breadcrumbs} />
+                        <div className={readerStyles.fontControls}>
+                            <button 
+                                onClick={() => setFontSize(prev => Math.min(prev + 2, 32))} 
+                                title="Increase text size"
+                                disabled={fontSize >= 32}
+                                className={readerStyles.fontBtn}
+                            >
+                                <Type size={15} /><span className={readerStyles.controlSign}>+</span>
+                            </button>
+                            <span className={readerStyles.fontSizeIndicator}>{fontSize}px</span>
+                            <button 
+                                onClick={() => setFontSize(prev => Math.max(prev - 2, 16))} 
+                                title="Decrease text size"
+                                disabled={fontSize <= 16}
+                                className={readerStyles.fontBtn}
+                            >
+                                <Type size={12} /><span className={readerStyles.controlSign}>-</span>
+                            </button>
+                        </div>
+                    </div>
+
                     <article>
                         <header className={styles.articleHeader}>
                             <p className={styles.category}>{post.category}</p>
@@ -116,7 +136,10 @@ const BlogReader = () => {
                             </div>
                         </header>
 
-                        <div className={styles.content}>
+                        <div 
+                            className={readerStyles.sermonBody}
+                            style={{ fontSize: `${fontSize}px` }}
+                        >
                             <ReactMarkdown remarkPlugins={[remarkGfm]}>
                                 {post.content}
                             </ReactMarkdown>

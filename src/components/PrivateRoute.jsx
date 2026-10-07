@@ -8,39 +8,78 @@ const PrivateRoute = ({ children }) => {
   const location = useLocation();
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const { data, error } = await supabase.auth.getUser();
-      if (error) {
-        console.error('Error fetching user:', error);
-        setLoading(false);
-        return;
+    let isMounted = true;
+
+    const checkAuth = async () => {
+      try {
+        // 1. Check local session state first to avoid throwing errors on fresh loads
+        const { data: { session } } = await supabase.auth.getSession();
+
+        if (!session) {
+          if (isMounted) {
+            setUser(null);
+            setLoading(false);
+          }
+          return;
+        }
+
+        // 2. Validate token/user status with Supabase if a session exists
+        const { data: { user: currentUser }, error } = await supabase.auth.getUser();
+
+        if (isMounted) {
+          setUser(error ? null : currentUser);
+          setLoading(false);
+        }
+      } catch (err) {
+        if (isMounted) {
+          setUser(null);
+          setLoading(false);
+        }
       }
-      setUser(data.user);
-      setLoading(false);
     };
 
-    fetchUser();
+    checkAuth();
 
+    // 3. Keep real-time auth changes synchronized
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
-        setUser(session?.user ?? null);
+        if (isMounted) {
+          setUser(session?.user ?? null);
+          setLoading(false);
+        }
       }
     );
 
     return () => {
-      authListener.subscription.unsubscribe();
+      isMounted = false;
+      authListener?.subscription?.unsubscribe();
     };
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>; // Or a spinner component
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <div>Loading...</div>
+      </div>
+    );
   }
 
-  if (user && user.user_metadata?.role === 'admin') {
-    return children;
+  const hasDataAccess = sessionStorage.getItem('hasDataAccess') === 'true';
+  const isAdminRoute = location.pathname.startsWith('/admin');
+
+  if (user) {
+    if (isAdminRoute && user.user_metadata?.role === 'admin') {
+      return children;
+    }
+    if (!isAdminRoute && hasDataAccess) {
+      return children;
+    }
   }
 
-  return <Navigate to="/admin-login" state={{ from: location }} replace />;
+  // Redirect to correct login route
+  const redirectTo = isAdminRoute ? '/admin-login' : '/data-login';
+
+  return <Navigate to={redirectTo} state={{ from: location }} replace />;
 };
 
 export default PrivateRoute;

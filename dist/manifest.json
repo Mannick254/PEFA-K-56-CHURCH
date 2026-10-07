@@ -11,19 +11,16 @@
   "orientation": "any",
   "icons": [
     {
-      "src": "https://res.cloudinary.com/dtcb3ffnv/image/upload/v1780723691/Untitled-design-24-_lfef05.png",
-      "sizes": "any",
-      "type": "image/png"
+      "src": "https://res.cloudinary.com/dtcb3ffnv/image/upload/w_192,h_192,c_fill/v1780723691/Untitled-design-24-_lfef05.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
     },
     {
-      "src": "https://res.cloudinary.com/dtcb3ffnv/image/upload/v1780723691/Untitled-design-24-_lfef05.png",
+      "src": "https://res.cloudinary.com/dtcb3ffnv/image/upload/w_512,h_512,c_fill/v1780723691/Untitled-design-24-_lfef05.png",
       "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "https://res.cloudinary.com/dtcb3ffnv/image/upload/v1780723691/Untitled-design-24-_lfef05.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "any maskable"
     }
   ],
   "shortcuts": [
@@ -34,7 +31,7 @@
       "url": "/sermons",
       "icons": [
         {
-          "src": "https://res.cloudinary.com/dtcb3ffnv/image/upload/v1780723691/Untitled-design-24-_lfef05.png",
+          "src": "https://res.cloudinary.com/dtcb3ffnv/image/upload/w_192,h_192,c_fill/v1780723691/Untitled-design-24-_lfef05.png",
           "sizes": "192x192"
         }
       ]
@@ -46,7 +43,7 @@
       "url": "/events",
       "icons": [
         {
-          "src": "https://res.cloudinary.com/dtcb3ffnv/image/upload/v1780723691/Untitled-design-24-_lfef05.png",
+          "src": "https://res.cloudinary.com/dtcb3ffnv/image/upload/w_192,h_192,c_fill/v1780723691/Untitled-design-24-_lfef05.png",
           "sizes": "192x192"
         }
       ]
@@ -58,7 +55,7 @@
       "url": "/prayers",
       "icons": [
         {
-          "src": "https://res.cloudinary.com/dtcb3ffnv/image/upload/v1780723691/Untitled-design-24-_lfef05.png",
+          "src": "https://res.cloudinary.com/dtcb3ffnv/image/upload/w_192,h_192,c_fill/v1780723691/Untitled-design-24-_lfef05.png",
           "sizes": "192x192"
         }
       ]

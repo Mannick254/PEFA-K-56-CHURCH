@@ -1,226 +1,287 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap');
-
-.wrapper {
-    position: relative;
-    padding: 80px 5%;
-    background: #f8f9fa;
-    overflow: hidden;
-    font-family: 'Montserrat', sans-serif;
-}
-
-.container {
+/* Section Base */
+.cnnDeptSection {
+    padding: 4rem 1.5rem;
+    background-color: #ffffff;
+    color: #0f172a;
+  }
+  
+  .container {
     max-width: 1200px;
     margin: 0 auto;
-    position: relative;
-    z-index: 2;
-}
-
-.header {
-    text-align: center;
-    margin-bottom: 50px;
-}
-
-.badge {
+  }
+  
+  /* Header */
+  .cnnHeader {
+    margin-bottom: 2.5rem;
+    text-align: left;
+  }
+  
+  .cnnCategoryBadge {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    background: #e9ecef;
-    padding: 8px 16px;
-    border-radius: 100px;
-    color: #495057;
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-}
-
-.title {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.8rem;
-    color: #212529;
-    margin-bottom: 1rem;
-}
-
-.title span {
-    color: #8a795d;
-}
-
-.subtitle {
-    max-width: 600px;
-    margin: 0 auto;
-    color: #6c757d;
-    line-height: 1.7;
-}
-
-.grid {
+    gap: 0.4rem;
+    background-color: #cc0000; /* CNN Red */
+    color: #ffffff;
+    font-size: 0.725rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    padding: 0.25rem 0.6rem;
+    border-radius: 2px;
+    margin-bottom: 0.75rem;
+  }
+  
+  .cnnBadgeIcon {
+    color: #ffffff;
+  }
+  
+  .cnnTitle {
+    font-size: 2.25rem;
+    font-weight: 900;
+    color: #0f172a;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+  
+  .cnnHighlight {
+    color: #cc0000;
+  }
+  
+  .cnnSubtitle {
+    color: #475569;
+    font-size: 1rem;
+    max-width: 650px;
+    line-height: 1.55;
+  }
+  
+  /* CNN Grid Layout */
+  .cnnGrid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    margin-bottom: 50px;
-}
-
-.card {
-    background: #fff;
-    border-radius: 16px;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  
+  /* Featured Hero Card (First Item) */
+  @media (min-width: 992px) {
+    .cnnCardFeatured {
+      grid-column: span 2;
+    }
+    
+    .cnnCardFeatured .cnnLink {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      align-items: center;
+    }
+  
+    .cnnCardFeatured .cnnImageWrapper {
+      height: 100%;
+      min-height: 240px;
+    }
+  }
+  
+  /* Base CNN Card Styling */
+  .cnnCard {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-top: 4px solid #0f172a;
+    border-radius: 4px;
     overflow: hidden;
-    border: 1px solid #dee2e6;
-    transition: all 0.4s ease;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
-    border-color: #ced4da;
-}
-
-.link {
+    transition: transform 0.2s ease, border-top-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .cnnCard:hover {
+    transform: translateY(-3px);
+    border-top-color: #cc0000;
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.08);
+  }
+  
+  .cnnLink {
     text-decoration: none;
     color: inherit;
-    display: block;
-}
-
-.imageWrapper {
-    height: 200px;
-    position: relative;
-    overflow: hidden;
-}
-
-.imageZoomer {
-    width: 100%;
+    display: flex;
+    flex-direction: column;
     height: 100%;
-}
-
-.image {
+  }
+  
+  /* Image Wrapper & Overlay Tags */
+  .cnnImageWrapper {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    background-color: #f1f5f9;
+    overflow: hidden;
+  }
+  
+  .cnnImage {
     width: 100%;
     height: 100%;
     object-fit: cover;
-}
-
-.placeholder {
-    width: 100%;
-    height: 100%;
+    transition: transform 0.4s ease;
+  }
+  
+  .cnnCard:hover .cnnImage {
+    transform: scale(1.04);
+  }
+  
+  .cnnPlaceholder {
     display: flex;
+    align-items: center;
     justify-content: center;
-    align-items: center;
-    background: #e9ecef;
-    color: #adb5bd;
-}
-
-.glassOverlay {
+    height: 100%;
+    color: #94a3b8;
+  }
+  
+  .cnnTagOverlay {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 12px;
-    background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
-}
-
-.leaderPill {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(5px);
-    border-radius: 20px;
-    padding: 6px 12px;
-    font-size: 0.8rem;
-    color: #fff;
-}
-
-.content {
-    padding: 20px;
-}
-
-.deptName {
-    font-size: 1.3rem;
+    top: 0.75rem;
+    left: 0.75rem;
+    background-color: #0f172a;
+    color: #ffffff;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    padding: 0.2rem 0.5rem;
+    border-radius: 2px;
+  }
+  
+  .cnnLeaderTag {
+    position: absolute;
+    bottom: 0.75rem;
+    left: 0.75rem;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(4px);
+    color: #ffffff;
+    font-size: 0.725rem;
     font-weight: 600;
-    color: #212529;
-    margin-bottom: 12px;
-}
-
-.ctaText {
+    padding: 0.25rem 0.6rem;
+    border-radius: 2px;
     display: flex;
     align-items: center;
-    gap: 8px;
-    color: #8a795d;
-    font-weight: 500;
-    transition: gap 0.3s ease;
-}
-
-.card:hover .ctaText {
-    gap: 12px;
-}
-
-.footer {
-    text-align: center;
-}
-
-.mainCta {
-    display: inline-flex;
-    align-items: center;
-    background: #8a795d;
-    color: #fff;
-    padding: 14px 28px;
-    border-radius: 100px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.mainCta:hover {
-    background: #212529;
-    transform: scale(1.05);
-}
-
-.ctaIcon {
-    margin-left: 8px;
-    transition: transform 0.3s ease;
-}
-
-.mainCta:hover .ctaIcon {
-    transform: translateX(4px);
-}
-
-.errorState {
+    gap: 0.35rem;
+  }
+  
+  /* Content Body */
+  .cnnContent {
+    padding: 1.25rem;
     display: flex;
     flex-direction: column;
+    flex: 1;
+  }
+  
+  .cnnMeta {
+    margin-bottom: 0.35rem;
+  }
+  
+  .cnnMinistryLabel {
+    font-size: 0.675rem;
+    font-weight: 800;
+    color: #cc0000;
+    letter-spacing: 0.05em;
+  }
+  
+  .cnnDeptName {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+  
+  .cnnExcerpt {
+    font-size: 0.875rem;
+    color: #475569;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+  
+  .cnnCtaText {
+    display: inline-flex;
     align-items: center;
-    gap: 1rem;
-    color: #d9534f;
-    padding: 40px;
-    background: #f8d7da;
-    border: 1px solid #f5c6cb;
-    border-radius: 16px;
-}
-
-.skeletonCard {
-    background: #fff;
-    border-radius: 16px;
-    padding: 20px;
-    border: 1px solid #dee2e6;
-}
-
-.skeletonImage {
-    height: 160px;
-    background: #e9ecef;
-    border-radius: 8px;
-    margin-bottom: 16px;
-}
-
-.skeletonLine {
-    height: 16px;
-    background: #e9ecef;
+    gap: 0.35rem;
+    font-size: 0.825rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-top: auto;
+    transition: color 0.2s ease;
+  }
+  
+  .cnnCard:hover .cnnCtaText {
+    color: #cc0000;
+  }
+  
+  /* Error State */
+  .cnnErrorBox {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+    padding: 1rem;
     border-radius: 4px;
-    margin-bottom: 8px;
-}
-
-@media (max-width: 768px) {
-    .wrapper {
-        padding: 60px 5%;
-    }
-    .title {
-        font-size: 2.2rem;
-    }
-    .grid {
-        grid-template-columns: 1fr;
-    }
-}
+    margin-bottom: 2rem;
+  }
+  
+  /* Skeleton Loader */
+  .cnnSkeletonGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  
+  .cnnSkeletonCard {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 1rem;
+  }
+  
+  .cnnSkeletonImage {
+    height: 160px;
+    background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+    background-size: 200% 100%;
+    animation: cnnPulse 1.5s infinite;
+    margin-bottom: 1rem;
+    border-radius: 2px;
+  }
+  
+  .cnnSkeletonLine {
+    height: 14px;
+    background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+    background-size: 200% 100%;
+    animation: cnnPulse 1.5s infinite;
+    margin-bottom: 0.5rem;
+    border-radius: 2px;
+  }
+  
+  @keyframes cnnPulse {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  
+  /* Footer Action */
+  .cnnFooter {
+    display: flex;
+    justify-content: flex-start;
+    border-top: 2px solid #0f172a;
+    padding-top: 1.5rem;
+  }
+  
+  .cnnFooterBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #0f172a;
+    color: #ffffff;
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+  }
+  
+  .cnnFooterBtn:hover {
+    background-color: #cc0000;
+  }

@@ -1,0 +1,172 @@
+/* src/styles/IctContact.modern.module.css */
+.pageWrapper {
+  background-color: #0b0f17;
+  color: #f1f5f9;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.mainContent {
+  padding: 6rem 0;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.title {
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: #94a3b8;
+  max-width: 650px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.contactGrid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 3rem;
+  background-color: #131b2e;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.contactForm {
+  padding: 3rem;
+}
+
+.contactForm h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #f8fafc;
+    margin-bottom: 2rem;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #cbd5e1;
+}
+
+.formGroup input,
+.formGroup textarea {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #f1f5f9;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+.formGroup textarea {
+    min-height: 120px;
+}
+
+.submitBtn {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submitBtn:hover {
+  background-color: #1d4ed8;
+}
+
+.contactInfo {
+  background-color: #1e293b;
+  padding: 3rem;
+}
+
+.infoBlock {
+  display: flex;
+  align-items: start;
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.infoBlock:last-child {
+    margin-bottom: 0;
+}
+
+.icon {
+  color: #3b82f6;
+  flex-shrink: 0;
+}
+
+.infoBlock h4 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.1rem;
+  color: #f8fafc;
+  font-weight: 700;
+}
+
+.infoBlock p,
+.infoBlock a {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.infoBlock a:hover {
+    color: #3b82f6;
+}
+
+@media (max-width: 900px) {
+  .contactGrid {
+    grid-template-columns: 1fr;
+  }
+  .contactInfo {
+    order: -1;
+  }
+}
+
+@media (max-width: 600px) {
+    .mainContent {
+        padding: 4rem 0;
+    }
+    .title {
+        font-size: 2.2rem;
+    }
+    .contactForm, .contactInfo {
+        padding: 2rem;
+    }
+}

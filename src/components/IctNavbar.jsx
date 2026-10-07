@@ -34,8 +34,6 @@ const IctNavbar = () => {
 
   const navLinks = [
     { name: 'About', path: '/ict-team/About' },
-    { name: 'Services', path: '/ict-team/Services' },
-    { name: 'Projects', path: '/ict-team/Projects' },
   ];
 
   return (

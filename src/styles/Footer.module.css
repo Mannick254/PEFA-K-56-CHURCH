@@ -1,247 +1,359 @@
-/* src/styles/Footer.module.css */
-.footer {
-    background-color: #1a1a1a;
-    color: #a3a3a3;
-    padding: 60px 0 30px;
-    font-family: 'Roboto', sans-serif;
-}
+/* ==========================================================================
+   CNN EDITORIAL FOOTER COMPONENT
+   ========================================================================== */
 
-.container {
+   .footer {
+    --cnn-red: #cc0000;
+    --cnn-black: #0c0c0c;
+    --cnn-dark-gray: #171717;
+    --border-dark: #262626;
+    --text-muted: #94a3b8;
+    --text-light: #f8fafc;
+  
+    background-color: var(--cnn-black);
+    color: var(--text-light);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .topBarAccent {
+    height: 4px;
+    background-color: var(--cnn-red);
+    width: 100%;
+  }
+  
+  .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
-}
-
-/* --- Top Row: Brand and Newsletter --- */
-.topRow {
+    padding: 3.5rem 1.25rem 2rem;
+  }
+  
+  /* Top Section: Brand & Newsletter */
+  .topRow {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 3.5rem;
+    align-items: start;
+  }
+  
+  .brandSide {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding-bottom: 40px;
-    border-bottom: 1px solid #333;
-    margin-bottom: 40px;
-    gap: 40px;
-}
-
-.brandSide {
-    flex: 1.5;
-    min-width: 280px;
-}
-
-.logoArea {
+    flex-direction: column;
+  }
+  
+  .logoArea {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
-}
-
-.iconWrapper {
-    background-color: #f5a623;
-    color: #1a1a1a;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
+    gap: 0.85rem;
+    margin-bottom: 1rem;
+  }
+  
+  .iconWrapper {
+    background-color: var(--cnn-red);
+    color: #ffffff;
+    padding: 0.5rem;
+    border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 15px;
-}
-
-.logoText {
+  }
+  
+  .logoText {
     display: flex;
     flex-direction: column;
-}
-
-.churchName {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: #fff;
-    letter-spacing: 1px;
-}
-
-.branchCode {
+  }
+  
+  .churchName {
+    font-family: Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 900;
+    letter-spacing: -0.01em;
+    color: #ffffff;
+  }
+  
+  .branchCode {
+    font-size: 0.65rem;
+    font-weight: 900;
+    color: var(--cnn-red);
+    letter-spacing: 0.08em;
+  }
+  
+  .missionText {
     font-size: 0.9rem;
-    color: #f5a623;
-    letter-spacing: 2px;
-    font-weight: 500;
-}
-
-.missionText {
-    font-size: 0.95rem;
-    line-height: 1.7;
-    max-width: 400px;
-}
-
-.missionText strong {
-    color: #f0f0f0;
-}
-
-.newsletterSide {
-    flex: 1;
-    min-width: 280px;
-}
-
-.newsletterSide h4 {
-    font-size: 1.2rem;
-    color: #fff;
-    margin-bottom: 15px;
-    font-weight: 500;
-}
-
-.newsletterSide p {
-    font-size: 0.9rem;
-    margin-bottom: 20px;
     line-height: 1.6;
-}
-
-.newsletterForm {
+    color: var(--text-muted);
+    margin: 0 0 1.25rem;
+    max-width: 480px;
+  }
+  
+  .missionText strong {
+    color: #ffffff;
+  }
+  
+  .liveBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--cnn-dark-gray);
+    border: 1px solid var(--border-dark);
+    padding: 0.4rem 0.75rem;
+    border-radius: 4px;
+    width: fit-content;
+  }
+  
+  .liveBadge a {
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+  }
+  
+  .liveBadge a:hover {
+    color: var(--cnn-red);
+  }
+  
+  .liveDot {
+    color: var(--cnn-red);
+    animation: blink 1.5s infinite;
+  }
+  
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  
+  /* Newsletter Section */
+  .newsletterSide {
     display: flex;
-}
-
-.newsletterForm input {
-    flex-grow: 1;
-    padding: 12px 15px;
-    border: 1px solid #444;
-    border-radius: 6px 0 0 6px;
-    background-color: #2b2b2b;
-    color: #fff;
-    font-size: 0.9rem;
-    outline: none;
-    transition: border-color 0.3s;
-}
-
-.newsletterForm input:focus {
-    border-color: #f5a623;
-}
-
-.newsletterForm button {
-    padding: 12px 20px;
+    flex-direction: column;
+  }
+  
+  .newsletterTag {
+    font-size: 0.65rem;
+    font-weight: 900;
+    color: var(--cnn-red);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.35rem;
+  }
+  
+  .newsletterSide h4 {
+    font-family: Georgia, serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin: 0 0 0.4rem;
+    color: #ffffff;
+  }
+  
+  .newsletterSide p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0 0 1.25rem;
+    line-height: 1.4;
+  }
+  
+  .newsletterForm {
+    width: 100%;
+  }
+  
+  .inputGroup {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: var(--cnn-dark-gray);
+    border: 1px solid var(--border-dark);
+    border-radius: 4px;
+    padding: 0.25rem;
+    transition: border-color 0.2s ease;
+  }
+  
+  .inputGroup:focus-within {
+    border-color: var(--cnn-red);
+  }
+  
+  .mailIcon {
+    margin-left: 0.75rem;
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+  
+  .inputGroup input {
+    width: 100%;
+    background: transparent;
     border: none;
-    background-color: #f5a623;
-    color: #1a1a1a;
-    font-weight: bold;
-    font-size: 0.9rem;
+    padding: 0.6rem 0.75rem;
+    color: #ffffff;
+    font-size: 0.85rem;
+    outline: none;
+  }
+  
+  .inputGroup input::placeholder {
+    color: #64748b;
+  }
+  
+  .inputGroup button {
+    background-color: var(--cnn-red);
+    color: #ffffff;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    font-weight: 800;
     cursor: pointer;
-    border-radius: 0 6px 6px 0;
-    transition: background-color 0.3s;
-}
-
-.newsletterForm button:hover {
-    background-color: #f7b94e;
-}
-
-/* --- Middle Section: Links Grid --- */
-.grid {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    white-space: nowrap;
+    transition: background-color 0.2s ease;
+  }
+  
+  .inputGroup button:hover {
+    background-color: #b30000;
+  }
+  
+  .subscribedFeedback {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    color: #4ade80;
+    margin-top: 0.6rem;
+    font-weight: 600;
+  }
+  
+  /* Section Dividers */
+  .sectionDivider {
+    height: 1px;
+    background-color: var(--border-dark);
+    margin: 2.5rem 0;
+  }
+  
+  /* Middle Directory Grid */
+  .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 30px;
-    padding-bottom: 40px;
-    border-bottom: 1px solid #333;
-    margin-bottom: 30px;
-}
-
-.columnTitle {
-    font-size: 1.1rem;
-    color: #fff;
-    font-weight: 500;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #444;
-}
-
-.linkList {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+  
+  .columnTitle {
+    font-size: 0.725rem;
+    font-weight: 900;
+    color: var(--cnn-red);
+    letter-spacing: 0.08em;
+    margin: 0 0 1rem;
+    text-transform: uppercase;
+  }
+  
+  .linkList {
     list-style: none;
     padding: 0;
     margin: 0;
-}
-
-.linkList li {
-    margin-bottom: 12px;
-}
-
-.linkList a,
-.linkList li {
-    color: #a3a3a3;
+  }
+  
+  .linkList li {
+    margin-bottom: 0.65rem;
+  }
+  
+  .linkList a, .staticLink {
+    color: var(--text-muted);
     text-decoration: none;
-    font-size: 0.95rem;
-    transition: color 0.3s, padding-left 0.3s;
-    position: relative;
-}
-
-.linkList a:hover {
-    color: #fff;
-    padding-left: 5px;
-}
-
-/* --- Bottom Row: Copyright and Socials --- */
-.bottomRow {
+    font-size: 0.85rem;
+    transition: color 0.2s ease;
+  }
+  
+  .linkList a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+  }
+  
+  .staticLink {
+    cursor: default;
+  }
+  
+  /* Bottom Copyright Section */
+  .bottomRow {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     flex-wrap: wrap;
-    gap: 20px;
-}
-
-.copyWrapper {
-    text-align: left;
-}
-
-.copyright,
-.designCredit {
-    font-size: 0.9rem; /* Increased font size slightly */
-    margin: 0;
-    color: #d1d5db; /* A much lighter, more visible grey */
-}
-
-.designCredit {
-    margin-top: 8px;
-}
-
-.designCredit a {
-    color: #f5a623; /* Using the theme's accent color */
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s;
-}
-
-.designCredit a:hover {
-    color: #fff;
-}
-
-.socialIcons {
+    gap: 1.5rem;
+  }
+  
+  .copyWrapper {
     display: flex;
-    gap: 15px;
-}
-
-.socialIcons a {
-    color: #a3a3a3;
-    transition: color 0.3s, transform 0.3s;
-}
-
-.socialIcons a:hover {
-    color: #fff;
-    transform: translateY(-2px);
-}
-
-/* --- Responsive Design --- */
-@media (max-width: 992px) {
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  
+  .copyright {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+  
+  .designCredit {
+    font-size: 0.75rem;
+    color: #64748b;
+    margin: 0;
+  }
+  
+  .designCredit a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 700;
+  }
+  
+  .designCredit a:hover {
+    color: var(--cnn-red);
+  }
+  
+  .socialIcons {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  
+  .socialIcons a {
+    width: 36px;
+    height: 36px;
+    background-color: var(--cnn-dark-gray);
+    border: 1px solid var(--border-dark);
+    color: var(--text-muted);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+  
+  .socialIcons a:hover {
+    background-color: var(--cnn-red);
+    color: #ffffff;
+    border-color: var(--cnn-red);
+  }
+  
+  /* Responsive Layout */
+  @media (max-width: 900px) {
     .topRow {
-        flex-direction: column;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
     }
-}
-
-@media (max-width: 768px) {
-    .bottomRow {
-        flex-direction: column-reverse;
-        align-items: center;
-        text-align: center;
-    }
-
-    .copyWrapper {
-        margin-top: 20px;
-        text-align: center;
-    }
-
     .grid {
-        grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
     }
-}
+  }
+  
+  @media (max-width: 550px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+    .bottomRow {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .inputGroup button span {
+      display: none;
+    }
+  }

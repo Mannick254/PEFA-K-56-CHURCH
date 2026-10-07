@@ -1,12 +1,12 @@
 
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useLocation } from 'react-router-dom';
 
 const Seo = ({
   title,
   description,
   keywords,
-  url,
   type = 'website', // Default type
   imageData,
   author,
@@ -16,11 +16,12 @@ const Seo = ({
   startDate,
   endDate
 }) => {
+  const { pathname } = useLocation();
   // Dynamically determine the origin, falling back to the production URL.
   // This makes it work in development (localhost) and production.
   const origin = typeof window !== 'undefined' ? window.location.origin : 'https://pefa-k-56-church.vercel.app';
 
-  const fullUrl = `${origin}${url || ''}`;
+  const fullUrl = `${origin}${pathname}`;
 
   const baseSchema = {
     "@context": "https://schema.org",

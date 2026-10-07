@@ -1,3 +1,16 @@
+/*
+This file contains the styles for the admin blog management page. It is responsible for the overall layout, typography, and component styles of the blog management interface.
+
+The styles are organized into the following sections:
+- Variable Definitions: Defines the color palette and other theme variables used throughout the file.
+- Base Layout: Sets up the main container for the blog management page.
+- Header: Styles the header section, including the title and action buttons.
+- Search Bar: Styles the search input used to filter blog posts.
+- Post Cards: Styles the individual blog post cards, including their hover and active states.
+- Expanded Content: Styles the expanded view of a blog post, which includes a content snippet and action buttons.
+- Modal: Styles the modal used for creating and editing blog posts.
+- Spinner: Styles the loading spinner.
+*/
 :root {
     --primary: #6366f1;
     --primary-hover: #4f46e5;
@@ -13,7 +26,7 @@
   
   .adminContainer {
     max-width: 1000px;
-    margin: 2rem auto;
+    margin: 0 auto;
     padding: 0 1.5rem;
     font-family: 'Inter', system-ui, sans-serif;
     color: var(--text-main);
@@ -25,6 +38,13 @@
     justify-content: space-between;
     align-items: flex-end;
     margin-bottom: 2rem;
+  }
+
+  .description {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
   }
   
   .titleArea h1 {

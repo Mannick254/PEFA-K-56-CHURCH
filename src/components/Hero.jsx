@@ -1,20 +1,40 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Sparkles, PlayCircle, MoveRight } from 'lucide-react';
+
 import { supabase } from '../supabaseClient';
 import styles from '../styles/Hero.module.css';
 
+const DEFAULT_HERO_DATA = {
+  title: "THEME OF THE YEAR 2026",
+  subtitle: "ABIDING IN CHRIST (John 15:4)",
+  image_url: '',
+  cta_primary_text: 'About Us',
+  cta_primary_link: '/about',
+  cta_secondary_text: 'Watch Online',
+  cta_secondary_link: '/sermons'
+};
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15, delayChildren: 0.3 }
+  }
+};
+
+const itemVariants = {
+  hidden: { y: 30, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] }
+  }
+};
+
 const Hero = () => {
-  const [heroData, setHeroData] = useState({
-    title: "THEME OF THE YEAR 2026",
-    subtitle: "ABIDING IN CHRIST (John 15:4)",
-    image_url: '',
-    cta_primary_text: 'About Us',
-    cta_primary_link: '/about',
-    cta_secondary_text: 'Watch Online',
-    cta_secondary_link: '/sermons'
-  });
+  const [heroData, setHeroData] = useState(DEFAULT_HERO_DATA);
   const [isMobile, setIsMobile] = useState(false);
 
   const containerRef = useRef(null);
@@ -23,56 +43,66 @@ const Hero = () => {
     offset: ["start start", "end start"]
   });
 
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  // Parallax and Fade effects
+  // Parallax and Fade transforms
   const yImage = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
   const opacityContent = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
   const scaleContent = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
 
+  // Window resize handler
   useEffect(() => {
-    async function fetchHero() {
-      try {
-        const { data, error } = await supabase.from('hero').select('*').eq('published', true).single();
-        if (data) setHeroData(prev => ({ ...prev, ...data }));
-      } catch (err) {
-        console.error("Error fetching hero:", err);
-      }
-    }
-    fetchHero();
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+
+    let timeoutId = null;
+    const handleResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(checkMobile, 150);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.3 }
-    }
-  };
+  // Supabase Data Fetching
+  useEffect(() => {
+    let isMounted = true;
 
-  const itemVariants = {
-    hidden: { y: 30, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] }
+    async function fetchHero() {
+      try {
+        const { data, error } = await supabase
+          .from('hero')
+          .select('*')
+          .eq('published', true)
+          .maybeSingle();
+
+        if (error) throw error;
+        if (data && isMounted) {
+          setHeroData(prev => ({ ...prev, ...data }));
+        }
+      } catch (err) {
+        console.error("Error fetching hero:", err.message);
+      }
     }
-  };
+
+    fetchHero();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <section ref={containerRef} className={styles.heroContainer}>
-      {/* Background Layer */}
+      {/* Background Media */}
       <div className={styles.heroMedia}>
         <motion.div style={{ y: yImage }} className={styles.imageWrapper}>
           {heroData.image_url ? (
             <img
               src={heroData.image_url}
-              alt="Hero Background"
+              alt="PEFA Kawangware 56 Theme Banner"
               fetchPriority="high"
               className={styles.heroImg}
             />
@@ -83,7 +113,7 @@ const Hero = () => {
         </motion.div>
       </div>
 
-      {/* Content Layer */}
+      {/* Hero Content */}
       <motion.div
         style={{ opacity: opacityContent, scale: scaleContent }}
         className={styles.contentWrapper}
