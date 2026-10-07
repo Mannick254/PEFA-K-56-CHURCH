@@ -1,359 +1,377 @@
-/* ==========================================================================
-   CNN EDITORIAL FOOTER COMPONENT
-   ========================================================================== */
-
-   .footer {
-    --cnn-red: #cc0000;
-    --cnn-black: #0c0c0c;
-    --cnn-dark-gray: #171717;
-    --border-dark: #262626;
-    --text-muted: #94a3b8;
-    --text-light: #f8fafc;
-  
-    background-color: var(--cnn-black);
-    color: var(--text-light);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .topBarAccent {
-    height: 4px;
-    background-color: var(--cnn-red);
+.footer {
+    background-color: #0F0F0F;
+    color: #A3A3A3;
+    font-family: 'Inter', sans-serif;
+    padding-top: 2.5rem;
+    padding-bottom: 2rem;
     width: 100%;
-  }
-  
-  .container {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.topBarAccent {
+    height: 4px;
+    width: 100%;
+    background-color: #E63946; /* Editorial Red */
+    margin-bottom: 2.5rem;
+}
+
+.container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 3.5rem 1.25rem 2rem;
-  }
-  
-  /* Top Section: Brand & Newsletter */
-  .topRow {
-    display: grid;
-    grid-template-columns: 1.1fr 1fr;
-    gap: 3.5rem;
-    align-items: start;
-  }
-  
-  .brandSide {
+    padding: 0 1.5rem;
+}
+
+/* Top Row */
+.topRow {
     display: flex;
-    flex-direction: column;
-  }
-  
-  .logoArea {
+    justify-content: space-between;
+    gap: 3rem;
+    margin-bottom: 2.5rem;
+}
+
+.brandSide {
+    flex: 1.5;
+}
+
+.newsletterSide {
+    flex: 1;
+}
+
+.logoArea {
     display: flex;
     align-items: center;
-    gap: 0.85rem;
+    gap: 0.75rem;
     margin-bottom: 1rem;
-  }
-  
-  .iconWrapper {
-    background-color: var(--cnn-red);
-    color: #ffffff;
-    padding: 0.5rem;
-    border-radius: 4px;
+}
+
+.iconWrapper {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    padding: 0.6rem;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  
-  .logoText {
+    color: #E63946;
+}
+
+.logoText {
     display: flex;
     flex-direction: column;
-  }
-  
-  .churchName {
-    font-family: Georgia, serif;
-    font-size: 1.15rem;
-    font-weight: 900;
-    letter-spacing: -0.01em;
-    color: #ffffff;
-  }
-  
-  .branchCode {
-    font-size: 0.65rem;
-    font-weight: 900;
-    color: var(--cnn-red);
-    letter-spacing: 0.08em;
-  }
-  
-  .missionText {
+}
+
+.churchName {
     font-size: 0.9rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+}
+
+.branchCode {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #A3A3A3;
+    text-transform: uppercase;
+}
+
+.missionText {
+    font-size: 0.95rem;
     line-height: 1.6;
-    color: var(--text-muted);
-    margin: 0 0 1.25rem;
-    max-width: 480px;
-  }
-  
-  .missionText strong {
-    color: #ffffff;
-  }
-  
-  .liveBadge {
+    max-width: 400px;
+    margin-bottom: 1.25rem;
+}
+
+.missionText strong {
+    font-weight: 600;
+    color: #EAEAEA;
+}
+
+.liveBadge {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    background-color: var(--cnn-dark-gray);
-    border: 1px solid var(--border-dark);
-    padding: 0.4rem 0.75rem;
-    border-radius: 4px;
-    width: fit-content;
-  }
-  
-  .liveBadge a {
-    color: #ffffff;
-    font-size: 0.7rem;
-    font-weight: 800;
-    letter-spacing: 0.06em;
+    background-color: rgba(230, 57, 70, 0.1);
+    border: 1px solid rgba(230, 57, 70, 0.4);
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.liveBadge a {
+    color: #F1FAEE;
     text-decoration: none;
-  }
-  
-  .liveBadge a:hover {
-    color: var(--cnn-red);
-  }
-  
-  .liveDot {
-    color: var(--cnn-red);
-    animation: blink 1.5s infinite;
-  }
-  
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-  
-  /* Newsletter Section */
-  .newsletterSide {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .newsletterTag {
-    font-size: 0.65rem;
-    font-weight: 900;
-    color: var(--cnn-red);
-    letter-spacing: 0.08em;
-    margin-bottom: 0.35rem;
-  }
-  
-  .newsletterSide h4 {
-    font-family: Georgia, serif;
+    transition: color 0.2s;
+}
+
+.liveBadge a:hover {
+    color: #E63946;
+}
+
+@keyframes pulse-red {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.6); }
+    50% { box-shadow: 0 0 0 4px rgba(230, 57, 70, 0); }
+}
+
+.liveDot {
+    color: #E63946;
+    animation: pulse-red 2s infinite;
+    border-radius: 50%;
+}
+
+
+.newsletterTag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #45A29E; /* A teal color */
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.newsletterSide h4 {
     font-size: 1.4rem;
-    font-weight: 800;
-    margin: 0 0 0.4rem;
-    color: #ffffff;
-  }
-  
-  .newsletterSide p {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin: 0 0 1.25rem;
-    line-height: 1.4;
-  }
-  
-  .newsletterForm {
-    width: 100%;
-  }
-  
-  .inputGroup {
-    position: relative;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin: 0;
+    margin-bottom: 0.5rem;
+}
+
+.newsletterSide p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+}
+
+.newsletterForm {
+    display: flex;
+}
+
+.inputGroup {
     display: flex;
     align-items: center;
-    background-color: var(--cnn-dark-gray);
-    border: 1px solid var(--border-dark);
-    border-radius: 4px;
-    padding: 0.25rem;
-    transition: border-color 0.2s ease;
-  }
-  
-  .inputGroup:focus-within {
-    border-color: var(--cnn-red);
-  }
-  
-  .mailIcon {
-    margin-left: 0.75rem;
-    color: var(--text-muted);
-    flex-shrink: 0;
-  }
-  
-  .inputGroup input {
-    width: 100%;
+    background-color: #1A1A1A;
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding-left: 0.75rem;
+    transition: border-color 0.2s;
+}
+
+.inputGroup:focus-within {
+    border-color: #45A29E;
+}
+
+.mailIcon {
+    color: #666;
+}
+
+.inputGroup input {
     background: transparent;
     border: none;
-    padding: 0.6rem 0.75rem;
-    color: #ffffff;
-    font-size: 0.85rem;
+    color: #FFFFFF;
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    width: 100%;
     outline: none;
-  }
-  
-  .inputGroup input::placeholder {
-    color: #64748b;
-  }
-  
-  .inputGroup button {
-    background-color: var(--cnn-red);
-    color: #ffffff;
+}
+
+.inputGroup input::placeholder {
+    color: #777;
+}
+
+.inputGroup button {
+    background-color: #45A29E;
+    color: #FFFFFF;
     border: none;
-    padding: 0.6rem 1rem;
-    border-radius: 3px;
-    font-size: 0.8rem;
-    font-weight: 800;
+    border-radius: 0 4px 4px 0;
+    padding: 0.75rem 1rem;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 0.4rem;
-    white-space: nowrap;
-    transition: background-color 0.2s ease;
-  }
-  
-  .inputGroup button:hover {
-    background-color: #b30000;
-  }
-  
-  .subscribedFeedback {
+    gap: 0.5rem;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.inputGroup button:hover {
+    background-color: #3b8a85;
+}
+
+.subscribedFeedback {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
-    font-size: 0.8rem;
-    color: #4ade80;
-    margin-top: 0.6rem;
-    font-weight: 600;
-  }
-  
-  /* Section Dividers */
-  .sectionDivider {
-    height: 1px;
-    background-color: var(--border-dark);
-    margin: 2.5rem 0;
-  }
-  
-  /* Middle Directory Grid */
-  .grid {
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: #2ECC71;
+    margin-top: 0.75rem;
+}
+
+.sectionDivider {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 2.5rem;
+}
+
+/* Grid for Links */
+.grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
-  }
-  
-  .columnTitle {
-    font-size: 0.725rem;
-    font-weight: 900;
-    color: var(--cnn-red);
-    letter-spacing: 0.08em;
-    margin: 0 0 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.column h5 {
+    font-size: 0.9rem;
+    color: #FFFFFF;
+    font-weight: 700;
+    margin-bottom: 1rem;
     text-transform: uppercase;
-  }
-  
-  .linkList {
+    letter-spacing: 0.5px;
+}
+
+.linkList {
     list-style: none;
     padding: 0;
     margin: 0;
-  }
-  
-  .linkList li {
-    margin-bottom: 0.65rem;
-  }
-  
-  .linkList a, .staticLink {
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 0.85rem;
-    transition: color 0.2s ease;
-  }
-  
-  .linkList a:hover {
-    color: #ffffff;
-    text-decoration: underline;
-  }
-  
-  .staticLink {
-    cursor: default;
-  }
-  
-  /* Bottom Copyright Section */
-  .bottomRow {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-  }
-  
-  .copyWrapper {
     display: flex;
     flex-direction: column;
-    gap: 0.2rem;
-  }
-  
-  .copyright {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    margin: 0;
-  }
-  
-  .designCredit {
-    font-size: 0.75rem;
-    color: #64748b;
-    margin: 0;
-  }
-  
-  .designCredit a {
-    color: var(--text-muted);
+    gap: 0.75rem;
+}
+
+.linkList a, .staticLink {
+    color: #A3A3A3;
     text-decoration: none;
-    font-weight: 700;
-  }
-  
-  .designCredit a:hover {
-    color: var(--cnn-red);
-  }
-  
-  .socialIcons {
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.linkList a:hover {
+    color: #FFFFFF;
+}
+
+.staticLink {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Bottom Row */
+.bottomRow {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 0.6rem;
-  }
-  
-  .socialIcons a {
-    width: 36px;
-    height: 36px;
-    background-color: var(--cnn-dark-gray);
-    border: 1px solid var(--border-dark);
-    color: var(--text-muted);
-    border-radius: 4px;
+    gap: 1.5rem;
+}
+
+.copyWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.copyright {
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+.designCredit {
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+.designCredit a {
+    color: #45A29E;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.designCredit a:hover {
+    text-decoration: underline;
+}
+
+.socialIcons {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.socialIcons a {
+    color: #A3A3A3;
+    background-color: rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
-  }
-  
-  .socialIcons a:hover {
-    background-color: var(--cnn-red);
-    color: #ffffff;
-    border-color: var(--cnn-red);
-  }
-  
-  /* Responsive Layout */
-  @media (max-width: 900px) {
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.socialIcons a:hover {
+    color: #FFFFFF;
+    background-color: #E63946;
+    transform: translateY(-2px);
+}
+.website-visits-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: #A3A3A3;
+}
+
+/* Responsive Design */
+
+@media (max-width: 992px) {
     .topRow {
-      grid-template-columns: 1fr;
-      gap: 2.5rem;
+        flex-direction: column;
+        gap: 2.5rem;
     }
     .grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 2rem;
+        grid-template-columns: repeat(2, 1fr);
     }
-  }
-  
-  @media (max-width: 550px) {
-    .grid {
-      grid-template-columns: 1fr;
-    }
+}
+
+@media (max-width: 768px) {
     .bottomRow {
-      flex-direction: column;
-      align-items: flex-start;
+        flex-direction: column-reverse;
+        align-items: center;
+        text-align: center;
     }
-    .inputGroup button span {
-      display: none;
+    .copyWrapper {
+        align-items: center;
     }
-  }
+    .socialIcons {
+        margin-bottom: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 1rem;
+    }
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .inputGroup {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0;
+        border: none;
+        background: none;
+    }
+
+    .inputGroup input {
+        border: 1px solid #333;
+        border-radius: 6px;
+        padding: 0.8rem;
+        text-align: center;
+        margin-bottom: 0.75rem;
+    }
+
+    .inputGroup button {
+        border-radius: 6px;
+        justify-content: center;
+    }
+}

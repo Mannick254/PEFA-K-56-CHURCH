@@ -17,7 +17,6 @@ import {
   Filler
 } from 'chart.js';
 import CountUp from 'react-countup';
-import WebsiteVisits from '../components/WebsiteVisits';
 
 // Register Chart.js components
 ChartJS.register(
@@ -295,10 +294,7 @@ const ChurchData = () => {
                 <p className={styles.statSub}>Members + Youth + Children</p>
             </div>
             <div className={styles.statCard}>
-              <WebsiteVisits isDashboard={true} />
-            </div>
-            <div className={styles.statCard}>
-                <h3>Congregation Composition</h3>
+              <h3>Congregation Composition</h3>
                 <div className={styles.chartWrapper} style={{height: '150px'}}>
                     <Doughnut data={analyticsData.congregationChartData} options={doughnutChartOptions} />
                 </div>

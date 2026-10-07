@@ -26,6 +26,7 @@ const BRAND = {
   name: 'PEFA KAWANGWARE 56 CHURCH',
   subtext: 'PEFAK56 ICT TEAM',
   logoUrl: 'https://res.cloudinary.com/dtcb3ffnv/image/upload/v1780723691/Untitled-design-24-_lfef05.png',
+  website: 'https://www.pefak56church.top',
 };
 
 // 2. WhatsApp Connection Handler
@@ -61,6 +62,14 @@ async function startWhatsApp() {
 }
 
 // 3. Helper Functions
+
+// Multi-Group Helper: Reads comma-separated JIDs or falls back to single JID
+function getTargetGroupIds() {
+  const envVar = process.env.WHATSAPP_GROUP_IDS || process.env.WHATSAPP_GROUP_ID;
+  if (!envVar) return [];
+  return envVar.split(',').map((id) => id.trim()).filter(Boolean);
+}
+
 async function getVerse() {
   const today = new Date().toISOString().split('T')[0];
 
@@ -116,6 +125,7 @@ function formatMessage({ title, body }) {
     body,
     ``,
     `───────────────────`,
+    `🌐 Sent from ${BRAND.website}`,
     `✨ _Powered by *${BRAND.subtext}*_`,
   ].join('\n');
 }
@@ -154,9 +164,9 @@ app.post('/trigger-daily-verse', async (req, res) => {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  const groupId = process.env.WHATSAPP_GROUP_ID;
-  if (!groupId) {
-    return res.status(500).json({ error: 'WHATSAPP_GROUP_ID environment variable is missing.' });
+  const groupIds = getTargetGroupIds();
+  if (groupIds.length === 0) {
+    return res.status(500).json({ error: 'WHATSAPP_GROUP_IDS environment variable is missing.' });
   }
 
   try {
@@ -168,15 +178,24 @@ app.post('/trigger-daily-verse', async (req, res) => {
 
     const caption = formatMessage({
       title: '📖 VERSE OF THE DAY',
-      body: `📍 *${verse.reference}*\n\n> _"${verse.text}"_`,
+      body: `📍 *${verse.reference}*\n\n> *"${verse.text}"*`,
     });
 
-    await sock.sendMessage(groupId, {
-      image: { url: BRAND.logoUrl },
-      caption: caption,
-    });
+    const sendPromises = groupIds.map((groupId) =>
+      sock.sendMessage(groupId, {
+        image: { url: BRAND.logoUrl },
+        caption: caption,
+      })
+    );
 
-    return res.json({ success: true, message: 'Verse delivered to WhatsApp!', verse });
+    await Promise.all(sendPromises);
+
+    return res.json({
+      success: true,
+      message: `Verse delivered to ${groupIds.length} WhatsApp group(s)!`,
+      groupsSent: groupIds,
+      verse,
+    });
   } catch (err) {
     console.error('Error sending message:', err);
     return res.status(500).json({ error: err.message });
@@ -190,9 +209,9 @@ app.post('/trigger-latest-sermon', async (req, res) => {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  const groupId = process.env.WHATSAPP_GROUP_ID;
-  if (!groupId) {
-    return res.status(500).json({ error: 'WHATSAPP_GROUP_ID environment variable is missing.' });
+  const groupIds = getTargetGroupIds();
+  if (groupIds.length === 0) {
+    return res.status(500).json({ error: 'WHATSAPP_GROUP_IDS environment variable is missing.' });
   }
 
   try {
@@ -213,20 +232,28 @@ app.post('/trigger-latest-sermon', async (req, res) => {
 
     if (error) throw error;
 
-    const sermonUrl = `https://www.pefak56church.top/sermons/${data.id}`;
+    const sermonUrl = `${BRAND.website}/sermons/${data.id}`;
 
     const caption = formatMessage({
       title: '🎬 NEW SERMON ALERT',
       body: `🎥 *${data.title}*\n👤 *Preacher:* ${data.preacher}\n\n🔗 *Watch or Read Here:* ${sermonUrl}`,
     });
 
-    // Send with the branding image banner
-    await sock.sendMessage(groupId, {
-      image: { url: BRAND.logoUrl },
-      caption: caption,
-    });
+    const sendPromises = groupIds.map((groupId) =>
+      sock.sendMessage(groupId, {
+        image: { url: BRAND.logoUrl },
+        caption: caption,
+      })
+    );
 
-    return res.json({ success: true, message: 'Sermon notification sent!', sermon: data });
+    await Promise.all(sendPromises);
+
+    return res.json({
+      success: true,
+      message: `Sermon notification delivered to ${groupIds.length} WhatsApp group(s)!`,
+      groupsSent: groupIds,
+      sermon: data,
+    });
   } catch (err) {
     console.error('Error sending sermon notification:', err);
     return res.status(500).json({ error: err.message });
@@ -234,7 +261,14 @@ app.post('/trigger-latest-sermon', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Bot server listening on port ${PORT}`);
   startWhatsApp();
+});
+
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`❌ Port ${PORT} is in use. Kill the process with: fuser -k ${PORT}/tcp`);
+    process.exit(1);
+  }
 });

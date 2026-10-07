@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Flame, Mail, ArrowRight, CheckCircle2, Radio } from 'lucide-react';
 import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube } from 'react-icons/fa';
 import styles from '../styles/Footer.module.css';
+import WebsiteVisits from './WebsiteVisits';
 
 const fadeInParent = {
   hidden: { opacity: 0 },
@@ -179,6 +180,7 @@ const Footer = () => {
             <motion.p className={styles.designCredit} variants={fadeInChild}>
               Engineered & Maintained by <Link to="/ict-team">PEFAK56 ICT TEAM</Link>
             </motion.p>
+           <WebsiteVisits />
           </div>
 
           <motion.div className={styles.socialIcons} variants={fadeInChild}>
