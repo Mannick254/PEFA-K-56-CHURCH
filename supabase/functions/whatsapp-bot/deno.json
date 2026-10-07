@@ -1,6 +1,0 @@
-{
-  "imports": {
-    "@adiwajshing/baileys": "npm:@adiwajshing/baileys@^5.0.0",
-    "@hapi/boom": "npm:@hapi/boom@^10.0.0"
-  }
-}
