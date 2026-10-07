@@ -3,6 +3,7 @@ import makeWASocket, { useMultiFileAuthState, DisconnectReason } from '@whiskeys
 import { createClient } from '@supabase/supabase-js';
 import qrcode from 'qrcode-terminal';
 import express from 'express';
+import pino from 'pino';
 
 const app = express();
 app.use(express.json());
@@ -20,13 +21,21 @@ if (supabaseUrl && supabaseKey) {
 
 let sock;
 
-// 2. WhatsApp Connection Handler with Terminal QR Rendering
+// Branding Configurations
+const BRAND = {
+  name: 'PEFA KAWANGWARE 56 CHURCH',
+  subtext: 'PEFAK56 ICT TEAM',
+  logoUrl: 'https://res.cloudinary.com/dtcb3ffnv/image/upload/v1780723691/Untitled-design-24-_lfef05.png',
+};
+
+// 2. WhatsApp Connection Handler
 async function startWhatsApp() {
   const { state, saveCreds } = await useMultiFileAuthState('baileys_auth_info');
 
   sock = makeWASocket({
     auth: state,
-    printQRInTerminal: false, // We'll handle this manually with qrcode-terminal
+    printQRInTerminal: false,
+    logger: pino({ level: 'silent' }), // Suppresses noisy background Baileys sync logs
   });
 
   sock.ev.on('creds.update', saveCreds);
@@ -51,7 +60,7 @@ async function startWhatsApp() {
   });
 }
 
-// 3. Robust Verse Fetcher (DB -> API -> Fallback)
+// 3. Helper Functions
 async function getVerse() {
   const today = new Date().toISOString().split('T')[0];
 
@@ -77,7 +86,7 @@ async function getVerse() {
     const json = await res.json();
     return {
       reference: json.verse.details.reference,
-      text: json.verse.details.text.replace(/<[^>]*>?/gm, '').trim(),
+      text: json.verse.details.text.replace(/<[^>]*>?/gm, ' ').trim(),
     };
   } catch (apiErr) {
     console.warn('OurManna API unavailable, using safety fallback:', apiErr.message);
@@ -88,7 +97,57 @@ async function getVerse() {
   }
 }
 
-// 4. Trigger Endpoint for Supabase pg_cron
+// Helper function to build styled headers and footers
+function formatMessage({ title, body }) {
+  const dateStr = new Date().toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+
+  return [
+    `🏛️ *${BRAND.name}*`,
+    `🗓️ _${dateStr}_`,
+    `───────────────────`,
+    ``,
+    `*${title}*`,
+    ``,
+    body,
+    ``,
+    `───────────────────`,
+    `✨ _Powered by *${BRAND.subtext}*_`,
+  ].join('\n');
+}
+
+// 4. Endpoints
+
+// Root Health Check Route
+app.get('/', (req, res) => {
+  res.json({
+    status: 'online',
+    service: 'PEFA Kawangware WhatsApp Bot',
+    whatsappConnected: !!sock,
+  });
+});
+
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
+
+// Helper Route: Fetch participating WhatsApp Groups & JIDs
+app.get('/groups', async (req, res) => {
+  try {
+    if (!sock) return res.status(503).json({ error: 'WhatsApp socket not initialized' });
+    const groups = await sock.groupFetchAllParticipating();
+    const list = Object.values(groups).map((g) => ({ name: g.subject, jid: g.id }));
+    return res.json(list);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// Endpoint: Trigger Daily Verse
 app.post('/trigger-daily-verse', async (req, res) => {
   const authHeader = req.headers.authorization;
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
@@ -106,9 +165,17 @@ app.post('/trigger-daily-verse', async (req, res) => {
     }
 
     const verse = await getVerse();
-    const message = `📖 *Verse of the Day*\n\n"${verse.text}"\n\n— *${verse.reference}*`;
 
-    await sock.sendMessage(groupId, { text: message });
+    const caption = formatMessage({
+      title: '📖 VERSE OF THE DAY',
+      body: `📍 *${verse.reference}*\n\n> _"${verse.text}"_`,
+    });
+
+    await sock.sendMessage(groupId, {
+      image: { url: BRAND.logoUrl },
+      caption: caption,
+    });
+
     return res.json({ success: true, message: 'Verse delivered to WhatsApp!', verse });
   } catch (err) {
     console.error('Error sending message:', err);
@@ -116,6 +183,7 @@ app.post('/trigger-daily-verse', async (req, res) => {
   }
 });
 
+// Endpoint: Trigger Latest Sermon Notification
 app.post('/trigger-latest-sermon', async (req, res) => {
   const authHeader = req.headers.authorization;
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
@@ -146,30 +214,23 @@ app.post('/trigger-latest-sermon', async (req, res) => {
     if (error) throw error;
 
     const sermonUrl = `https://www.pefak56church.top/sermons/${data.id}`;
-    const message = `🔥 *New Sermon Alert* 🔥\n\n*${data.title}*\nby ${data.preacher}\n\nWatch or read now: ${sermonUrl}`;
 
-    await sock.sendMessage(groupId, { text: message });
+    const caption = formatMessage({
+      title: '🎬 NEW SERMON ALERT',
+      body: `🎥 *${data.title}*\n👤 *Preacher:* ${data.preacher}\n\n🔗 *Watch or Read Here:* ${sermonUrl}`,
+    });
+
+    // Send with the branding image banner
+    await sock.sendMessage(groupId, {
+      image: { url: BRAND.logoUrl },
+      caption: caption,
+    });
+
     return res.json({ success: true, message: 'Sermon notification sent!', sermon: data });
   } catch (err) {
     console.error('Error sending sermon notification:', err);
     return res.status(500).json({ error: err.message });
   }
-});
-
-// 5. Helper Route: Fetch participating WhatsApp Groups & JIDs
-app.get('/groups', async (req, res) => {
-  try {
-    if (!sock) return res.status(503).json({ error: 'WhatsApp socket not initialized' });
-    const groups = await sock.groupFetchAllParticipating();
-    const list = Object.values(groups).map((g) => ({ name: g.subject, jid: g.id }));
-    return res.json(list);
-  } catch (err) {
-    return res.status(500).json({ error: err.message });
-  }
-});
-
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'ok' });
 });
 
 const PORT = process.env.PORT || 3000;
