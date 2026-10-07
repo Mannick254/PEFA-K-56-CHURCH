@@ -1,8 +1,9 @@
-const makeWASocket = require('@whiskeysockets/baileys').default;
-const { useMultiFileAuthState, DisconnectReason } = require('@whiskeysockets/baileys');
-const { createClient } = require('@supabase/supabase-js');
-const express = require('express');
-require('dotenv').config();
+import makeWASocket, { useMultiFileAuthState, DisconnectReason } from '@whiskeysockets/baileys';
+import { createClient } from '@supabase/supabase-js';
+import express from 'express';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
 app.use(express.json());
@@ -36,11 +37,10 @@ async function startWhatsApp() {
   });
 }
 
-// 1. Helper to fetch verse (DB -> OurManna API -> Safety Fallback)
+// Helper to fetch verse (DB -> OurManna API -> Safety Fallback)
 async function getVerse() {
   const today = new Date().toISOString().split('T')[0];
 
-  // Try Supabase custom queue first
   try {
     const { data } = await supabase
       .from('daily_verses')
@@ -53,7 +53,6 @@ async function getVerse() {
     console.warn('DB check failed, falling back to API:', err);
   }
 
-  // Fallback to OurManna API
   try {
     const res = await fetch('https://beta.ourmanna.com/api/v1/get?format=json&order=daily');
     const json = await res.json();
@@ -62,7 +61,6 @@ async function getVerse() {
       text: json.verse.details.text.replace(/<[^>]*>?/gm, '').trim()
     };
   } catch (apiErr) {
-    // Safety Net
     return {
       reference: 'Proverbs 3:5-6',
       text: 'Trust in the LORD with all your heart and lean not on your own understanding...'
@@ -70,7 +68,7 @@ async function getVerse() {
   }
 }
 
-// 2. Direct Trigger Endpoint called by Supabase pg_cron
+// Direct Trigger Endpoint called by Supabase pg_cron
 app.post('/trigger-daily-verse', async (req, res) => {
   const authHeader = req.headers.authorization;
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
