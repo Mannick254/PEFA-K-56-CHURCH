@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
-    "start:server": "node sarver.js"
+    "start:server": "node server.js"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
