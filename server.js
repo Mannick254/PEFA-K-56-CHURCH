@@ -4,6 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 import qrcode from 'qrcode-terminal';
 import express from 'express';
 import pino from 'pino';
+import cron from 'node-cron';
 
 const app = express();
 app.use(express.json());
@@ -130,7 +131,47 @@ function formatMessage({ title, body }) {
   ].join('\n');
 }
 
-// 4. Endpoints
+// Reusable logic to send daily verse
+async function executeDailyVerseDispatch() {
+  const groupIds = getTargetGroupIds();
+  if (groupIds.length === 0) {
+    throw new Error('WHATSAPP_GROUP_IDS environment variable is missing.');
+  }
+
+  if (!sock) {
+    throw new Error('WhatsApp socket not initialized yet.');
+  }
+
+  const verse = await getVerse();
+
+  const caption = formatMessage({
+    title: '📖 VERSE OF THE DAY',
+    body: `📍 *${verse.reference}*\n\n> *"${verse.text}"*`,
+  });
+
+  const sendPromises = groupIds.map((groupId) =>
+    sock.sendMessage(groupId, {
+      image: { url: BRAND.logoUrl },
+      caption: caption,
+    })
+  );
+
+  await Promise.all(sendPromises);
+  return { groupIds, verse };
+}
+
+// 4. Automated Cron Scheduler (Runs every day at 6:00 AM EAT / 03:00 UTC)
+cron.schedule('0 3 * * *', async () => {
+  console.log('⏰ [CRON] Starting automated daily verse dispatch...');
+  try {
+    const result = await executeDailyVerseDispatch();
+    console.log(`✅ [CRON] Daily verse delivered to ${result.groupIds.length} group(s)!`);
+  } catch (err) {
+    console.error('❌ [CRON] Automated daily verse failed:', err.message);
+  }
+});
+
+// 5. Endpoints
 
 // Root Health Check Route
 app.get('/', (req, res) => {
@@ -157,44 +198,20 @@ app.get('/groups', async (req, res) => {
   }
 });
 
-// Endpoint: Trigger Daily Verse
+// Endpoint: Trigger Daily Verse manually or via HTTP trigger
 app.post('/trigger-daily-verse', async (req, res) => {
   const authHeader = req.headers.authorization;
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  const groupIds = getTargetGroupIds();
-  if (groupIds.length === 0) {
-    return res.status(500).json({ error: 'WHATSAPP_GROUP_IDS environment variable is missing.' });
-  }
-
   try {
-    if (!sock) {
-      return res.status(503).json({ error: 'WhatsApp socket not initialized yet.' });
-    }
-
-    const verse = await getVerse();
-
-    const caption = formatMessage({
-      title: '📖 VERSE OF THE DAY',
-      body: `📍 *${verse.reference}*\n\n> *"${verse.text}"*`,
-    });
-
-    const sendPromises = groupIds.map((groupId) =>
-      sock.sendMessage(groupId, {
-        image: { url: BRAND.logoUrl },
-        caption: caption,
-      })
-    );
-
-    await Promise.all(sendPromises);
-
+    const result = await executeDailyVerseDispatch();
     return res.json({
       success: true,
-      message: `Verse delivered to ${groupIds.length} WhatsApp group(s)!`,
-      groupsSent: groupIds,
-      verse,
+      message: `Verse delivered to ${result.groupIds.length} WhatsApp group(s)!`,
+      groupsSent: result.groupIds,
+      verse: result.verse,
     });
   } catch (err) {
     console.error('Error sending message:', err);
