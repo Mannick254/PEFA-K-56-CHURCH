@@ -30,6 +30,16 @@ const BRAND = {
   website: 'https://www.pefak56church.top',
 };
 
+// Strict Secret Authorization Validator
+function isValidAuthorization(authHeader) {
+  const secret = process.env.CRON_SECRET;
+  if (!secret) {
+    console.error('❌ CRON_SECRET environment variable is not defined on Render!');
+    return false;
+  }
+  return authHeader === `Bearer ${secret}`;
+}
+
 // 2. WhatsApp Connection Handler
 async function startWhatsApp() {
   const { state, saveCreds } = await useMultiFileAuthState('baileys_auth_info');
@@ -37,7 +47,7 @@ async function startWhatsApp() {
   sock = makeWASocket({
     auth: state,
     printQRInTerminal: false,
-    logger: pino({ level: 'silent' }), // Suppresses noisy background Baileys sync logs
+    logger: pino({ level: 'silent' }),
   });
 
   sock.ev.on('creds.update', saveCreds);
@@ -200,8 +210,7 @@ app.get('/groups', async (req, res) => {
 
 // Endpoint: Trigger Daily Verse manually or via HTTP trigger
 app.post('/trigger-daily-verse', async (req, res) => {
-  const authHeader = req.headers.authorization;
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (!isValidAuthorization(req.headers.authorization)) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
@@ -214,15 +223,14 @@ app.post('/trigger-daily-verse', async (req, res) => {
       verse: result.verse,
     });
   } catch (err) {
-    console.error('Error sending message:', err);
+    console.error('Error sending daily verse message:', err);
     return res.status(500).json({ error: err.message });
   }
 });
 
 // Endpoint: Trigger Latest Sermon Notification
 app.post('/trigger-latest-sermon', async (req, res) => {
-  const authHeader = req.headers.authorization;
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (!isValidAuthorization(req.headers.authorization)) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
@@ -245,9 +253,13 @@ app.post('/trigger-latest-sermon', async (req, res) => {
       .select('id, title, preacher')
       .order('date', { ascending: false })
       .limit(1)
-      .single();
+      .maybeSingle();
 
     if (error) throw error;
+
+    if (!data) {
+      return res.status(404).json({ error: 'No sermon records found in Supabase database.' });
+    }
 
     const sermonUrl = `${BRAND.website}/sermons/${data.id}`;
 
