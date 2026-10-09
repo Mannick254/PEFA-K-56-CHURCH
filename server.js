@@ -1,3 +1,4 @@
+
 import 'dotenv/config';
 import makeWASocket, { useMultiFileAuthState, DisconnectReason } from '@whiskeysockets/baileys';
 import { createClient } from '@supabase/supabase-js';
@@ -224,67 +225,6 @@ app.post('/trigger-daily-verse', async (req, res) => {
     });
   } catch (err) {
     console.error('Error sending daily verse message:', err);
-    return res.status(500).json({ error: err.message });
-  }
-});
-
-// Endpoint: Trigger Latest Sermon Notification
-app.post('/trigger-latest-sermon', async (req, res) => {
-  if (!isValidAuthorization(req.headers.authorization)) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-
-  const groupIds = getTargetGroupIds();
-  if (groupIds.length === 0) {
-    return res.status(500).json({ error: 'WHATSAPP_GROUP_IDS environment variable is missing.' });
-  }
-
-  try {
-    if (!sock) {
-      return res.status(503).json({ error: 'WhatsApp socket not initialized yet.' });
-    }
-
-    if (!supabase) {
-      return res.status(500).json({ error: 'Supabase client not initialized.' });
-    }
-
-    const { data, error } = await supabase
-      .from('sermons')
-      .select('id, title, preacher')
-      .order('date', { ascending: false })
-      .limit(1)
-      .maybeSingle();
-
-    if (error) throw error;
-
-    if (!data) {
-      return res.status(404).json({ error: 'No sermon records found in Supabase database.' });
-    }
-
-    const sermonUrl = `${BRAND.website}/sermons/${data.id}`;
-
-    const caption = formatMessage({
-      title: '🎬 NEW SERMON ALERT',
-      body: `🎥 *${data.title}*\n👤 *Preacher:* ${data.preacher}\n\n🔗 *Watch or Read Here:* ${sermonUrl}`,
-    });
-
-    const sendPromises = groupIds.map((groupId) =>
-      sock.sendMessage(groupId, {
-        image: { url: BRAND.logoUrl },
-        caption: caption,
-      })
-    );
-
-    await Promise.all(sendPromises);
-
-    return res.json({
-      success: true,
-      message: `Sermon notification delivered to ${groupIds.length} WhatsApp group(s)!`,
-      groupsSent: groupIds,
-      sermon: data,
-    });
-  } catch (err) {
-    console.error('Error sending sermon notification:', err);
     return res.status(500).json({ error: err.message });
   }
 });
